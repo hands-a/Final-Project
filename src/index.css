@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+
+
+body {
+  background-color: #c38adc; /* لون خلفية الصفحة هادي جداً */
+  font-family: 'Inter', sans-serif;
+}
