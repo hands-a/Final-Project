@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
 import { RiRocketLine } from 'react-icons/ri';
-
+import Logo from "../../assets/logo.png"; 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -70,13 +70,14 @@ const Navbar = () => {
         </div>
 
         {/* 3. (اليمين) اللوجو والنص */}
-        <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-slate-800 font-sans tracking-tight">
-            Future<span className="text-purple-600">Dev</span>
-          </span>
-          {/* ✅ اللوجو رجع أهو */}
-          <img src="/logo.png" alt="Logo" className="w-20 h-15 object-contain" />
-        </Link>
+        {/* 3. (اليمين) اللوجو والنص */}
+<Link to="/" className="flex items-center gap-2">
+  <span className="text-2xl font-bold text-slate-800 font-sans tracking-tight">
+    Future<span className="text-purple-600">Dev</span>
+  </span>
+  {/* ✅ تم وضع المتغير Logo داخل الـ src */}
+  <img src={Logo} alt="Logo" className="w-20 h-15 object-contain" />
+</Link>
 
       </div>
 

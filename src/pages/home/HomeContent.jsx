@@ -36,14 +36,14 @@ const HomeContent = () => {
   const reviews = [
     {
       id: 1,
-      name: "Sarah Johnson",
-      role: "Software Developer",
-      text: "Future Dev transformed my career! The courses are comprehensive and the instructors are amazing.",
+      name: "Rana Wael",
+      role: "The best in the universe",
+      text: "My support, my life, and everything I have and will have, to me you are everything in my life. I love you.",
       rating: 5
     },
     {
       id: 2,
-      name: "Michael Chen",
+      name: "Ahmed",
       role: "Data Scientist",
       text: "Best investment in my education. The platform is intuitive and the content is top-notch.",
       rating: 5

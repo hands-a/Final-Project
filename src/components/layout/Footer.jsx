@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // ✅ استيراد الأيقونات من المكتبة اللي إنت سطبتها
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from 'react-icons/fa';
+import Logo from "../../assets/logo.png"; 
 import { HiLocationMarker, HiMail, HiPhone } from 'react-icons/hi';
 
 const Footer = () => {
@@ -42,7 +43,7 @@ const Footer = () => {
                 Future<span className="text-purple-600">Dev</span>
                 
               </span>
-                            <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain dark:brightness-0 dark:invert" />
+                            <img src={Logo} alt="Logo" className="w-9 h-9 object-contain dark:brightness-0 dark:invert" />
 
               {/* اللوجو بيقلب أبيض لوحده في الدارك مود */}
             </Link>
