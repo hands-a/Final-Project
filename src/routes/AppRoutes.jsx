@@ -5,6 +5,10 @@ import Footer from '../components/layout/Footer'
 import Hero from '../pages/home/Hero';
 import HomeContent from '../pages/home/HomeContent';    
 import LoginPage from '../pages/auth/LoginPage';
+import RegisterPage from '../pages/auth/RegisterPage';
+import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
+import VerifyCodePage from '../pages/auth/VerifyCodePage';
+import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 
 const Layout = () => {
   return (
@@ -32,7 +36,13 @@ const AppRoutes = () => {
         } />
         
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+<Route path="/verify-code" element={<VerifyCodePage />} />
+<Route path="/reset-password" element={<ResetPasswordPage />} />
+
       </Route>
+      
     </Routes>
   );
 };
