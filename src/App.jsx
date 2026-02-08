@@ -1,12 +1,19 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes';
+import { CartProvider } from './context/CartContext';
+import { StudentProvider } from './context/StudentContext';
+import { AuthProvider } from './context/AuthContext'; // 👈 1. استدعاء
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    // 👈 2. الترتيب مهم: Auth الأول، ثم Student، ثم Cart
+    <AuthProvider>
+      <StudentProvider>
+        <CartProvider>
+          <AppRoutes />
+        </CartProvider>
+      </StudentProvider>
+    </AuthProvider>
   );
 }
 
