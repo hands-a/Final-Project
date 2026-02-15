@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaEnvelope, FaLock, FaArrowRight, FaGoogle, FaFacebook } from 'react-icons/fa';
-import { useAuth } from '../../context/AuthContext'; // 👈 استدعاء
+import { useAuth } from '../../context/AuthContext'; 
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // 👈 استدعاء دالة الدخول
+  const { login } = useAuth(); 
 
   const initialValues = {
     email: '',
@@ -23,29 +23,37 @@ const LoginPage = () => {
   });
 
   const onSubmit = (values, { setSubmitting }) => {
-    // محاكاة عملية تسجيل دخول (هنا المفروض تكلم الـ API)
+    // Simulate Login Logic
     setTimeout(() => {
       const userData = {
-        name: values.email.split('@')[0], // اسم مؤقت من الإيميل
+        name: values.email.split('@')[0], 
         email: values.email,
         role: 'student'
       };
       
-      login(userData); // 👈 تفعيل الدخول في السيستم
+      login(userData); 
       setSubmitting(false);
-      navigate('/'); // 👈 توجيه للصفحة الرئيسية
+      
+      // Role-Based Navigation Logic
+      if (values.email.includes('admin')) {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/');
+      }
     }, 1000);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-bl from-slate-900 via-[#1a103c] to-slate-900 relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
       
+      {/* Background Effects */}
       <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-pink-600/20 rounded-full blur-[100px] opacity-70 animate-pulse-slow pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-violet-600/30 rounded-full blur-[100px] opacity-70 animate-pulse-slow pointer-events-none" style={{animationDelay: '1.5s'}}></div>
 
       <div className="relative z-10 w-full max-w-[550px] mt-15">
         <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl">
           
+          {/* Header */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-pink-500 to-violet-600 rounded-2xl mb-4 shadow-lg shadow-pink-500/30">
               <FaLock className="text-white text-xl" />

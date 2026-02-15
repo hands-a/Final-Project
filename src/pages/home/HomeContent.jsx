@@ -4,7 +4,6 @@ import {
   FaChalkboardTeacher, FaCertificate, FaInfinity, FaStar, FaQuoteRight, 
   FaArrowRight, FaUserTie, FaPlayCircle, FaCode, FaPaintBrush, FaDatabase
 } from 'react-icons/fa';
-
 const HomeContent = () => {
 
   
@@ -82,9 +81,9 @@ const HomeContent = () => {
   const reviews = [
     {
       id: 1,
-      name: "Rana Wael",
-      role: "The best in the universe",
-      text: "My support, my life, and everything I have and will have, to me you are everything in my life. I love you.",
+      name: "John Doe",
+      role: "Software Engineer",
+      text: "The platform is user-friendly and easy to navigate. The instructors are knowledgeable and engaging. I highly recommend it!",
       image: "https://randomuser.me/api/portraits/women/44.jpg",
       rating: 5
     },

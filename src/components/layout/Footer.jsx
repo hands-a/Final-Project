@@ -6,7 +6,6 @@ import { HiLocationMarker, HiMail, HiPhone } from 'react-icons/hi';
 
 const Footer = () => {
 
-  
   const SocialIcon = ({ icon: Icon, link }) => (
     <a 
       href={link || "#"} 
@@ -19,10 +18,19 @@ const Footer = () => {
     </a>
   );
 
-  
   const headingStyle = "font-bold text-lg mb-6 relative inline-block text-white";
   const underlineStyle = "absolute bottom-[-8px] left-0 w-12 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full";
   const linkStyle = "text-sm font-medium transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:translate-x-1";
+
+  // 👇 دي القائمة اللي عدلناها لتطابق أقسام الكورسات
+  const tracks = [
+    'Development', 
+    'Design', 
+    'Mobile App', 
+    'Data Science', 
+    'Cyber Security',
+    'DevOps'
+  ];
 
   return (
     <footer className="w-full pt-20 pb-8 border-t border-white/10 bg-[#0a0a0a] text-slate-300">
@@ -30,6 +38,7 @@ const Footer = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
+          {/* 1. Logo & Bio */}
           <div className="flex flex-col gap-6">
             <Link to="/" className="flex items-center gap-2">
                <img src={Logo} alt="Logo" className="w-10 h-10 object-contain" />
@@ -41,7 +50,6 @@ const Footer = () => {
               Your #1 platform to learn coding from scratch to mastery. We build your future line by line with elite mentors.
             </p>
             
-          
             <div className="flex items-center gap-3 mt-2">
               <SocialIcon icon={FaFacebookF} link="#" />
               <SocialIcon icon={FaTwitter} link="#" />
@@ -50,41 +58,60 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* 2. روابط سريعة */}
+          {/* 2. Quick Links */}
           <div>
             <h3 className={headingStyle}>
               Quick Links
               <span className={underlineStyle}></span>
             </h3>
             <ul className="flex flex-col gap-3">
-              {['Home', 'About Us', 'Mentors', 'Community', 'FAQ'].map((item) => (
-                <li key={item}>
-                  <Link to="/" className={linkStyle}>
-                    <span className="text-purple-500 text-xs">●</span> {item}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link to="/" className={linkStyle}>
+                  <span className="text-purple-500 text-xs">●</span> Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className={linkStyle}> 
+                  <span className="text-purple-500 text-xs">●</span> About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/courses" className={linkStyle}>
+                  <span className="text-purple-500 text-xs">●</span> All Courses
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" className={linkStyle}>
+                  <span className="text-purple-500 text-xs">●</span> Join Community
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className={linkStyle}>
+                  <span className="text-purple-500 text-xs">●</span> FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 
-          
+          {/* 3. Top Tracks (محدثة الآن) */}
           <div>
             <h3 className={headingStyle}>
               Top Tracks
               <span className={underlineStyle}></span>
             </h3>
             <ul className="flex flex-col gap-3">
-              {['Front-end Development', 'Back-end Python', 'UI/UX Design', 'React.js Master', 'Data Science'].map((item) => (
-                <li key={item}>
+              {tracks.map((track) => (
+                <li key={track}>
+                  {/* بنوجه المستخدم لصفحة الكورسات */}
                   <Link to="/courses" className={linkStyle}>
-                    <span className="text-pink-500 text-xs">●</span> {item}
+                    <span className="text-pink-500 text-xs">●</span> {track}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-        
+          {/* 4. Contact Us */}
           <div>
             <h3 className={headingStyle}>
               Contact Us
@@ -114,7 +141,7 @@ const Footer = () => {
 
         </div>
 
-        
+        {/* Copyright */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-center md:text-left text-slate-500">
             © {new Date().getFullYear()} All rights reserved to <span className="font-bold text-white">FutureDev</span>.

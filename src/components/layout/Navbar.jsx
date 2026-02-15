@@ -27,7 +27,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
-  };
+  }; 
 
   const getLinkClass = ({ isActive }) => 
     `relative text-[16px] font-medium transition-colors duration-300 pb-1
@@ -104,7 +104,7 @@ const Navbar = () => {
         </div>
 
       </div>
-
+    {/* Mobile Menu */}
       <div className={`lg:hidden absolute top-full left-0 w-full bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl transition-all duration-300 overflow-hidden ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="flex flex-col gap-6 p-8 text-center">
           <NavLink to="/" className={getLinkClass}>Home</NavLink>

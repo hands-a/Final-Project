@@ -1,26 +1,43 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
-  // بنشوف هل فيه مستخدم متسجل في الذاكرة ولا لأ
+  // 1. استرجاع المستخدم من الذاكرة لو موجود
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  // دالة تسجيل الدخول (بنحفظ البيانات)
+  // 2. دالة تسجيل الدخول (Updated)
   const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    // محاكاة للصلاحيات (Roles Simulation)
+    // في الواقع، البيانات دي بتيجي من السيرفر (Database)
+    let role = 'student';
+    
+    // لو الإيميل فيه كلمة admin، نعتبره أدمن/مدرب
+    if (userData.email.includes('admin') || userData.email.includes('instructor')) {
+      role = 'instructor'; 
+    }
+
+    const userWithRole = { 
+      ...userData, 
+      role: role, 
+      // صورة افتراضية لو مفيش صورة
+      avatar: `https://ui-avatars.com/api/?name=${userData.name}&background=random`
+    };
+    
+    setUser(userWithRole);
+    localStorage.setItem('user', JSON.stringify(userWithRole));
   };
 
-  // دالة تسجيل الخروج (بنمسح البيانات)
+  // 3. دالة تسجيل الخروج
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    localStorage.removeItem('cart'); // اختياري: نمسح السلة لو خرج
+    // ملحوظة: مبنمسحش الكورسات عشان لما يرجع يلاقيها، إلا لو عايز تمسح كل حاجة
   };
 
   return (
@@ -29,5 +46,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

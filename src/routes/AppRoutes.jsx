@@ -16,7 +16,10 @@ import CoursesPage from '../pages/courses/CoursesPage';
 import CourseDetailsPage from '../pages/courses/CourseDetailsPage';
 import MyCoursesPage from '../pages/dashboard/MyCoursesPage';
 import CoursePlayerPage from '../pages/dashboard/CoursePlayerPage';
-
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminRoute from "../components/AdminRoute";
+import AddCoursePage from "../pages/admin/AddCoursePage";
+import FAQPage from '../pages/FAQPage';
 const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -51,6 +54,35 @@ const AppRoutes = () => {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/my-courses" element={<MyCoursesPage />} />
         <Route path="/learn/:id" element={<CoursePlayerPage />} />
+        {/* 👇 المسار المحمي للأدمن */}
+<Route 
+  path="/admin/dashboard" 
+  element={
+    <AdminRoute>
+      <AdminDashboard />
+    </AdminRoute>
+  } 
+/>
+
+{/* 👇 المسار المحمي لإضافة كورس (لسه هنعملها) */}
+<Route 
+  path="/admin/add-course" 
+  element={
+    <AdminRoute>
+      {/* كان هنا مكتوب div coming soon، شيلها وحط دي: */}
+      <AddCoursePage />
+    </AdminRoute>
+  } 
+/>
+<Route 
+  path="/admin/add-course" 
+  element={
+    <AdminRoute>
+      <AddCoursePage />  {/* 👈 هنا بدل الـ div القديمة */}
+    </AdminRoute>
+  } 
+/>
+<Route path="/faq" element={<FAQPage />} />
       </Route>
     </Routes>
   );
