@@ -1,52 +1,52 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { coursesData } from '../data/coursesData'; // بنستورد الكورسات عشان ناخد منها بيانات
 
 const StudentContext = createContext();
 
 export const useStudent = () => useContext(StudentContext);
 
 export const StudentProvider = ({ children }) => {
-  // 1. القراءة الفورية من LocalStorage عند البدء (Lazy Initialization)
-  // ده بيمنع إن القيمة تكون فاضية [] أول ما الصفحة تفتح
+  // 1. بنحاول نجيب الكورسات المسجلة من المتصفح لو موجودة
   const [enrolledCourses, setEnrolledCourses] = useState(() => {
-    try {
-      const storedData = localStorage.getItem('enrolledCourses');
-      return storedData ? JSON.parse(storedData) : [];
-    } catch (error) {
-      console.error("Failed to load courses from storage", error);
-      return [];
-    }
+    const saved = localStorage.getItem('enrolledCourses');
+    return saved ? JSON.parse(saved) : []; 
   });
 
-  // 2. مراقبة أي تغيير وحفظه فوراً في LocalStorage
-  useEffect(() => {
-    localStorage.setItem('enrolledCourses', JSON.stringify(enrolledCourses));
-  }, [enrolledCourses]);
-
-  // --- Actions ---
-
-  // دالة الاشتراك في كورس جديد
+  // 2. دالة عشان الطالب يشترك في كورس (هنستخدمها بعد الدفع)
   const enrollCourse = (course) => {
-    setEnrolledCourses((prevCourses) => {
-      // لو الكورس موجود أصلاً، مرجعش نسخة جديدة (عشان نمنع التكرار)
-      if (prevCourses.some(c => c.id === course.id)) return prevCourses;
+    setEnrolledCourses((prev) => {
+      // نتأكد إنه مش مشترك أصلاً
+      if (prev.find(c => c.id === course.id)) return prev;
       
-      // إضافة الكورس مع نسبة تقدم 0
-      return [...prevCourses, { ...course, progress: 0 }];
+      const newCourse = {
+        ...course,
+        progress: 0, // بنبدأ التقدم من صفر
+        lastAccessed: new Date().toISOString()
+      };
+      
+      const updated = [...prev, newCourse];
+      localStorage.setItem('enrolledCourses', JSON.stringify(updated));
+      return updated;
     });
   };
 
-  // دالة تحديث التقدم (مهمة جداً لصفحة My Learning)
+  // 3. دالة تحديث التقدم (لما يحضر درس)
   const updateProgress = (courseId, progress) => {
-    setEnrolledCourses((prevCourses) => {
-      return prevCourses.map(course => {
-        if (course.id === courseId) {
-          // تحديث النسبة، ولو النسبة 100 بنعلم عليه
-          return { ...course, progress: progress };
-        }
-        return course;
-      });
+    setEnrolledCourses(prev => {
+       const updated = prev.map(c => c.id === courseId ? { ...c, progress } : c);
+       localStorage.setItem('enrolledCourses', JSON.stringify(updated));
+       return updated;
     });
   };
+
+  // *مؤقتًا للتجربة:* هنضيف شوية كورسات وهمية لو الطالب جديد عشان الصفحة متبقاش فاضية
+  useEffect(() => {
+    if (enrolledCourses.length === 0) {
+        // بنضيف أول كورسين من الداتا كأن الطالب اشتراهم
+        const demoCourses = coursesData.slice(0, 2).map(c => ({...c, progress: Math.floor(Math.random() * 80)})); 
+        setEnrolledCourses(demoCourses);
+    }
+  }, []);
 
   return (
     <StudentContext.Provider value={{ enrolledCourses, enrollCourse, updateProgress }}>

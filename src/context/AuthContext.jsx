@@ -13,21 +13,22 @@ export const AuthProvider = ({ children }) => {
 
   // 2. دالة تسجيل الدخول (Updated)
   const login = (userData) => {
-    // محاكاة للصلاحيات (Roles Simulation)
-    // في الواقع، البيانات دي بتيجي من السيرفر (Database)
     let role = 'student';
     
-    // لو الإيميل فيه كلمة admin، نعتبره أدمن/مدرب
+    // التعديل هنا: خليناها admin عشان الـ Navbar يفهمها
     if (userData.email.includes('admin') || userData.email.includes('instructor')) {
-      role = 'instructor'; 
+      role = 'admin'; 
     }
 
     const userWithRole = { 
       ...userData, 
       role: role, 
-      // صورة افتراضية لو مفيش صورة
       avatar: `https://ui-avatars.com/api/?name=${userData.name}&background=random`
     };
+    
+    setUser(userWithRole);
+    localStorage.setItem('user', JSON.stringify(userWithRole));
+  
     
     setUser(userWithRole);
     localStorage.setItem('user', JSON.stringify(userWithRole));

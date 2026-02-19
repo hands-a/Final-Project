@@ -5,7 +5,7 @@ import { RiRocketLine, RiLogoutBoxRLine } from 'react-icons/ri';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
-import Logo from "../../assets/logo.png"; // 👈 اللوجو بتاعك موجود اهو
+import Logo from "../../assets/logo.png"; 
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +42,7 @@ const Navbar = () => {
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${scrolled ? 'bg-[#0a0a0a]/80 backdrop-blur-xl border-white/10 shadow-lg py-3' : 'bg-transparent border-transparent py-5'}`}>
       <div className="container mx-auto px-6 flex items-center justify-between">
 
-        {/* 👇 اللوجو بتاعك رجع هنا */}
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
           <img src={Logo} alt="Logo" className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" />
           <span className="text-2xl font-bold text-white font-sans tracking-tight">
@@ -50,14 +50,15 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* باقي الكود زي ما هو بالظبط */}
+        {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-8 bg-white/5 px-8 py-2 rounded-full border border-white/5 backdrop-blur-sm">
           <NavLink to="/" className={getLinkClass}>Home</NavLink>
           <NavLink to="/courses" className={getLinkClass}>Courses</NavLink>
           {user && <NavLink to="/my-courses" className={getLinkClass}>My Learning</NavLink>}
-          <NavLink to="/mentors" className={getLinkClass}>Mentors</NavLink>
+          <NavLink to="/about" className={getLinkClass}>About</NavLink>
         </div>
 
+        {/* Right Side Icons */}
         <div className="flex items-center gap-4">
           <Link to="/cart" className="relative group mr-2">
             <FaShoppingCart className="text-2xl text-slate-400 group-hover:text-white transition-colors" />
@@ -73,11 +74,14 @@ const Navbar = () => {
               <div className="flex items-center gap-4 pl-4 border-l border-white/10">
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold border-2 border-[#0a0a0a] shadow-lg">
-                    {user.name.charAt(0).toUpperCase()}
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <div className="hidden xl:block">
                     <p className="text-sm font-bold text-white leading-none">{user.name}</p>
-                    <p className="text-xs text-slate-400">Student</p>
+                    {/* 👇 هنا التعديل عشان يظهر Role المستخدم صح 👇 */}
+                    <p className="text-xs text-slate-400 capitalize">
+                      {user.role === 'admin' ? 'Administrator' : 'Student'}
+                    </p>
                   </div>
                 </div>
                 <button 
@@ -104,7 +108,8 @@ const Navbar = () => {
         </div>
 
       </div>
-    {/* Mobile Menu */}
+
+      {/* Mobile Menu */}
       <div className={`lg:hidden absolute top-full left-0 w-full bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl transition-all duration-300 overflow-hidden ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="flex flex-col gap-6 p-8 text-center">
           <NavLink to="/" className={getLinkClass}>Home</NavLink>
