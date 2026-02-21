@@ -21,6 +21,7 @@ import AdminRoute from "../components/AdminRoute";
 import AddCoursePage from "../pages/admin/AddCoursePage";
 import FAQPage from '../pages/FAQPage';
 import AboutPage from '../pages/AboutPage';
+import ProfilePage from '../pages/dashboard/ProfilePage';
 const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -55,6 +56,7 @@ const AppRoutes = () => {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/my-courses" element={<MyCoursesPage />} />
         <Route path="/learn/:id" element={<CoursePlayerPage />} />
+        <Route path="/course/:id" element={<CourseDetailsPage />} />
         {/* 👇 المسار المحمي للأدمن */}
 <Route 
   path="/admin/dashboard" 
@@ -85,8 +87,11 @@ const AppRoutes = () => {
 />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         
       </Route>
+      {/* Profile Page */}
+<Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 };

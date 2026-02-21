@@ -2,20 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { coursesData } from '../../data/coursesData';
 import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext'; // 👈 1. استدعاء نظام المستخدمين
+import { useAuth } from '../../context/AuthContext';
 import { 
-  FaStar, FaPlayCircle, FaClock, FaAward, FaMobileAlt, 
-  FaCheckCircle, FaChevronDown, FaChevronUp, FaLock
+  FaStar, FaPlayCircle, FaClock, FaAward, 
+  FaCheckCircle, FaChevronDown, FaChevronUp, FaLock, FaArrowLeft
 } from 'react-icons/fa';
 
 const CourseDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { user } = useAuth(); // 👈 2. التأكد من حالة المستخدم
+  const { user } = useAuth(); 
   
   const [course, setCourse] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [loading, setLoading] = useState(true);
   
   const curriculum = [
     { title: "Introduction & Setup", lessons: 3, duration: "15m" },
@@ -26,48 +27,59 @@ const CourseDetailsPage = () => {
   ];
 
   useEffect(() => {
-    const foundCourse = coursesData.find(c => c.id === parseInt(id));
-    setCourse(foundCourse);
+    // حل مشكلة النص والرقم عن طريق المقارنة بنص في الحالتين
+    const foundCourse = coursesData.find(c => String(c.id) === String(id));
+    
+    setCourse(foundCourse || null);
+    setLoading(false);
     window.scrollTo(0, 0);
   }, [id]);
 
-  // 👇 3. تعديل دالة الإضافة للسلة
   const handleAddToCart = () => {
-    // لو مفيش مستخدم، نمنعه ونوديه يسجل دخول
     if (!user) {
       alert("Please log in first to enroll in this course!"); 
       navigate('/login');
       return;
     }
-
-    // لو مسجل، كمل عادي
     addToCart(course);
     navigate('/cart');
   };
 
-  if (!course) return <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-white">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!course) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center text-center px-6">
+        <h1 className="text-6xl font-bold text-white mb-4">404</h1>
+        <h2 className="text-2xl font-bold text-slate-300 mb-6">Course Not Found</h2>
+        <p className="text-slate-500 mb-8">The course you are looking for might have been removed or the link is broken.</p>
+        <Link to="/courses" className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 transition-colors">
+          <FaArrowLeft /> Back to Courses
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 relative overflow-hidden">
-      
-      {/* Background Effects */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] z-0 pointer-events-none"></div>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-purple-900/20 blur-[120px] pointer-events-none"></div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        
         <div className="flex flex-col lg:flex-row gap-12 mb-12">
           
-          {/* --- Left Content --- */}
           <div className="lg:w-2/3">
-            
-            {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-sm text-slate-400 mb-6">
               <Link to="/courses" className="hover:text-purple-400 transition-colors">Courses</Link> / 
               <span className="text-white truncate">{course.title}</span>
             </div>
 
-            {/* Badge */}
             <span className="bg-purple-600/20 text-purple-300 border border-purple-600/30 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">
               {course.category}
             </span>
@@ -77,7 +89,7 @@ const CourseDetailsPage = () => {
             </h1>
 
             <p className="text-slate-300 text-lg mb-6 leading-relaxed">
-              Master {course.category} from scratch. This comprehensive course covers everything you need to become a professional developer using modern tools.
+              Master {course.category} from scratch. This comprehensive course covers everything you need to become a professional using modern tools.
             </p>
 
             <div className="flex flex-wrap items-center gap-6 text-sm text-slate-300 mb-8">
@@ -92,12 +104,10 @@ const CourseDetailsPage = () => {
               </div>
             </div>
 
-            {/* Mobile Enrollment Card */}
             <div className="lg:hidden mb-10">
                <EnrollmentCard course={course} onAddToCart={handleAddToCart} />
             </div>
 
-            {/* --- Tabs --- */}
             <div className="border-b border-white/10 mb-8 overflow-x-auto">
               <div className="flex gap-8 min-w-max">
                 {['overview', 'curriculum', 'instructor'].map((tab) => (
@@ -116,14 +126,12 @@ const CourseDetailsPage = () => {
               </div>
             </div>
 
-            {/* --- Tab Content --- */}
             <div className="text-slate-300">
               {activeTab === 'overview' && (
                 <div className="space-y-6 animate-fadeIn">
                   <h3 className="text-2xl font-bold text-white mb-2">Course Description</h3>
                   <p className="leading-relaxed">
                     This course is designed for beginners and professionals alike. We start from the very basics and move towards advanced topics. 
-                    You will build real-world projects, learn best practices, and get ready for high-paying jobs.
                   </p>
                   
                   <h3 className="text-xl font-bold text-white mt-8 mb-4">What you'll learn</h3>
@@ -169,7 +177,6 @@ const CourseDetailsPage = () => {
             </div>
           </div>
 
-          {/* --- Right Sidebar (Sticky) --- */}
           <div className="hidden lg:block lg:w-1/3 relative">
             <div className="sticky top-28">
               <EnrollmentCard course={course} onAddToCart={handleAddToCart} />
@@ -182,24 +189,21 @@ const CourseDetailsPage = () => {
   );
 };
 
-// --- Sub-Components ---
-
 const EnrollmentCard = ({ course, onAddToCart }) => (
   <div className="bg-[#13151d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-    {/* Preview Image: Object-Contain for Logos */}
-    <div className="relative h-48 group cursor-pointer overflow-hidden bg-[#0f1119] p-6 flex items-center justify-center">
-      <div className="absolute inset-0 bg-gradient-to-t from-[#13151d] to-transparent opacity-60"></div>
+    <div className="relative h-48 group cursor-pointer overflow-hidden bg-white p-6 flex items-center justify-center">
+      <div className="absolute inset-0 bg-gradient-to-t from-[#13151d] to-transparent opacity-10"></div>
       <img 
         src={course.image} 
         alt="Preview" 
-        className="w-full h-full object-contain relative z-10 transform group-hover:scale-110 transition-transform duration-500" 
+        className="max-w-[70%] max-h-[70%] object-contain relative z-10 transform group-hover:scale-110 transition-transform duration-500" 
       />
     </div>
 
     <div className="p-6">
       <div className="flex items-end gap-3 mb-6">
-        <span className={`text-3xl font-bold ${course.price === 0 ? 'text-green-400' : 'text-white'}`}>
-          {course.price === 0 ? 'Free' : `$${course.price}`}
+        <span className={`text-3xl font-bold ${course.price === 0 || course.price === 'Free' ? 'text-green-400' : 'text-white'}`}>
+          {course.price === 0 || course.price === 'Free' ? 'Free' : `$${course.price}`}
         </span>
       </div>
 
@@ -207,10 +211,10 @@ const EnrollmentCard = ({ course, onAddToCart }) => (
         onClick={onAddToCart}
         className="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg shadow-purple-600/25 transition-all mb-4 transform hover:-translate-y-1"
       >
-        {course.price === 0 ? 'Enroll for Free' : 'Add to Cart'}
+        {course.price === 0 || course.price === 'Free' ? 'Enroll for Free' : 'Add to Cart'}
       </button>
       
-      {course.price > 0 && (
+      {course.price !== 0 && course.price !== 'Free' && (
         <button 
           onClick={onAddToCart}
           className="w-full py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-xl transition-all mb-6"

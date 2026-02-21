@@ -1,21 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useStudent } from '../../context/StudentContext';
-import Navbar from '../../components/layout/Navbar'; // ✅ إضافة الناف بار
-import Footer from '../../components/layout/Footer'; // ✅ إضافة الفوتر
+import Navbar from '../../components/layout/Navbar';
+import Footer from '../../components/layout/Footer';
 import { FaPlay, FaCheckCircle, FaBookOpen } from 'react-icons/fa';
 
 const MyCoursesPage = () => {
   const { enrolledCourses } = useStudent();
 
-  // --- حالة: الطالب لسه مشتركش في أي كورس ---
+  // --- حالة: الطالب لسه مشترش كورسات ---
   if (enrolledCourses.length === 0) {
     return (
       <>
         <Navbar />
         <div className="min-h-screen bg-[#0a0a0a] pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
           
-          {/* Background Blob */}
+          {/* Background Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[100px] pointer-events-none"></div>
 
           <div className="relative z-10 bg-[#13151d] p-12 rounded-3xl border border-white/5 shadow-2xl max-w-lg w-full">
@@ -100,9 +100,9 @@ const MyCoursesPage = () => {
                   <div className="p-6 flex-1 flex flex-col">
                     <div className="flex justify-between items-start mb-3">
                        <span className="text-[10px] font-bold text-purple-300 uppercase tracking-wider bg-purple-500/10 px-2 py-1 rounded border border-purple-500/20">
-                          {course.category || 'Course'}
+                          {course.category || 'Development'}
                        </span>
-                       {isCompleted && <FaCheckCircle className="text-green-500 text-lg" />}
+                       {isCompleted && <FaCheckCircle className="text-green-500 text-lg" title="Completed" />}
                     </div>
 
                     <h3 className="text-lg font-bold text-white mb-2 line-clamp-1 group-hover:text-purple-400 transition-colors">

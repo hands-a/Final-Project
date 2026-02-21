@@ -2,11 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   FaChalkboardTeacher, FaCertificate, FaInfinity, FaStar, FaQuoteRight, 
-  FaArrowRight, FaUserTie, FaPlayCircle, FaCode, FaPaintBrush, FaDatabase
+  FaArrowRight, FaUserTie, FaPlayCircle, FaBookOpen 
 } from 'react-icons/fa';
+
+import { coursesData } from '../../data/coursesData'; 
+
 const HomeContent = () => {
 
-  
   const features = [
     {
       id: 1,
@@ -31,7 +33,6 @@ const HomeContent = () => {
     }
   ];
 
-
   const stats = [
     { label: "Active Learners", value: "50K+" },
     { label: "Video Hours", value: "1200+" },
@@ -39,45 +40,6 @@ const HomeContent = () => {
     { label: "Success Rate", value: "95%" },
   ];
 
-  
-  
-  const courses = [
-    {
-      id: 1,
-      title: "Full-Stack Web Development",
-      instructor: "Ahmed Ali",
-      rating: 4.8,
-      lessons: 45,
-      price: "Free",
-      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      category: "Development",
-      catIcon: <FaCode />
-    },
-    {
-      id: 2,
-      title: "UI/UX Design Masterclass",
-      instructor: "Sara Smith",
-      rating: 4.9,
-      lessons: 32,
-      price: "$49.99",
-      image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      category: "Design",
-      catIcon: <FaPaintBrush />
-    },
-    {
-      id: 3,
-      title: "Python for Data Science",
-      instructor: "Omar Khaled",
-      rating: 4.7,
-      lessons: 28,
-      price: "$39.99",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      category: "Data Science",
-      catIcon: <FaDatabase />
-    }
-  ];
-
-  
   const reviews = [
     {
       id: 1,
@@ -105,20 +67,17 @@ const HomeContent = () => {
     }
   ];
 
+  // بناخد أول 3 كورسات من ملفك الحقيقي (React, Next.js, Angular)
+  const popularCourses = coursesData.slice(0, 3);
+
   return (
-    
     <div className="w-full bg-[#0f1117] py-24 relative overflow-hidden">
-      
-      
-      
-      
       
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none opacity-50"></div>
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-slate-800/20 rounded-full blur-[120px] pointer-events-none opacity-50"></div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
-        
         <div className="text-center mb-20">
           <span className="inline-block py-1 px-3 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold tracking-widest uppercase mb-4">
             Why FutureDev?
@@ -131,24 +90,20 @@ const HomeContent = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
           {features.map((item) => (
-            
             <div key={item.id} className="bg-[#1a1a2e]/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 hover:border-indigo-500/30 transition-all duration-500 hover:-translate-y-2 shadow-xl group">
               <div className={`w-16 h-16 rounded-2xl ${item.iconBg} flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-105 transition-transform duration-300`}>
                 {item.icon}
               </div>
-              
               <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
               <p className="text-slate-400 leading-relaxed text-sm">{item.desc}</p>
             </div>
           ))}
         </div>
 
-        
-        <div className="mb-32 border rounded-3xl border-white/10 border-white/5 py-12">
+        <div className="mb-32 border rounded-3xl border-white/10 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((stat, idx) => (
               <div key={idx} className="flex flex-col gap-1">
-                
                 <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
                   {stat.value}
                 </h3>
@@ -158,7 +113,6 @@ const HomeContent = () => {
           </div>
         </div>
 
-        
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
           <div>
              <span className="text-indigo-400 font-bold text-sm tracking-widest uppercase mb-2 block">Learning Tracks</span>
@@ -169,52 +123,52 @@ const HomeContent = () => {
           </Link>
         </div>
 
+        {/* --- شبكة الكورسات --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
-          {courses.map((course) => (
-          
+          {popularCourses.map((course) => (
             <div key={course.id} className="group bg-[#13151d] border border-white/5 rounded-3xl overflow-hidden hover:border-white/10 transition-all duration-300 shadow-lg hover:shadow-2xl flex flex-col">
               
-              
-              <div className="relative h-52 overflow-hidden">
-                
+              <Link to={`/course/${course.id}`} className="relative h-52 overflow-hidden block">
                 <div className="absolute inset-0 bg-gradient-to-t from-[#13151d] via-transparent to-transparent z-10 opacity-80"></div>
-                <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 bg-white" />
                 
                 <div className="absolute top-4 left-4 z-20">
                   <span className="bg-[#13151d]/80 backdrop-blur-md border border-white/10 text-slate-200 text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-2">
-                    {course.catIcon} {course.category}
+                    <FaBookOpen className="text-indigo-400" /> {course.category}
                   </span>
                 </div>
-              </div>
+              </Link>
 
-              
               <div className="p-6 flex flex-col flex-grow relative z-20">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-1 text-amber-400 text-sm">
                     <FaStar /> <span className="font-bold">{course.rating}</span>
                   </div>
-                  <span className={`text-lg font-bold ${course.price === "Free" ? "text-teal-400" : "text-white"}`}>
-                    {course.price}
+                  <span className={`text-lg font-bold ${course.price === 0 || course.price === "Free" ? "text-teal-400" : "text-white"}`}>
+                    {course.price === 0 || course.price === "Free" ? "Free" : `$${course.price}`}
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-3 line-clamp-2 group-hover:text-indigo-300 transition-colors">{course.title}</h3>
+                <Link to={`/course/${course.id}`}>
+                  <h3 className="text-lg font-bold text-white mb-3 line-clamp-2 group-hover:text-indigo-300 transition-colors">{course.title}</h3>
+                </Link>
                 
                 <div className="flex items-center gap-5 text-xs text-slate-500 mb-6">
                   <span className="flex items-center gap-1.5"><FaUserTie className="text-slate-400" /> {course.instructor}</span>
                   <span className="flex items-center gap-1.5"><FaPlayCircle className="text-slate-400" /> {course.lessons} Lessons</span>
                 </div>
 
-                
-                <button className="w-full mt-auto py-3 rounded-xl bg-white/5 border border-white/10 text-slate-300 font-semibold hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all duration-300 flex items-center justify-center gap-2">
+                <Link 
+                  to={`/course/${course.id}`} 
+                  className="w-full mt-auto py-3 rounded-xl bg-white/5 border border-white/10 text-slate-300 font-semibold hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all duration-300 flex items-center justify-center gap-2"
+                >
                   View Details
-                </button>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-      
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Loved by Students</h2>
           <p className="text-slate-400">Feedback from our community.</p>
@@ -242,12 +196,9 @@ const HomeContent = () => {
           ))}
         </div>
 
-        
         <div className="relative w-full rounded-[2.5rem] overflow-hidden p-12 md:p-20 text-center border border-white/5 shadow-2xl">
-      
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 to-[#0f1117]"></div>
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
-          
           
           <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-800/20 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
