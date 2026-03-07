@@ -18,7 +18,8 @@ const ForgotPasswordPage = () => {
     navigate('/verify-code');
   };
 
-  return (
+    return (
+      
     <div className="min-h-screen bg-gradient-to-bl from-slate-900 via-[#1a103c] to-slate-900 relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
         
         <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-pink-600/20 rounded-full blur-[100px] opacity-70 animate-pulse-slow pointer-events-none"></div>

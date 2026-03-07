@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useCourses } from '../../context/CourseContext'; 
+import axios from 'axios'; 
 import CourseCard from '../../components/courses/CourseCard'; 
-import { FaSearch, FaFilter, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaChevronLeft, FaChevronRight, FaSpinner } from 'react-icons/fa';
 
 const CoursesPage = () => {
-  const { courses } = useCourses();
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true); 
   
   const [filteredCourses, setFilteredCourses] = useState([]);
   
@@ -16,48 +17,80 @@ const CoursesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6; 
 
-  // 👇 تحديث قائمة التصنيفات لتتماشى مع الكورسات الحقيقية
   const categories = [
     'All', 
-    'Development',   // يشمل Front-end, Back-end
-    'Design',        // يشمل UI/UX
-    'Data Science',  // يشمل Python, Analysis
-    'Mobile App',    // يشمل React Native, Flutter
+    'Data Science', 
+    'Mobile App', 
     'Cyber Security',
-    'DevOps'
+    'DevOps',
+    'Front-end'
   ];
 
-  // 👇 تحديث المستويات
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
+  // 👈 الحل السحري هنا: ظبطنا استقبال الداتا عشان يشتغل مع أي إصدار لـ Strapi
+  useEffect(() => {
+    axios.get('http://localhost:1337/api/courses?populate=*')
+      .then((response) => {
+        const formattedCourses = response.data.data.map((item) => {
+          
+          // لو Strapi قديم هياخد attributes، لو جديد هياخد item مباشر
+          const attr = item.attributes || item; 
+          
+          const { title, category, level, price, instructor, rating, lessons, image } = attr;
+          
+          // تظبيط الصورة عشان تتوافق مع التحديث الجديد
+          let imageUrl = 'https://via.placeholder.com/400x200?text=No+Image';
+          if (image) {
+            if (image.url) { // الإصدار الجديد
+              imageUrl = `http://localhost:1337${image.url}`;
+            } else if (image.data?.attributes?.url) { // الإصدار القديم
+              imageUrl = `http://localhost:1337${image.data.attributes.url}`;
+            }
+          }
+          
+          return {
+            id: item.id || item.documentId,
+            title: title || "بدون عنوان",
+            category: category || "All",
+            level: level || "Beginner",
+            price: price || 0,
+            instructor: instructor || "Unknown",
+            rating: rating || 0,
+            lessons: lessons || 0,
+            image: imageUrl
+          };
+        });
+
+        setCourses(formattedCourses);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching courses from Strapi:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  // الفلترة 
   useEffect(() => {
     let result = courses; 
 
-    // 1. Search Filter
     if (searchTerm) {
       result = result.filter(course => 
         course.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // 2. Category Filter (Updated Logic)
     if (selectedCategory !== 'All') {
-      // تعديل بسيط: لو الكورس نوعه "Front-end" والفلتر "Development"، ممكن نعتبره تبعنا لو حابب
-      // أو نخليه يطابق الاسم بالظبط. هنا هنخليه يطابق الاسم اللي في الداتا.
-      // لو الداتا عندك فيها "Development" كـ Category، يبقى تمام.
-      // لو الداتا فيها "Front-end" وأنت عايز الفلتر يبقى "Development"، محتاجين شرط مركب.
-      // للتبسيط الآن: سنفترض أن الـ Category في الكورس هو نفسه في الفلتر.
       result = result.filter(course => course.category === selectedCategory);
     }
 
-    // 3. Level Filter
     if (selectedLevel !== 'All') {
       result = result.filter(course => course.level === selectedLevel);
     }
 
-    // 4. Price Filter
     if (priceFilter === 'Free') {
-      result = result.filter(course => course.price === 0 || course.price === "Free"); // دعم الصيغتين
+      result = result.filter(course => course.price === 0 || course.price === "Free"); 
     } else if (priceFilter === 'Paid') {
       result = result.filter(course => course.price > 0 && course.price !== "Free");
     }
@@ -76,6 +109,15 @@ const CoursesPage = () => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center pt-28">
+        <FaSpinner className="text-purple-500 text-5xl animate-spin mb-4" />
+        <h2 className="text-white text-xl font-bold">Loading courses...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 relative overflow-hidden">

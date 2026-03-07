@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { coursesData as initialCourses } from '../data/coursesData';
+// import { coursesData as initialCourses } from '../data/coursesData';
 
 const CourseContext = createContext();
 

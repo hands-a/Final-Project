@@ -17,8 +17,7 @@ import {
 } from "react-icons/fa";
 
 const ProfilePage = () => {
-  // 👇 ضفنا updateUser هنا عشان نحدث الداتا على مستوى الموقع 👇
-  const { user, updateUser } = useAuth();
+  const { user } = useAuth();
 
   // 1. Ref لزرار رفع الصورة المخفي
   const fileInputRef = useRef(null);
@@ -60,18 +59,8 @@ const ProfilePage = () => {
     }
   };
 
-  // 👇 التعديل الأخير: تحديث بيانات المستخدم في الـ Context عشان الناف بار يتغير 👇
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // إرسال الصورة والاسم للناف بار والذاكرة
-    if (updateUser) {
-      updateUser({
-        name: formData.name,
-        avatar: avatarPreview || user.avatar // لو في صورة جديدة حطها، لو مفيش سيب القديمة
-      });
-    }
-
     alert("Profile and Avatar updated successfully! 🚀");
     // هنا في المستقبل هنبعت الـ formData (بما فيها الصورة) لـ Strapi
   };
@@ -108,7 +97,7 @@ const ProfilePage = () => {
                 <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-purple-900/40 to-pink-900/40"></div>
 
                 <div className="relative w-32 h-32 mx-auto mt-4 mb-4 rounded-full border-4 border-[#13151d] shadow-xl group">
-                  {/* تحديث مصدر الصورة عشان يعرض الـ Preview لو موجود */}
+                  {/* 👇 تحديث مصدر الصورة عشان يعرض الـ Preview لو موجود 👇 */}
                   <img
                     src={
                       avatarPreview ||
@@ -455,7 +444,6 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { coursesData } from '../../data/coursesData';
+import axios from 'axios'; 
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { 
@@ -26,12 +26,57 @@ const CourseDetailsPage = () => {
     { title: "Final Exam & Certification", lessons: 1, duration: "45m" },
   ];
 
+  // 👈 التعديل الدبابة: هنجيب الداتا كلها ونصطاد الكورس عشان نتفادى 404 في Strapi v5
   useEffect(() => {
-    // حل مشكلة النص والرقم عن طريق المقارنة بنص في الحالتين
-    const foundCourse = coursesData.find(c => String(c.id) === String(id));
-    
-    setCourse(foundCourse || null);
-    setLoading(false);
+    setLoading(true);
+    // لاحظ إننا بنجيب كل الكورسات مش كورس واحد
+    axios.get('http://localhost:1337/api/courses?populate=*')
+      .then(response => {
+        const allCourses = response.data.data;
+        
+        // هندور على الكورس بتاعنا من وسطهم
+        const targetCourse = allCourses.find(c => 
+          String(c.id) === String(id) || String(c.documentId) === String(id)
+        );
+
+        if (targetCourse) {
+          const attr = targetCourse.attributes || targetCourse;
+          
+          let imageUrl = 'https://via.placeholder.com/400x200?text=No+Image';
+          if (attr.image) {
+            if (attr.image.url) { 
+              imageUrl = `http://localhost:1337${attr.image.url}`;
+            } else if (attr.image.data?.attributes?.url) { 
+              imageUrl = `http://localhost:1337${attr.image.data.attributes.url}`;
+            }
+          }
+
+          setCourse({
+            id: targetCourse.id || targetCourse.documentId,
+            title: attr.title || "بدون عنوان",
+            category: attr.category || "General",
+            instructor: attr.instructor || "Unknown",
+            rating: attr.rating || 0,
+            lessons: attr.lessons || 0,
+            duration: attr.duration || "N/A",
+            level: attr.level || "Beginner",
+            price: attr.price || 0,
+            description: attr.description || "لا يوجد وصف متاح حالياً.",
+            requirements: attr.requirements || "",
+            image: imageUrl
+          });
+        } else {
+          // لو الكورس مش موجود فعلاً
+          setCourse(null);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error fetching course details:", error);
+        setCourse(null);
+        setLoading(false);
+      });
+      
     window.scrollTo(0, 0);
   }, [id]);
 
@@ -89,7 +134,7 @@ const CourseDetailsPage = () => {
             </h1>
 
             <p className="text-slate-300 text-lg mb-6 leading-relaxed">
-              Master {course.category} from scratch. This comprehensive course covers everything you need to become a professional using modern tools.
+              Master {course.category} with this comprehensive course. Learn from scratch to advanced level.
             </p>
 
             <div className="flex flex-wrap items-center gap-6 text-sm text-slate-300 mb-8">
@@ -129,11 +174,22 @@ const CourseDetailsPage = () => {
             <div className="text-slate-300">
               {activeTab === 'overview' && (
                 <div className="space-y-6 animate-fadeIn">
+                  
                   <h3 className="text-2xl font-bold text-white mb-2">Course Description</h3>
-                  <p className="leading-relaxed">
-                    This course is designed for beginners and professionals alike. We start from the very basics and move towards advanced topics. 
+                  <p className="leading-relaxed whitespace-pre-wrap text-slate-300">
+                    {course.description}
                   </p>
                   
+                  {course.requirements && (
+                    <>
+                      <h3 className="text-xl font-bold text-white mt-8 mb-4">Requirements</h3>
+                      <div className="flex items-start gap-3 bg-white/5 p-4 rounded-xl border border-white/10">
+                        <FaCheckCircle className="text-purple-500 mt-1 shrink-0" />
+                        <span className="text-sm leading-relaxed">{course.requirements}</span>
+                      </div>
+                    </>
+                  )}
+
                   <h3 className="text-xl font-bold text-white mt-8 mb-4">What you'll learn</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {["Build full-scale applications", "Understand modern architecture", "Master industry-standard tools", "Write clean, maintainable code"].map((item, i) => (
@@ -196,7 +252,7 @@ const EnrollmentCard = ({ course, onAddToCart }) => (
       <img 
         src={course.image} 
         alt="Preview" 
-        className="max-w-[70%] max-h-[70%] object-contain relative z-10 transform group-hover:scale-110 transition-transform duration-500" 
+        className="max-w-[100%] max-h-[100%] object-cover relative z-10 transform group-hover:scale-110 transition-transform duration-500" 
       />
     </div>
 
@@ -227,7 +283,7 @@ const EnrollmentCard = ({ course, onAddToCart }) => (
 
       <div className="space-y-4">
         <FeatureRow icon={FaPlayCircle} text={`${course.lessons} On-demand video lessons`} />
-        <FeatureRow icon={FaClock} text="Full lifetime access" />
+        <FeatureRow icon={FaClock} text={course.duration ? `Duration: ${course.duration}` : "Full lifetime access"} />
         <FeatureRow icon={FaAward} text="Certificate of completion" />
       </div>
     </div>
