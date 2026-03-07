@@ -57,26 +57,39 @@ const FloatingModel = ({ modelPath, position, scale = 1, parallaxSpeed = 0.002, 
 
 const Global3D = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // مراقبة السكرول
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // مراقبة حجم الشاشة عشان الموبايل
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // تشغيلها أول مرة
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
+  // 💡 هنا العظمة: لو الموبايل شغال (isMobile)، هنقربهم ونصغرهم.. لو لاب توب هيفضلوا زي ما هما
   const ELEMENTS = [
-    // 🛑 التلاتة اللي ظابطين معاك 
-    { path: '/java.glb', position: [-7, 4, -4], scale: 0.3, color: 'java', speed: 0.002 },
-    { path: '/react_logo.glb', position: [8, -1, -4], scale: 0.2, color: 'react', speed: -0.0015 },
-    { path: '/Robot.glb', position: [6, -5, -5], scale: 0.3, color: 'robot', speed: -0.002 },
-
-    // 🚀 التلاتة الصغيرين (ضربنا الحجم عشان يبانوا)
-    { path: '/docker.glb', position: [7, 4, -5], scale: 6.5, color: 'docker', speed: -0.002 },
-    { path: '/javascript.glb', position: [-8, -1, -4], scale: 6.2, color: 'javascript', speed: 0.003 },
-    { path: '/mongo.glb', position: [-7, -5, -3], scale: 6.2, color: 'mongo', speed: 0.001 },
+    // Java
+    { path: '/java.glb', position: isMobile ? [-2.5, 4, -5] : [-7, 4, -4], scale: isMobile ? 0.25 : 0.4, color: 'java', speed: 0.002 },
+    // Docker
+    { path: '/docker.glb', position: isMobile ? [2.5, 5, -5] : [7, 4, -5], scale: isMobile ? 3.5 : 5.5, color: 'docker', speed: -0.002 },
+    // JavaScript
+    { path: '/javascript.glb', position: isMobile ? [-2.5, -1, -5] : [-8, -1, -4], scale: isMobile ? 3.2 : 5.2, color: 'javascript', speed: 0.003 },
+    // React
+    { path: '/react_logo.glb', position: isMobile ? [2.5, -1.5, -5] : [8, -1, -4], scale: isMobile ? 0.1 : 0.2, color: 'react', speed: -0.0015 },
+    // Mongo
+    { path: '/mongo.glb', position: isMobile ? [-2.5, -6, -5] : [-7, -5, -3], scale: isMobile ? 4.2 : 6.2, color: 'mongo', speed: 0.001 },
+    // Robot
+    { path: '/Robot.glb', position: isMobile ? [2.5, -7, -5] : [6, -5, -5], scale: isMobile ? 0.25 : 0.4, color: 'robot', speed: -0.002 },
     
-    // 🛑 وقفنا تايب سكريبت عشان مفيش ملف ليها في الـ public لحد ما تجيب واحد
-    // { path: '/typescript.glb', position: [-2, 3, -6], scale: 2.0, color: 'typescript', speed: 0.0025 },
   ];
 
   return (
