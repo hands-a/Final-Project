@@ -19,7 +19,6 @@ const CourseCard = ({ course }) => {
           className="w-full h-full object-contain drop-shadow-2xl transform group-hover:scale-110 transition-transform duration-500 relative z-10" 
         />
         
-        {/* بادج القسم */}
         <div className="absolute top-4 left-4 z-20">
           <span className="bg-white/5 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
             {course.category}

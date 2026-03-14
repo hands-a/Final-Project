@@ -8,27 +8,24 @@ import { FaPlay, FaCheckCircle, FaBookOpen } from 'react-icons/fa';
 const MyCoursesPage = () => {
   const { enrolledCourses } = useStudent();
 
-  // --- حالة: الطالب لسه مشترش كورسات ---
+  // --- حالة: الطالب لسه مشترش كورسات (Empty State) ---
   if (enrolledCourses.length === 0) {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-[#0a0a0a] pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
+        <div className="min-h-screen bg-[#050511] pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
           
-          {/* Background Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[100px] pointer-events-none"></div>
-
-          <div className="relative z-10 bg-[#13151d] p-12 rounded-3xl border border-white/5 shadow-2xl max-w-lg w-full">
-            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-               <FaBookOpen className="text-3xl text-purple-500" />
+          <div className="relative z-10 bg-white/0 backdrop-blur-xl p-12 rounded-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] max-w-lg w-full">
+            <div className="w-20 h-20 bg-gradient-to-tr from-pink-500/20 to-violet-600/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-[0_0_15px_rgba(244,114,182,0.1)] animate-pulse">
+               <FaBookOpen className="text-3xl text-pink-400 opacity-80" />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-3">No courses yet!</h2>
-            <p className="text-slate-400 mb-8">
+            <h2 className="text-3xl font-light text-white mb-4 tracking-wide">No courses yet!</h2>
+            <p className="text-slate-400 mb-10 font-light text-sm leading-relaxed">
               You haven't enrolled in any courses yet. Explore our catalog and start your learning journey today.
             </p>
             <Link 
               to="/courses" 
-              className="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-purple-600/20 hover:scale-105 transition-all"
+              className="inline-block px-8 py-3.5 bg-gradient-to-r from-pink-500 to-violet-600 text-white font-medium rounded-xl shadow-lg shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               Browse Courses
             </Link>
@@ -39,34 +36,33 @@ const MyCoursesPage = () => {
     );
   }
 
-  // --- حالة: الطالب عنده كورسات ---
+  // --- حالة: الطالب عنده كورسات (Enrolled State) ---
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-[#0a0a0a] pt-32 pb-20 relative overflow-hidden">
+      <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">
         
-        {/* Background Effects */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none"></div>
-
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           
           {/* Header & Stats */}
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-white/10 pb-8">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">My Learning</h1>
-              <p className="text-slate-400">Track your progress and continue learning.</p>
+              <h1 className="text-3xl md:text-5xl font-light tracking-wide text-white mb-3">My Learning</h1>
+              <p className="text-slate-400 font-light tracking-wide text-sm">Track your progress and continue learning.</p>
             </div>
             
             <div className="flex gap-4">
-               <div className="bg-[#13151d] px-6 py-3 rounded-xl border border-white/5 min-w-[120px] text-center">
-                  <span className="block text-2xl font-bold text-white">{enrolledCourses.length}</span>
-                  <span className="text-xs text-slate-400 uppercase tracking-wider font-bold">Enrolled</span>
+               {/* Enrolled Stat Card (Pure Glass) */}
+               <div className="bg-white/0 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 min-w-[120px] text-center shadow-sm">
+                  <span className="block text-3xl font-light text-white mb-1">{enrolledCourses.length}</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-widest font-medium">Enrolled</span>
                </div>
-               <div className="bg-[#13151d] px-6 py-3 rounded-xl border border-white/5 min-w-[120px] text-center">
-                  <span className="block text-2xl font-bold text-green-400">
+               {/* Completed Stat Card (Pure Glass) */}
+               <div className="bg-white/0 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 min-w-[120px] text-center shadow-sm">
+                  <span className="block text-3xl font-light text-green-400 mb-1">
                      {enrolledCourses.filter(c => c.progress === 100).length}
                   </span>
-                  <span className="text-xs text-slate-400 uppercase tracking-wider font-bold">Completed</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-widest font-medium">Completed</span>
                </div>
             </div>
           </div>
@@ -77,59 +73,59 @@ const MyCoursesPage = () => {
               const isCompleted = course.progress === 100;
 
               return (
-                <div key={course.id} className="bg-[#13151d] border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all group flex flex-col hover:-translate-y-1 hover:shadow-xl">
+                // Course Card (Pure Glass)
+                <div key={course.id} className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:border-pink-500/30 transition-all duration-300 group flex flex-col hover:-translate-y-1 hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] shadow-[0_4px_24px_0_rgba(0,0,0,0.3)]">
                   
                   {/* Image Section */}
-                  <div className="relative h-48 bg-black overflow-hidden">
+                  <div className="relative h-48 bg-white/5 overflow-hidden border-b border-white/5">
                     <img 
                       src={course.image} 
                       alt={course.title} 
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#13151d] via-transparent to-transparent"></div>
                     
                     {/* Play Overlay */}
-                    <Link to={`/learn/${course.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/40 backdrop-blur-sm">
-                      <div className="w-14 h-14 bg-white text-purple-600 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
-                        <FaPlay className="ml-1" />
+                    <Link to={`/learn/${course.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/40 backdrop-blur-sm z-20">
+                      <div className="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
+                        <FaPlay className="ml-1 text-lg opacity-80" />
                       </div>
                     </Link>
                   </div>
 
                   {/* Content Section */}
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="flex justify-between items-start mb-3">
-                       <span className="text-[10px] font-bold text-purple-300 uppercase tracking-wider bg-purple-500/10 px-2 py-1 rounded border border-purple-500/20">
+                  <div className="p-8 flex-1 flex flex-col">
+                    <div className="flex justify-between items-start mb-4">
+                       <span className="text-[9px] font-bold text-pink-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10 shadow-sm">
                           {course.category || 'Development'}
                        </span>
-                       {isCompleted && <FaCheckCircle className="text-green-500 text-lg" title="Completed" />}
+                       {isCompleted && <FaCheckCircle className="text-green-400 text-lg drop-shadow-md" title="Completed" />}
                     </div>
 
-                    <h3 className="text-lg font-bold text-white mb-2 line-clamp-1 group-hover:text-purple-400 transition-colors">
+                    <h3 className="text-xl font-medium tracking-wide text-white mb-2 line-clamp-1 group-hover:text-pink-400 transition-colors">
                       {course.title}
                     </h3>
-                    <p className="text-xs text-slate-400 mb-6">By {course.instructor}</p>
+                    <p className="text-xs text-slate-500 mb-8 font-light uppercase tracking-widest">By {course.instructor}</p>
 
-                    {/* Progress Bar */}
+                    {/* Progress Bar Area */}
                     <div className="mt-auto">
-                      <div className="flex justify-between text-xs text-slate-300 mb-2 font-bold">
+                      <div className="flex justify-between text-[11px] text-slate-400 mb-3 font-medium uppercase tracking-widest">
                         <span>{isCompleted ? 'Completed' : 'Progress'}</span>
                         <span>{course.progress}%</span>
                       </div>
                       
-                      <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-6">
+                      <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-8">
                         <div 
-                          className={`h-full rounded-full transition-all duration-1000 ease-out ${isCompleted ? 'bg-green-500' : 'bg-gradient-to-r from-purple-500 to-pink-500'}`}
+                          className={`h-full rounded-full transition-all duration-1000 ease-out ${isCompleted ? 'bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.5)]' : 'bg-gradient-to-r from-pink-500 to-violet-600 shadow-[0_0_10px_rgba(244,114,182,0.4)]'}`}
                           style={{ width: `${course.progress}%` }}
                         ></div>
                       </div>
 
                       <Link 
                         to={`/learn/${course.id}`}
-                        className={`w-full py-3 rounded-xl font-bold text-sm flex justify-center items-center gap-2 transition-all border
+                        className={`w-full py-3.5 rounded-xl font-medium text-sm flex justify-center items-center gap-2 transition-all border
                           ${isCompleted 
-                            ? 'bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500 hover:text-white' 
-                            : 'bg-white/5 text-white border-white/10 hover:bg-purple-600 hover:border-purple-600 hover:text-white'
+                            ? 'bg-transparent border-green-400/30 text-green-400 hover:bg-green-400/10' 
+                            : 'bg-transparent border-white/20 text-white hover:bg-white/10 hover:border-white/30'
                           }
                         `}
                       >

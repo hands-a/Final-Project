@@ -11,106 +11,107 @@ const CartPage = () => {
   const total = subtotal + tax;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pt-28 pb-20 relative overflow-hidden">
-      
-      {/* Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] z-0 pointer-events-none"></div>
-
+// هتبقى كده
+<div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         
-        <h1 className="text-3xl font-bold text-white mb-8">Shopping Cart <span className="text-slate-500 text-lg font-normal">({cartItems.length} courses)</span></h1>
+        <h1 className="text-3xl md:text-4xl font-light text-white mb-10 tracking-wide">
+          Shopping Cart <span className="text-slate-500 text-lg md:text-xl font-light">({cartItems.length} courses)</span>
+        </h1>
 
         {cartItems.length > 0 ? (
-          <div className="flex flex-col lg:flex-row gap-12">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-12">
             
-            {/* List */}
+            {/* --- Cart Items List --- */}
             <div className="lg:w-2/3 space-y-6">
               {cartItems.map((item) => (
-                <div key={item.id} className="flex flex-col sm:flex-row gap-6 bg-[#13151d] border border-white/5 p-4 rounded-2xl items-center group hover:border-white/10 transition-colors">
+                <div key={item.id} className="flex flex-col sm:flex-row gap-6 bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-3xl items-center group hover:bg-white/10 hover:border-white/20 transition-all shadow-sm hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
                   
-                  {/* Image */}
-                  <Link to={`/courses/${item.id}`} className="w-full sm:w-40 h-28 flex-shrink-0 overflow-hidden rounded-xl bg-[#0f1119] p-4 flex items-center justify-center">
-                    <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
+                  {/* Image Container (Glass) */}
+                  <Link to={`/courses/${item.id}`} className="w-full sm:w-48 h-32 flex-shrink-0 overflow-hidden rounded-2xl bg-black/20 p-2 flex items-center justify-center border border-white/5">
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover rounded-xl opacity-90 group-hover:opacity-100 transition-opacity" />
                   </Link>
 
-                  <div className="flex-grow text-center sm:text-left">
-                    <Link to={`/courses/${item.id}`} className="text-white font-bold text-lg hover:text-purple-400 transition-colors line-clamp-2">
+                  <div className="flex-grow text-center sm:text-left w-full">
+                    <Link to={`/courses/${item.id}`} className="text-white font-medium text-lg tracking-wide hover:text-pink-400 transition-colors line-clamp-2 mb-1">
                       {item.title}
                     </Link>
-                    <p className="text-slate-400 text-sm mt-1">By {item.instructor}</p>
-                    <div className="flex items-center justify-center sm:justify-start gap-2 mt-2">
-                      <span className="bg-white/5 text-slate-300 text-xs px-2 py-1 rounded border border-white/5">{item.level}</span>
-                      <span className="bg-white/5 text-slate-300 text-xs px-2 py-1 rounded border border-white/5">{item.lessons} Lessons</span>
+                    <p className="text-slate-400 text-[11px] uppercase tracking-widest font-light mb-3">By {item.instructor}</p>
+                    
+                    <div className="flex items-center justify-center sm:justify-start gap-3">
+                      <span className="bg-white/5 text-slate-300 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/10 shadow-sm">{item.level}</span>
+                      <span className="bg-white/5 text-slate-300 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/10 shadow-sm">{item.lessons} Lessons</span>
                     </div>
                   </div>
 
-                  <div className="flex flex-row sm:flex-col items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-center border-t sm:border-t-0 border-white/5 pt-4 sm:pt-0">
-                    <span className="text-purple-400 font-bold text-xl">${item.price}</span>
+                  <div className="flex flex-row sm:flex-col items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-center border-t sm:border-t-0 border-white/10 pt-5 sm:pt-0 sm:pl-6 sm:border-l">
+                    <span className="text-pink-400 font-light tracking-wider text-2xl">${item.price}</span>
                     <button 
                       onClick={() => removeFromCart(item.id)}
-                      className="text-slate-500 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-white/5"
+                      className="text-slate-500 hover:text-red-400 transition-all p-3 rounded-xl bg-transparent border border-transparent hover:bg-red-500/10 hover:border-red-500/30 flex items-center justify-center gap-2 text-sm"
+                      title="Remove from Cart"
                     >
-                      <FaTrash />
+                      <FaTrash className="text-lg" />
                     </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Summary */}
-            <div className="lg:w-1/3 h-fit lg:sticky lg:top-28">
-              <div className="bg-[#13151d] border border-white/10 p-8 rounded-3xl">
-                <h2 className="text-xl font-bold text-white mb-6">Order Summary</h2>
+            {/* --- Order Summary (Pure Glass) --- */}
+            <div className="lg:w-1/3 h-fit lg:sticky lg:top-32">
+              <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+                <h2 className="text-xl font-medium text-white mb-8 tracking-wide border-b border-white/10 pb-4">Order Summary</h2>
                 
-                <div className="space-y-4 mb-6 border-b border-white/10 pb-6">
-                  <div className="flex justify-between text-slate-400">
+                <div className="space-y-4 mb-8 border-b border-white/10 pb-8">
+                  <div className="flex justify-between text-slate-400 font-light text-sm">
                     <span>Subtotal</span>
-                    <span className="text-white font-bold">${subtotal.toFixed(2)}</span>
+                    <span className="text-white font-medium">${subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-slate-400">
+                  <div className="flex justify-between text-slate-400 font-light text-sm">
                     <span>Tax (14%)</span>
-                    <span className="text-white font-bold">${tax.toFixed(2)}</span>
+                    <span className="text-white font-medium">${tax.toFixed(2)}</span>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center mb-8">
-                  <span className="text-lg text-white font-bold">Total</span>
-                  <span className="text-3xl text-purple-400 font-bold">${total.toFixed(2)}</span>
+                <div className="flex justify-between items-center mb-10">
+                  <span className="text-lg text-white font-light tracking-wide">Total</span>
+                  <span className="text-3xl text-pink-400 font-light tracking-wider">${total.toFixed(2)}</span>
                 </div>
 
-                <div className="relative mb-6">
-                  <FaTag className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                {/* Coupon Input (Glassmorphism, No Icon) */}
+                <div className="relative mb-8">
                   <input 
                     type="text" 
                     placeholder="Coupon Code" 
-                    className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-20 text-white focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full bg-transparent border border-white/10 rounded-xl py-3.5 pl-4 pr-24 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all placeholder:text-slate-500/50 tracking-wider uppercase"
                   />
-                  <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
+                  <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white text-[10px] uppercase tracking-widest font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
                     Apply
                   </button>
                 </div>
 
-                {/* 👇 هنا التغيير: خليناه Link يودي لصفحة Checkout */}
-                <Link to="/checkout" className="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg shadow-purple-600/25 transition-all flex items-center justify-center gap-2 mb-4">
-                  Checkout <FaArrowRight />
+                <Link to="/checkout" className="w-full py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium tracking-wide rounded-xl shadow-lg shadow-pink-500/20 transition-all flex items-center justify-center gap-3 mb-6 hover:scale-[1.02] active:scale-[0.98]">
+                  Checkout <FaArrowRight className="text-sm font-light opacity-80" />
                 </Link>
                 
-                <p className="text-center text-slate-500 text-xs flex items-center justify-center gap-2">
-                  <FaLock className="text-xs" /> Secure Checkout
+                <p className="text-center text-slate-500 text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
+                  <FaLock className="text-sm opacity-80" /> Secure Checkout
                 </p>
               </div>
             </div>
 
           </div>
         ) : (
-          <div className="text-center py-20 bg-[#13151d] border border-white/5 rounded-3xl">
-            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FaTag className="text-3xl text-slate-500" />
+          /* --- Empty Cart State (Pure Glass) --- */
+          <div className="text-center py-24 bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] flex flex-col items-center justify-center max-w-3xl mx-auto">
+            <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+              <FaTag className="text-4xl text-slate-500 opacity-50" />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Your cart is empty</h2>
-            <p className="text-slate-400 mb-8">Looks like you haven't added any courses yet.</p>
-            <Link to="/courses" className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-xl transition-all">
-              Browse Courses
+            <h2 className="text-3xl font-light text-white mb-3 tracking-wide">Your cart is empty</h2>
+            <p className="text-slate-400 mb-10 font-light text-sm">Looks like you haven't added any courses yet. Discover top-rated courses and start learning today.</p>
+            <Link to="/courses" className="inline-flex items-center gap-3 bg-gradient-to-r from-pink-500 to-violet-600 text-white font-medium py-3.5 px-10 rounded-xl transition-all shadow-lg shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.98]">
+              Browse Courses <FaArrowRight className="text-sm opacity-80" />
             </Link>
           </div>
         )}

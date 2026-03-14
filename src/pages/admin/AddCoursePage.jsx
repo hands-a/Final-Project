@@ -4,6 +4,7 @@ import { FaCloudUploadAlt, FaSave, FaArrowLeft, FaDollarSign, FaList, FaImage } 
 // 👇 تأكد إن المسار ده صح والملفات دي موجودة
 import { useCourses } from '../../context/CourseContext';
 import CurriculumBuilder from "./CurriculumBuilder";
+
 const AddCoursePage = () => {
   const navigate = useNavigate();
   const { addCourse } = useCourses();
@@ -65,98 +66,144 @@ const AddCoursePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pt-32 pb-20 px-6 lg:px-12">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#050511] pt-32 pb-20 px-6 lg:px-12 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto relative z-10">
         
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <button onClick={() => navigate(-1)} className="p-2 bg-white/5 rounded-full hover:bg-white/10 text-white transition-colors">
+        <div className="flex items-center gap-6 mb-10 border-b border-white/10 pb-8">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="p-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl hover:bg-white/10 text-slate-300 hover:text-white transition-all shadow-sm"
+          >
             <FaArrowLeft />
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-white">Create New Course</h1>
-            <p className="text-slate-400">Fill in the details to publish a new course.</p>
+            <h1 className="text-3xl md:text-4xl font-light text-white mb-2 tracking-wide">Create New Course</h1>
+            <p className="text-slate-400 font-light text-sm tracking-wide">Fill in the details to publish a new course to the platform.</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           
-          {/* 1. Basic Info */}
-          <div className="bg-[#13151d] p-8 rounded-2xl border border-white/5">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <FaList className="text-purple-500" /> Basic Information
+          {/* 1. Basic Info (Pure Glass) */}
+          <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+            <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
+              <FaList className="text-pink-400 opacity-80" /> Basic Information
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="col-span-2">
-                <label className="block text-slate-300 mb-2 text-sm font-bold">Course Title</label>
-                <input type="text" name="title" onChange={handleChange} required
-                  className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-4 text-white focus:border-purple-500 outline-none" placeholder="e.g. Advanced React" />
+              <div className="col-span-1 md:col-span-2">
+                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Course Title</label>
+                <input 
+                  type="text" 
+                  name="title" 
+                  onChange={handleChange} 
+                  required
+                  className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all placeholder:text-slate-500/50 tracking-wider" 
+                  placeholder="e.g. Advanced React & Tailwind" 
+                />
               </div>
 
               <div>
-                <label className="block text-slate-300 mb-2 text-sm font-bold">Category</label>
-                <select name="category" onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-4 text-white focus:border-purple-500 outline-none">
-                  <option value="">Select Category</option>
-                  <option value="Development">Development</option>
-                  <option value="Design">Design</option>
+                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Category</label>
+                <select 
+                  name="category" 
+                  onChange={handleChange} 
+                  required
+                  className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all tracking-wider appearance-none"
+                >
+                  <option value="" className="bg-[#050511] text-slate-300">Select Category</option>
+                  <option value="Development" className="bg-[#050511] text-slate-300">Development</option>
+                  <option value="Design" className="bg-[#050511] text-slate-300">Design</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-slate-300 mb-2 text-sm font-bold">Level</label>
-                <select name="level" onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-4 text-white focus:border-purple-500 outline-none">
-                  <option value="Beginner">Beginner</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Advanced">Advanced</option>
+                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Level</label>
+                <select 
+                  name="level" 
+                  onChange={handleChange} 
+                  className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all tracking-wider appearance-none"
+                >
+                  <option value="Beginner" className="bg-[#050511] text-slate-300">Beginner</option>
+                  <option value="Intermediate" className="bg-[#050511] text-slate-300">Intermediate</option>
+                  <option value="Advanced" className="bg-[#050511] text-slate-300">Advanced</option>
                 </select>
               </div>
             </div>
           </div>
 
-          {/* 2. Pricing & Description */}
-          <div className="bg-[#13151d] p-8 rounded-2xl border border-white/5">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <FaDollarSign className="text-green-500" /> Details
+          {/* 2. Pricing & Description (Pure Glass) */}
+          <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+            <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
+              <FaDollarSign className="text-pink-400 opacity-80" /> Details & Pricing
             </h3>
             <div className="space-y-6">
               <div>
-                <label className="block text-slate-300 mb-2 text-sm font-bold">Price ($)</label>
-                <input type="number" name="price" onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-4 text-white focus:border-purple-500 outline-none" placeholder="49.99" />
+                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Price ($)</label>
+                <input 
+                  type="number" 
+                  name="price" 
+                  onChange={handleChange} 
+                  className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all placeholder:text-slate-500/50 tracking-wider" 
+                  placeholder="e.g. 49.99 (Leave 0 for Free)" 
+                />
               </div>
               <div>
-                <label className="block text-slate-300 mb-2 text-sm font-bold">Description</label>
-                <textarea name="description" rows="4" onChange={handleChange} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-4 text-white focus:border-purple-500 outline-none" placeholder="Course details..."></textarea>
+                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Description</label>
+                <textarea 
+                  name="description" 
+                  rows="4" 
+                  onChange={handleChange} 
+                  className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all resize-none placeholder:text-slate-500/50 tracking-wider leading-relaxed" 
+                  placeholder="Explain what students will learn in this course..."
+                ></textarea>
               </div>
             </div>
           </div>
 
-          {/* 3. Image Upload */}
-          <div className="bg-[#13151d] p-8 rounded-2xl border border-white/5">
-            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-              <FaImage className="text-pink-500" /> Course Image
+          {/* 3. Image Upload (Pure Glass) */}
+          <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+            <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
+              <FaImage className="text-pink-400 opacity-80" /> Course Thumbnail
             </h3>
-            <div className="border-2 border-dashed border-white/10 rounded-2xl p-8 text-center relative hover:border-purple-500 transition-colors">
-              <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            <div className="border-2 border-dashed border-white/20 rounded-2xl p-10 text-center relative hover:border-pink-400/50 hover:bg-white/5 transition-all group overflow-hidden">
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageChange} 
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+              />
               {preview ? (
-                <img src={preview} alt="Preview" className="w-full h-48 object-cover rounded-xl" />
+                <img src={preview} alt="Preview" className="w-full h-56 object-cover rounded-xl shadow-lg" />
               ) : (
-                <div className="flex flex-col items-center">
-                  <FaCloudUploadAlt className="text-4xl text-slate-400 mb-2" />
-                  <p className="text-slate-400">Click to upload thumbnail</p>
+                <div className="flex flex-col items-center justify-center">
+                  <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <FaCloudUploadAlt className="text-3xl text-pink-400 opacity-80" />
+                  </div>
+                  <p className="text-slate-300 font-medium tracking-wide mb-1">Click to upload thumbnail</p>
+                  <p className="text-slate-500 text-xs font-light">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* 4. Curriculum Builder */}
-          {/* 👇 لازم المكون ده يكون شغال عشان الصفحة تفتح */}
-          <CurriculumBuilder onCurriculumChange={setSections} />
+          {/* 4. Curriculum Builder Wrapper */}
+          {/* حطيناها جوه كارت زجاجي عشان لو الكومبوننت نفسه مش زجاجي، يبقى متوحد مع الباقي */}
+          <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+             <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
+                <FaList className="text-pink-400 opacity-80" /> Curriculum Builder
+             </h3>
+             <CurriculumBuilder onCurriculumChange={setSections} />
+          </div>
 
           {/* Submit */}
-          <div className="flex justify-end pt-4">
-            <button type="submit" className="px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
-              <FaSave /> Publish Course
+          <div className="flex justify-end pt-6">
+            <button 
+              type="submit" 
+              className="px-10 py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium tracking-wide rounded-xl shadow-lg shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3"
+            >
+              <FaSave className="opacity-80" /> Publish Course
             </button>
           </div>
 

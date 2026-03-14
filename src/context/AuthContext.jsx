@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(userWithRole));
   };
 
-  // 👇 الدالة الجديدة اللي ضفناها عشان تحديث البروفايل 👇
+  // 👇 الدالة الجديدة اللي ضفناها عشان تحديث البروفايل 
   const updateUser = (updatedData) => {
     const newUser = { ...user, ...updatedData };
     setUser(newUser);

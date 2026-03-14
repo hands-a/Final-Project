@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, Suspense, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Environment, Float, useGLTF } from '@react-three/drei';
+import { Environment, Float, useGLTF, Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 
 const LIGHT_CONFIG = {
@@ -49,7 +49,7 @@ const FloatingModel = ({ modelPath, position, scale = 1, parallaxSpeed = 0.002, 
   return (
     <group ref={groupRef} position={position}>
       <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-        <primitive object={clonedScene} scale={scale} />
+        <primitive object={clonedScene} scale={scale} dispose={null} />
       </Float>
     </group>
   );
@@ -60,13 +60,11 @@ const Global3D = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // مراقبة السكرول
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // مراقبة حجم الشاشة عشان الموبايل
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize(); // تشغيلها أول مرة
+    handleResize(); 
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -75,30 +73,32 @@ const Global3D = () => {
     };
   }, []);
 
-  // 💡 هنا العظمة: لو الموبايل شغال (isMobile)، هنقربهم ونصغرهم.. لو لاب توب هيفضلوا زي ما هما
   const ELEMENTS = [
-    // Java
     { path: '/java.glb', position: isMobile ? [-2.5, 4, -5] : [-7, 4, -4], scale: isMobile ? 0.25 : 0.4, color: 'java', speed: 0.002 },
-    // Docker
     { path: '/docker.glb', position: isMobile ? [2.5, 5, -5] : [7, 4, -5], scale: isMobile ? 3.5 : 5.5, color: 'docker', speed: -0.002 },
-    // JavaScript
     { path: '/javascript.glb', position: isMobile ? [-2.5, -1, -5] : [-8, -1, -4], scale: isMobile ? 3.2 : 5.2, color: 'javascript', speed: 0.003 },
-    // React
     { path: '/react_logo.glb', position: isMobile ? [2.5, -1.5, -5] : [8, -1, -4], scale: isMobile ? 0.1 : 0.2, color: 'react', speed: -0.0015 },
-    // Mongo
     { path: '/mongo.glb', position: isMobile ? [-2.5, -6, -5] : [-7, -5, -3], scale: isMobile ? 4.2 : 6.2, color: 'mongo', speed: 0.001 },
-    // Robot
     { path: '/Robot.glb', position: isMobile ? [2.5, -7, -5] : [6, -5, -5], scale: isMobile ? 0.25 : 0.4, color: 'robot', speed: -0.002 },
-    
   ];
 
   return (
     <div className="fixed top-0 left-0 w-full h-screen -z-50 pointer-events-none opacity-80">
-      <Canvas camera={{ position: [0, 0, 12], fov: 45 }}>
+      <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
         <ambientLight intensity={LIGHT_CONFIG.ambientIntensity} />
         <directionalLight position={[8, 10, 8]} intensity={LIGHT_CONFIG.keyLightIntensity} />
         <directionalLight position={[-6, -6, 5]} intensity={LIGHT_CONFIG.fillLightIntensity} />
         <Environment preset="city" />
+
+        {/* 🌟 تأثير الغبار الفضائي هنا 🌟 */}
+        <Sparkles 
+          count={150}        // عدد النقاط (مش كتير عشان الأداء)
+          scale={25}         // مساحة الانتشار (مغطية الشاشة كلها)
+          size={1.5}         // حجم النقطة (صغير وراقي)
+          speed={0.3}        // سرعة حركتها (بطيئة بتهدي الأعصاب)
+          opacity={0.25}     // شفافة عشان متغطيش على المحتوى
+          color="#e2e8f0"    // لون أبيض مايل للرصاصي الفاتح
+        />
 
         <Suspense fallback={null}>
           {ELEMENTS.map((el, idx) => (
