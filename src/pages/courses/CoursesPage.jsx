@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import CourseCard from '../../components/courses/CourseCard'; 
+import { coursesData as staticCourses } from "../../data/coursesData";
 import { FaFilter, FaChevronLeft, FaChevronRight, FaSpinner } from 'react-icons/fa';
 
 const CoursesPage = () => {
@@ -23,12 +24,14 @@ const CoursesPage = () => {
     'Mobile App', 
     'Cyber Security',
     'DevOps',
-    'Front-end'
+    'Front-end',
+    'Back-end' // 💡 ضفتلك الباك إند عشان كانت ناقصة في الفلتر
   ];
 
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
   useEffect(() => {
+    // 1. محاولة جلب البيانات من السيرفر (Strapi)
     axios.get('http://localhost:1337/api/courses?populate=*')
       .then((response) => {
         const formattedCourses = response.data.data.map((item) => {
@@ -62,7 +65,11 @@ const CoursesPage = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching courses from Strapi:", error);
+        // 2. 💡 الخطة البديلة (Fallback): لو السيرفر مقفول هنحمل الداتا الثابتة!
+        console.warn("Strapi server is down! Loading static fallback data... ⚠️", error.message);
+        
+        // هنا السر: بنحط الداتا بتاعتك بدل ما الشاشة تبقى فاضية
+        setCourses(staticCourses); 
         setLoading(false);
       });
   }, []);
@@ -106,17 +113,16 @@ const CoursesPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#050511] flex flex-col items-center justify-center pt-28">
+      <div className="min-h-screen bg-transparent flex flex-col items-center justify-center pt-28">
         <FaSpinner className="text-pink-500 text-5xl animate-spin mb-4" />
-        <h2 className="text-white text-xl font-bold tracking-widest uppercase">Loading courses...</h2>
+        <h2 className="text-white text-xl font-light tracking-widest uppercase drop-shadow-lg">Loading courses...</h2>
       </div>
     );
   }
 
   return (
-    // Background Space Theme
-// هتبقى كده
-<div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
+    // Background Space Theme (الزجاجي)
+    <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
         {/* Header & Search */}
@@ -134,7 +140,7 @@ const CoursesPage = () => {
               placeholder="Search for courses..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-transparent text-white border border-white/10 rounded-xl px-6 py-3 focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all placeholder:text-slate-500/50 text-sm tracking-wide"
+              className="w-full bg-white/5 backdrop-blur-md text-white border border-white/10 rounded-xl px-6 py-3 focus:outline-none focus:bg-white/10 focus:border-pink-400/50 transition-all placeholder:text-slate-500/50 text-sm tracking-wide shadow-lg"
             />
           </div>
         </div>
@@ -218,9 +224,6 @@ const CoursesPage = () => {
           <div className="w-full lg:w-3/4">
             {currentItems.length > 0 ? (
               <>
-                {/* ملاحظة: تأكد إن 컴بوننت الـ CourseCard نفسه
-                  متوافق مع الثيم الزجاجي عشان الشكل يكمل!
-                */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
                   {currentItems.map(course => (
                     <CourseCard key={course.id} course={course} />
@@ -229,7 +232,7 @@ const CoursesPage = () => {
 
                 {/* Pagination Controls */}
                 {totalPages > 1 && (
-                  <div className="flex justify-center items-center gap-2">
+                  <div className="flex justify-center items-center gap-2 mt-8">
                     <button 
                       onClick={() => paginate(currentPage - 1)} 
                       disabled={currentPage === 1} 
