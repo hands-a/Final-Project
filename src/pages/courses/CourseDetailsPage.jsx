@@ -75,6 +75,7 @@ const CourseDetailsPage = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
+  // 💡 دالة زرار الإضافة للكارت
   const handleAddToCart = () => {
     if (!user) {
       alert("Please log in first to enroll in this course!"); 
@@ -85,7 +86,17 @@ const CourseDetailsPage = () => {
     navigate('/cart');
   };
 
-  // Loading State (Space Theme)
+  // 💡 دالة زرار الشراء المباشر (جديدة)
+  const handleBuyNow = () => {
+    if (!user) {
+      alert("Please log in first to enroll in this course!"); 
+      navigate('/login');
+      return;
+    }
+    addToCart(course);
+    navigate('/checkout'); // بتودي للدفع علطول
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#050511] flex items-center justify-center">
@@ -94,7 +105,6 @@ const CourseDetailsPage = () => {
     );
   }
 
-  // 404 State (Space Theme)
   if (!course) {
     return (
       <div className="min-h-screen bg-[#050511] flex flex-col items-center justify-center text-center px-6">
@@ -109,21 +119,16 @@ const CourseDetailsPage = () => {
   }
 
   return (
-    // Main Background: Solid Dark Space
-    // هتبقى كده
-<div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">
-      
+    <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="flex flex-col lg:flex-row gap-12 mb-12">
           
           <div className="lg:w-2/3">
-            {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-sm text-slate-500 mb-6 font-light">
               <Link to="/courses" className="hover:text-pink-400 transition-colors">Courses</Link> / 
               <span className="text-slate-300 truncate">{course.title}</span>
             </div>
 
-            {/* Category Badge (Glassmorphism) */}
             <span className="bg-white/5 backdrop-blur-md border border-white/10 text-pink-400 text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 inline-block shadow-sm">
               {course.category}
             </span>
@@ -149,12 +154,11 @@ const CourseDetailsPage = () => {
               </div>
             </div>
 
-            {/* Mobile Enrollment Card */}
+            {/* 💡 مررنا الدالتين للموبايل */}
             <div className="lg:hidden mb-10">
-               <EnrollmentCard course={course} onAddToCart={handleAddToCart} />
+               <EnrollmentCard course={course} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
             </div>
 
-            {/* Tabs */}
             <div className="border-b border-white/10 mb-8 overflow-x-auto scrollbar-hide">
               <div className="flex gap-8 min-w-max">
                 {['overview', 'curriculum', 'instructor'].map((tab) => (
@@ -173,12 +177,10 @@ const CourseDetailsPage = () => {
               </div>
             </div>
 
-            {/* Tab Content */}
             <div className="text-slate-300 font-light">
               
               {activeTab === 'overview' && (
                 <div className="space-y-8 animate-fadeIn">
-                  
                   <div>
                     <h3 className="text-xl font-medium text-white mb-4 tracking-wide">Course Description</h3>
                     <p className="leading-relaxed whitespace-pre-wrap text-slate-400">
@@ -243,7 +245,8 @@ const CourseDetailsPage = () => {
 
           <div className="hidden lg:block lg:w-1/3 relative">
             <div className="sticky top-28">
-              <EnrollmentCard course={course} onAddToCart={handleAddToCart} />
+              {/* 💡 مررنا الدالتين للكمبيوتر */}
+              <EnrollmentCard course={course} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
             </div>
           </div>
 
@@ -253,18 +256,16 @@ const CourseDetailsPage = () => {
   );
 };
 
-// Pure Glass Enrollment Card
-const EnrollmentCard = ({ course, onAddToCart }) => (
+// 💡 استقبلنا الدالتين هنا وربطنا كل زرار بدالته الصح
+const EnrollmentCard = ({ course, onAddToCart, onBuyNow }) => (
   <div className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
     
-    {/* Image Container */}
     <div className="relative h-56 group cursor-pointer overflow-hidden bg-white/5 flex items-center justify-center p-6 border-b border-white/5">
       <img 
         src={course.image} 
         alt="Preview" 
         className="max-w-[100%] max-h-[100%] object-cover relative z-10 transform group-hover:scale-105 transition-transform duration-700" 
       />
-      {/* Play Button Overlay */}
       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors z-20 flex items-center justify-center">
         <FaPlayCircle className="text-white text-5xl opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all drop-shadow-lg" />
       </div>
@@ -286,7 +287,7 @@ const EnrollmentCard = ({ course, onAddToCart }) => (
       
       {course.price !== 0 && course.price !== 'Free' && (
         <button 
-          onClick={onAddToCart}
+          onClick={onBuyNow} 
           className="w-full py-4 bg-transparent border border-white/20 hover:bg-white/5 text-white font-medium rounded-xl transition-all mb-6"
         >
           Buy Now
@@ -311,7 +312,6 @@ const FeatureRow = ({ icon: Icon, text }) => (
   </div>
 );
 
-// Glassmorphism Curriculum Item
 const CurriculumItem = ({ section, idx }) => {
   const [isOpen, setIsOpen] = useState(idx === 0);
 

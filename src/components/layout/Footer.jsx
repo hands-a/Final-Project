@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaGithub } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedinIn, FaGithub } from 'react-icons/fa';
+import { FaXTwitter } from "react-icons/fa6";
 import Logo from "../../assets/logo.png"; 
 import { HiLocationMarker, HiMail, HiPhone } from 'react-icons/hi';
 
@@ -24,12 +25,14 @@ const Footer = () => {
 
   // 👇 دي القائمة اللي عدلناها لتطابق أقسام الكورسات
   const tracks = [
-    'Development', 
-    'Design', 
+    
+    'Data Science',
     'Mobile App', 
     'Data Science', 
     'Cyber Security',
-    'DevOps'
+    'DevOps',
+    'Front-end',
+    'Back-end'
   ];
 
   return (
@@ -52,7 +55,7 @@ const Footer = () => {
             
             <div className="flex items-center gap-3 mt-2">
               <SocialIcon icon={FaFacebookF} link="#" />
-              <SocialIcon icon={FaTwitter} link="#" />
+              <SocialIcon icon={FaXTwitter} link="#" />
               <SocialIcon icon={FaLinkedinIn} link="#" />
               <SocialIcon icon={FaGithub} link="#" />
             </div>
@@ -80,11 +83,7 @@ const Footer = () => {
                   <span className="text-purple-500 text-xs">●</span> All Courses
                 </Link>
               </li>
-              <li>
-                <Link to="/register" className={linkStyle}>
-                  <span className="text-purple-500 text-xs">●</span> Join Community
-                </Link>
-              </li>
+              
               <li>
                 <Link to="/faq" className={linkStyle}>
                   <span className="text-purple-500 text-xs">●</span> FAQ

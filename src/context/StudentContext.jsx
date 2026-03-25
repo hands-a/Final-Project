@@ -5,42 +5,37 @@ const StudentContext = createContext();
 export const useStudent = () => useContext(StudentContext);
 
 export const StudentProvider = ({ children }) => {
-  // 1. بنحاول نجيب الكورسات المسجلة من المتصفح لو موجودة (شغالة زي الفل مؤقتاً)
+  // 1. تحميل الكورسات من اللوكال ستوريدج (عشان لو عمل ريفريش الكورسات ماتطيرش)
   const [enrolledCourses, setEnrolledCourses] = useState(() => {
-    const saved = localStorage.getItem('enrolledCourses');
-    return saved ? JSON.parse(saved) : []; 
+    const savedCourses = localStorage.getItem('enrolledCourses');
+    return savedCourses ? JSON.parse(savedCourses) : [];
   });
 
-  // 2. دالة عشان الطالب يشترك في كورس
-  const enrollCourse = (course) => {
-    setEnrolledCourses((prev) => {
-      // نتأكد إنه مش مشترك أصلاً
-      if (prev.find(c => c.id === course.id)) return prev;
-      
-      const newCourse = {
+  // 2. تحديث اللوكال ستوريدج تلقائياً كل ما الطالب يشتري كورس جديد
+  useEffect(() => {
+    localStorage.setItem('enrolledCourses', JSON.stringify(enrolledCourses));
+  }, [enrolledCourses]);
+
+  // 3. دالة إضافة الكورسات اللي بتتنادى من صفحة الدفع
+  const enrollCourses = (cartItems) => {
+    setEnrolledCourses((prevCourses) => {
+      // التأكد إن الطالب مشتراش الكورس ده قبل كده
+      const newCourses = cartItems.filter(
+        (item) => !prevCourses.find((course) => course.id === item.id)
+      );
+
+      // 💡 التريكة هنا: بنضيف حقل (progress: 0) عشان شريط التقدم في صفحة My Learning يشتغل
+      const coursesWithProgress = newCourses.map(course => ({
         ...course,
-        progress: 0, // بنبدأ التقدم من صفر
-        lastAccessed: new Date().toISOString()
-      };
-      
-      const updated = [...prev, newCourse];
-      localStorage.setItem('enrolledCourses', JSON.stringify(updated));
-      return updated;
+        progress: 0 
+      }));
+
+      return [...prevCourses, ...coursesWithProgress];
     });
   };
 
-  // 3. دالة تحديث التقدم (لما يحضر درس)
-  const updateProgress = (courseId, progress) => {
-    setEnrolledCourses(prev => {
-       const updated = prev.map(c => String(c.id) === String(courseId) ? { ...c, progress } : c);
-       localStorage.setItem('enrolledCourses', JSON.stringify(updated));
-       return updated;
-    });
-  };
-
- 
   return (
-    <StudentContext.Provider value={{ enrolledCourses, enrollCourse, updateProgress }}>
+    <StudentContext.Provider value={{ enrolledCourses, enrollCourses }}>
       {children}
     </StudentContext.Provider>
   );

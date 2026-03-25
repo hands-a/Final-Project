@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import CourseCard from '../../components/courses/CourseCard'; 
-import { coursesData as staticCourses } from "../../data/coursesData";
-import { FaFilter, FaChevronLeft, FaChevronRight, FaSpinner } from 'react-icons/fa';
+import { FaFilter, FaChevronLeft, FaChevronRight, FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(false); // 💡 ضفنا State للإيرور لو السيرفر مقفول
   
   const [filteredCourses, setFilteredCourses] = useState([]);
   
@@ -25,13 +25,13 @@ const CoursesPage = () => {
     'Cyber Security',
     'DevOps',
     'Front-end',
-    'Back-end' // 💡 ضفتلك الباك إند عشان كانت ناقصة في الفلتر
+    'Back-end'
   ];
 
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
   useEffect(() => {
-    // 1. محاولة جلب البيانات من السيرفر (Strapi)
+    // جلب البيانات من Strapi حصرياً
     axios.get('http://localhost:1337/api/courses?populate=*')
       .then((response) => {
         const formattedCourses = response.data.data.map((item) => {
@@ -64,12 +64,10 @@ const CoursesPage = () => {
         setCourses(formattedCourses);
         setLoading(false);
       })
-      .catch((error) => {
-        // 2. 💡 الخطة البديلة (Fallback): لو السيرفر مقفول هنحمل الداتا الثابتة!
-        console.warn("Strapi server is down! Loading static fallback data... ⚠️", error.message);
-        
-        // هنا السر: بنحط الداتا بتاعتك بدل ما الشاشة تبقى فاضية
-        setCourses(staticCourses); 
+      .catch((err) => {
+        // 💡 السيرفر مقفول؟ مفيش داتا وهمية، هنظهر إيرور محترم
+        console.error("Strapi connection failed:", err.message);
+        setError(true); 
         setLoading(false);
       });
   }, []);
@@ -111,6 +109,7 @@ const CoursesPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // 1. شاشة التحميل (Loading)
   if (loading) {
     return (
       <div className="min-h-screen bg-transparent flex flex-col items-center justify-center pt-28">
@@ -120,8 +119,22 @@ const CoursesPage = () => {
     );
   }
 
+  // 2. شاشة الخطأ (Error) لو سيرفر Strapi مش شغال
+  if (error) {
+    return (
+      <div className="min-h-screen bg-transparent flex flex-col items-center justify-center pt-28 px-4 relative z-10">
+        <div className="bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl p-10 text-center max-w-lg shadow-[0_8px_32px_0_rgba(239,68,68,0.2)]">
+          <FaExclamationTriangle className="text-red-500 text-6xl mx-auto mb-6 opacity-80" />
+          <h2 className="text-3xl text-white font-light mb-4 tracking-wide">Connection Error</h2>
+          <p className="text-slate-400 font-light leading-relaxed mb-8">We couldn't connect to the server. Please make sure the Strapi backend is running on port 1337.</p>
+          <button onClick={() => window.location.reload()} className="px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all border border-white/10">Try Again</button>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. الشاشة الرئيسية (الكورسات)
   return (
-    // Background Space Theme (الزجاجي)
     <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
@@ -134,7 +147,6 @@ const CoursesPage = () => {
           </div>
 
           <div className="relative w-full md:w-96 group">
-            {/* Pure Glass Search Input */}
             <input 
               type="text" 
               placeholder="Search for courses..." 

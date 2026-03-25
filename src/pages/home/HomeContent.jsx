@@ -29,7 +29,8 @@ const HomeContent = () => {
             price: attr.price || 0,
             rating: attr.rating || 0,
             instructor: attr.instructor || "Unknown",
-            lessons: attr.lessons || 0,
+            // 💡 التعديل هنا: خلينا الكود يعد الدروس بدل ما يجيب الداتا كلها
+            lessons: attr.lessons?.data?.length || attr.lessons?.length || 0,
             image: imageUrl
           };
         });
@@ -102,7 +103,6 @@ const HomeContent = () => {
   ];
 
   return (
-    // التعديل هنا: رجعناها شفافة بالكامل bg-transparent
     <div className="w-full bg-transparent py-24 relative overflow-hidden">
       
       {/* Background Glows (متوافقة مع 3D والهيرو) */}

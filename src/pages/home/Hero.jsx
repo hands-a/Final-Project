@@ -7,10 +7,10 @@ const Hero = () => {
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-transparent text-white pt-20 lg:pt-0 mt-10">
       
-      {/* شبكة المربعات الخفيفة */}
+      {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,black,transparent)] z-0 pointer-events-none"></div>
 
-      {/* إضاءات محيطية (Glows) خففناها وزعناها صح */}
+      {/* Blurred Gradient Circles */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/5 rounded-full blur-[150px] pointer-events-none z-0"></div>
 

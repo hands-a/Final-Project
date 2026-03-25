@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios"; 
 import {
   FaPlus,
   FaUsers,
@@ -8,22 +9,64 @@ import {
   FaEdit,
   FaTrash,
   FaLayerGroup,
+  FaSpinner,
 } from "react-icons/fa";
-import { useCourses } from "../../context/CourseContext";
 
 const AdminDashboard = () => {
-  const { courses, deleteCourse } = useCourses();
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalRevenue = courses.reduce(
-    (acc, course) => acc + course.price * (course.students || 0),
-    0
-  );
-  const totalStudents = courses.reduce(
-    (acc, course) => acc + (course.students || 0),
-    0
-  );
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
-  // 💡 تحديث الألوان لتناسب التأثير الزجاجي المضيء (Neon Glass Effect)
+  const fetchCourses = () => {
+    axios.get("http://localhost:1337/api/courses?populate=*")
+      .then((response) => {
+        const formattedCourses = response.data.data.map((item) => {
+          const attr = item.attributes || item;
+          
+          let imageUrl = null;
+          if (attr.image?.url) {
+            imageUrl = `http://localhost:1337${attr.image.url}`;
+          } else if (attr.image?.data?.attributes?.url) {
+            imageUrl = `http://localhost:1337${attr.image.data.attributes.url}`;
+          }
+
+          return {
+            id: item.documentId || item.id, 
+            title: attr.title || "Untitled Course",
+            price: attr.price || 0,
+            students: attr.students || 0, 
+            level: attr.level || "Beginner",
+            category: attr.category || "Uncategorized",
+            image: imageUrl
+          };
+        });
+        setCourses(formattedCourses);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching courses for admin:", error);
+        setLoading(false);
+      });
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this course permanently?")) {
+      try {
+        await axios.delete(`http://localhost:1337/api/courses/${id}`);
+        setCourses(courses.filter(course => course.id !== id));
+      } catch (error) {
+        console.error("Error deleting course:", error);
+        alert("Failed to delete the course. Please try again.");
+      }
+    }
+  };
+
+  const totalRevenue = courses.reduce((acc, course) => acc + (course.price * (course.students || 0)), 0);
+  const totalStudents = courses.reduce((acc, course) => acc + (course.students || 0), 0);
+
   const stats = [
     {
       title: "Total Revenue",
@@ -48,11 +91,14 @@ const AdminDashboard = () => {
     },
   ];
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this course?")) {
-      deleteCourse(id);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#050511] flex flex-col items-center justify-center pt-24">
+        <FaSpinner className="text-pink-500 text-5xl animate-spin mb-4" />
+        <h2 className="text-white text-xl font-light tracking-widest uppercase">Loading Dashboard...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#050511] pt-24 pb-20 px-4 md:px-8 lg:px-12 relative overflow-hidden">
@@ -76,7 +122,7 @@ const AdminDashboard = () => {
           </Link>
         </div>
 
-        {/* Stats Grid (Pure Glass) */}
+        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {stats.map((stat, index) => (
             <div
@@ -100,7 +146,7 @@ const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Courses Table Container (Pure Glass) */}
+        {/* Courses Table Container */}
         <div className="bg-white/0 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
           <div className="p-6 md:p-8 border-b border-white/10 flex justify-between items-center">
             <h3 className="text-xl font-medium tracking-wide text-white">
@@ -133,21 +179,15 @@ const AdminDashboard = () => {
                       >
                         <td className="p-6 text-white group-hover:text-pink-400 transition-colors">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 overflow-hidden shrink-0">
+                            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 overflow-hidden shrink-0 flex items-center justify-center">
                               {course.image ? (
                                 <img
-                                  src={
-                                    typeof course.image === "string"
-                                      ? course.image
-                                      : URL.createObjectURL(course.image)
-                                  }
+                                  src={course.image}
                                   alt=""
                                   className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-slate-500">
-                                  <FaBook />
-                                </div>
+                                <FaBook className="text-slate-500" />
                               )}
                             </div>
                             <span className="line-clamp-1 font-light tracking-wide text-sm">{course.title}</span>
@@ -159,19 +199,22 @@ const AdminDashboard = () => {
                         <td className="p-6 text-sm font-light">
                           <div className="flex items-center gap-2 text-slate-300">
                              <FaUsers className="text-slate-500" />
-                             {course.students || 0}
+                             {course.students}
                           </div>
                         </td>
                         <td className="p-6">
                           <span className="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest bg-white/5 text-slate-300 border border-white/10">
-                            {course.level || "Beginner"}
+                            {course.level}
                           </span>
                         </td>
                         <td className="p-6 text-right">
                           <div className="flex items-center justify-end gap-3">
-                            <button className="p-2.5 bg-white/5 border border-white/10 hover:border-blue-500/50 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-xl transition-all shadow-sm">
+                            <Link 
+                              to={`/admin/edit-course/${course.id}`} 
+                              className="p-2.5 bg-white/5 border border-white/10 hover:border-blue-500/50 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-xl transition-all shadow-sm flex items-center justify-center"
+                            >
                               <FaEdit />
-                            </button>
+                            </Link>
                             <button
                               onClick={() => handleDelete(course.id)}
                               className="p-2.5 bg-white/5 border border-white/10 hover:border-red-500/50 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all shadow-sm"
@@ -195,21 +238,15 @@ const AdminDashboard = () => {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 overflow-hidden shrink-0">
+                        <div className="w-14 h-14 rounded-xl bg-white/5 border border-white/10 overflow-hidden shrink-0 flex items-center justify-center">
                           {course.image ? (
                             <img
-                              src={
-                                typeof course.image === "string"
-                                  ? course.image
-                                  : URL.createObjectURL(course.image)
-                              }
+                              src={course.image}
                               alt=""
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-slate-500">
-                              <FaBook />
-                            </div>
+                            <FaBook className="text-slate-500" />
                           )}
                         </div>
                         <div>
@@ -229,7 +266,7 @@ const AdminDashboard = () => {
                     <div className="grid grid-cols-2 gap-3 text-xs text-slate-300 bg-white/5 border border-white/5 p-3.5 rounded-xl font-light">
                       <div className="flex items-center gap-2">
                         <FaUsers className="text-slate-500 text-sm" />
-                        <span>{course.students || 0} Students</span>
+                        <span>{course.students} Students</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <FaLayerGroup className="text-slate-500 text-sm" />
@@ -238,9 +275,13 @@ const AdminDashboard = () => {
                     </div>
 
                     <div className="flex gap-3">
-                      <button className="flex-1 py-2.5 bg-white/5 border border-white/10 hover:border-blue-500/50 text-slate-300 hover:text-blue-400 hover:bg-blue-500/10 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all">
+                      {/* 💡 التعديل هنا: تحويل الزرار لـ Link في شاشة الموبايل */}
+                      <Link 
+                        to={`/admin/edit-course/${course.id}`} 
+                        className="flex-1 py-2.5 bg-white/5 border border-white/10 hover:border-blue-500/50 text-slate-300 hover:text-blue-400 hover:bg-blue-500/10 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all"
+                      >
                         <FaEdit className="text-sm" /> Edit
-                      </button>
+                      </Link>
                       <button
                         onClick={() => handleDelete(course.id)}
                         className="flex-1 py-2.5 bg-white/5 border border-white/10 hover:border-red-500/50 text-slate-300 hover:text-red-400 hover:bg-red-500/10 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all"

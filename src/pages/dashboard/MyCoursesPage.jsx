@@ -71,6 +71,8 @@ const MyCoursesPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {enrolledCourses.map((course) => {
               const isCompleted = course.progress === 100;
+              // 💡 التعديل هنا: بنتأكد إننا بنبعت الـ documentId لو موجود، ولو مش موجود نبعت الـ id العادي
+              const courseUrlId = course.documentId || course.id;
 
               return (
                 // Course Card (Pure Glass)
@@ -85,7 +87,7 @@ const MyCoursesPage = () => {
                     />
                     
                     {/* Play Overlay */}
-                    <Link to={`/learn/${course.id}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/40 backdrop-blur-sm z-20">
+                    <Link to={`/learn/${courseUrlId}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/40 backdrop-blur-sm z-20">
                       <div className="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
                         <FaPlay className="ml-1 text-lg opacity-80" />
                       </div>
@@ -121,7 +123,7 @@ const MyCoursesPage = () => {
                       </div>
 
                       <Link 
-                        to={`/learn/${course.id}`}
+                        to={`/learn/${courseUrlId}`}
                         className={`w-full py-3.5 rounded-xl font-medium text-sm flex justify-center items-center gap-2 transition-all border
                           ${isCompleted 
                             ? 'bg-transparent border-green-400/30 text-green-400 hover:bg-green-400/10' 
@@ -140,7 +142,7 @@ const MyCoursesPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      
     </>
   );
 };

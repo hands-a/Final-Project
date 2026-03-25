@@ -1,68 +1,121 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCourses } from '../../context/CourseContext';
+import axios from 'axios'; // 💡 غيرنا الـ Context بـ Axios
 import CurriculumBuilder from './CurriculumBuilder'; 
-import { FaSave, FaArrowLeft, FaDollarSign, FaList, FaImage } from "react-icons/fa";
+import { FaSave, FaArrowLeft, FaList, FaImage, FaSpinner } from "react-icons/fa";
 
 const EditCoursePage = () => {
   const { id } = useParams(); 
   const navigate = useNavigate();
-  const { courses, updateCourse } = useCourses();
 
   // الحالة (State) لتخزين البيانات
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Development');
   const [level, setLevel] = useState('Beginner');
   const [price, setPrice] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null); // File object لو المستخدم اختار صورة جديدة
   const [imagePreview, setImagePreview] = useState(null);
   const [sections, setSections] = useState([]);
+  
+  const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false); // عشان زرار الحفظ
 
-  // تحميل بيانات الكورس عند فتح الصفحة
+  // 1. تحميل بيانات الكورس من Strapi عند فتح الصفحة
   useEffect(() => {
-    const courseToEdit = courses.find(c => c.id === parseInt(id));
-    if (courseToEdit) {
-      setTitle(courseToEdit.title);
-      setCategory(courseToEdit.category);
-      setLevel(courseToEdit.level);
-      setPrice(courseToEdit.price);
-      setSections(courseToEdit.sections || []);
-      
-      // التعامل مع الصورة
-      if (courseToEdit.image) {
-        setImage(courseToEdit.image);
-        setImagePreview(typeof courseToEdit.image === 'string' ? courseToEdit.image : URL.createObjectURL(courseToEdit.image));
-      }
-    } else {
-      navigate('/admin/dashboard');
-    }
-  }, [id, courses, navigate]);
+    axios.get(`http://localhost:1337/api/courses/${id}?populate=*`)
+      .then((response) => {
+        const item = response.data.data;
+        if (!item) {
+          navigate('/admin/dashboard');
+          return;
+        }
+
+        const attr = item.attributes || item;
+
+        setTitle(attr.title || '');
+        setCategory(attr.category || 'Development');
+        setLevel(attr.level || 'Beginner');
+        setPrice(attr.price || '');
+        // لو عندك حقل للدروس
+        // setSections(attr.curriculum || []); 
+        
+        // التعامل مع الصورة الجاية من السيرفر
+        if (attr.image?.url) {
+          setImagePreview(`http://localhost:1337${attr.image.url}`);
+        } else if (attr.image?.data?.attributes?.url) {
+          setImagePreview(`http://localhost:1337${attr.image.data.attributes.url}`);
+        }
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching course for edit:", error);
+        navigate('/admin/dashboard'); // لو الكورس مش موجود ارجع للوحة التحكم
+      });
+  }, [id, navigate]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file));
+      setImagePreview(URL.createObjectURL(file)); // عرض الصورة مؤقتاً قبل الرفع
     }
   };
 
-  const handleSubmit = (e) => {
+  // 2. دالة حفظ التعديلات في Strapi
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     
-    const updatedCourseData = {
-      title,
-      category,
-      level,
-      price: parseFloat(price),
-      image,
-      sections,
-      rating: 4.8, 
-      students: 0  
-    };
+    try {
+      let imageId = null;
 
-    updateCourse(parseInt(id), updatedCourseData);
-    navigate('/admin/dashboard');
+      // أ. لو المستخدم اختار صورة جديدة (File)، نرفعها الأول لـ Strapi
+      if (image instanceof File) {
+        const formData = new FormData();
+        formData.append('files', image);
+        
+        const uploadResponse = await axios.post('http://localhost:1337/api/upload', formData);
+        imageId = uploadResponse.data[0].id; // ناخد الـ ID بتاع الصورة المرفوعة
+      }
+
+      // ب. نجهز البيانات اللي هتتحدث
+      const courseData = {
+        title,
+        category,
+        level,
+        price: parseFloat(price) || 0,
+        // sections: sections, // لو هتحفظ المنهج هنا
+      };
+
+      // لو رفعنا صورة جديدة، نربطها بالكورس
+      if (imageId) {
+        courseData.image = imageId;
+      }
+
+      // ج. نبعت أمر التعديل (PUT) لـ Strapi
+      await axios.put(`http://localhost:1337/api/courses/${id}`, {
+        data: courseData
+      });
+
+      // د. نرجع للوحة التحكم بعد النجاح
+      navigate('/admin/dashboard');
+
+    } catch (error) {
+      console.error("Error updating course:", error);
+      alert("حدث خطأ أثناء حفظ التعديلات. تأكد من تشغيل السيرفر.");
+      setIsSaving(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#050511] flex flex-col items-center justify-center pt-24">
+        <FaSpinner className="text-pink-500 text-5xl animate-spin mb-4" />
+        <h2 className="text-white text-xl font-light tracking-widest uppercase">Loading Course...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-transparent pt-32 pb-24 px-6 md:px-12 relative overflow-hidden">
@@ -87,7 +140,6 @@ const EditCoursePage = () => {
           {/* --- Left Column: Basic Info & Curriculum --- */}
           <div className="lg:col-span-2 space-y-8">
             
-            {/* Title, Category & Level (Pure Glass) */}
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] space-y-6">
               <div>
                 <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Course Title</label>
@@ -145,13 +197,10 @@ const EditCoursePage = () => {
               </div>
             </div>
 
-            {/* Curriculum Builder Wrapper (Pure Glass) */}
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
               <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
                 <FaList className="text-pink-400 opacity-80" /> Course Curriculum
               </h3>
-              
-              {/* لاحظ هنا: بنمرر onCurriculumChange عشان يشتغل صح مع النسخة الجديدة من الكومبوننت */}
               <CurriculumBuilder onCurriculumChange={setSections} />
             </div>
 
@@ -160,7 +209,6 @@ const EditCoursePage = () => {
           {/* --- Right Column: Image & Actions --- */}
           <div className="space-y-8">
             
-            {/* Image Upload (Pure Glass) */}
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] text-center">
               <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
                 <FaImage className="text-pink-400 opacity-80" /> Course Thumbnail
@@ -179,12 +227,12 @@ const EditCoursePage = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
             <button 
               type="submit" 
-              className="w-full py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium tracking-wide rounded-xl shadow-lg shadow-pink-500/20 transition-all flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98]"
+              disabled={isSaving}
+              className="w-full py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium tracking-wide rounded-xl shadow-lg shadow-pink-500/20 transition-all flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <FaSave className="opacity-80" /> Save Changes
+              {isSaving ? <FaSpinner className="animate-spin" /> : <><FaSave className="opacity-80" /> Save Changes</>}
             </button>
 
           </div>

@@ -1,8 +1,11 @@
 import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
+
+// Layout
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
-import CartPage from '../pages/cart/CartPage';
+
+// Public & Auth Pages
 import Hero from '../pages/home/Hero';
 import HomeContent from '../pages/home/HomeContent';
 import LoginPage from '../pages/auth/LoginPage';
@@ -10,18 +13,25 @@ import RegisterPage from '../pages/auth/RegisterPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import VerifyCodePage from '../pages/auth/VerifyCodePage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
-import CheckoutPage from '../pages/checkout/CheckoutPage';
-import SuccessPage from '../pages/checkout/SuccessPage';
-import CoursesPage from '../pages/courses/CoursesPage';
-import CourseDetailsPage from '../pages/courses/CourseDetailsPage';
-import MyCoursesPage from '../pages/dashboard/MyCoursesPage';
-import CoursePlayerPage from '../pages/dashboard/CoursePlayerPage';
-import AdminDashboard from "../pages/admin/AdminDashboard";
-import AdminRoute from "../components/AdminRoute";
-import AddCoursePage from "../pages/admin/AddCoursePage";
 import FAQPage from '../pages/FAQPage';
 import AboutPage from '../pages/AboutPage';
+
+// Course & User Pages
+import CoursesPage from '../pages/courses/CoursesPage';
+import CourseDetailsPage from '../pages/courses/CourseDetailsPage';
+import CartPage from '../pages/cart/CartPage';
+import CheckoutPage from '../pages/checkout/CheckoutPage';
+import SuccessPage from '../pages/checkout/SuccessPage';
+import MyCoursesPage from '../pages/dashboard/MyCoursesPage';
+import CoursePlayerPage from '../pages/dashboard/CoursePlayerPage';
 import ProfilePage from '../pages/dashboard/ProfilePage';
+
+// Admin Pages 💡 (تم تظبيط المسارات هنا)
+import AdminRoute from "../components/AdminRoute";
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import AddCoursePage from "../pages/admin/AddCoursePage";
+import EditCoursePage from "../pages/admin/EditCoursePage"; // 👈 المسار الصح اهو!
+
 const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -38,60 +48,63 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
+        {/* الصفحة الرئيسية */}
         <Route path="/" element={
           <>
             <Hero />
             <HomeContent />
           </>
         } />
+        
+        {/* مسارات المصادقة (Auth) */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-code" element={<VerifyCodePage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        
+        {/* مسارات الكورسات والمستخدم */}
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
+        <Route path="/course/:id" element={<CourseDetailsPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/my-courses" element={<MyCoursesPage />} />
         <Route path="/learn/:id" element={<CoursePlayerPage />} />
-        <Route path="/course/:id" element={<CourseDetailsPage />} />
-        {/* 👇 المسار المحمي للأدمن */}
-<Route 
-  path="/admin/dashboard" 
-  element={
-    <AdminRoute>
-      <AdminDashboard />
-    </AdminRoute>
-  } 
-/>
-
-{/* 👇 المسار المحمي لإضافة كورس (لسه هنعملها) */}
-<Route 
-  path="/admin/add-course" 
-  element={
-    <AdminRoute>
-      {/* كان هنا مكتوب div coming soon، شيلها وحط دي: */}
-      <AddCoursePage />
-    </AdminRoute>
-  } 
-/>
-<Route 
-  path="/admin/add-course" 
-  element={
-    <AdminRoute>
-      <AddCoursePage />  {/* 👈 هنا بدل الـ div القديمة */}
-    </AdminRoute>
-  } 
-/>
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+
+        {/* 👇 مسارات الأدمن المحمية (تم ترتيبها وإزالة التكرار) */}
+        <Route 
+          path="/admin/dashboard" 
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          } 
+        />
         
+        <Route 
+          path="/admin/add-course" 
+          element={
+            <AdminRoute>
+              <AddCoursePage />
+            </AdminRoute>
+          } 
+        />
+        
+        <Route 
+          path="/admin/edit-course/:id" 
+          element={
+            <AdminRoute>
+              <EditCoursePage />
+            </AdminRoute>
+          } 
+        />
+
       </Route>
-      {/* Profile Page */}
-<Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 };
