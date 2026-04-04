@@ -6,7 +6,7 @@ import { FaFilter, FaChevronLeft, FaChevronRight, FaSpinner, FaExclamationTriang
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(false); // 💡 ضفنا State للإيرور لو السيرفر مقفول
+  const [error, setError] = useState(false); 
   
   const [filteredCourses, setFilteredCourses] = useState([]);
   
@@ -31,7 +31,6 @@ const CoursesPage = () => {
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
   useEffect(() => {
-    // جلب البيانات من Strapi حصرياً
     axios.get('http://localhost:1337/api/courses?populate=*')
       .then((response) => {
         const formattedCourses = response.data.data.map((item) => {
@@ -65,7 +64,6 @@ const CoursesPage = () => {
         setLoading(false);
       })
       .catch((err) => {
-        // 💡 السيرفر مقفول؟ مفيش داتا وهمية، هنظهر إيرور محترم
         console.error("Strapi connection failed:", err.message);
         setError(true); 
         setLoading(false);
@@ -109,7 +107,7 @@ const CoursesPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 1. شاشة التحميل (Loading)
+ 
   if (loading) {
     return (
       <div className="min-h-screen bg-transparent flex flex-col items-center justify-center pt-28">
@@ -119,7 +117,6 @@ const CoursesPage = () => {
     );
   }
 
-  // 2. شاشة الخطأ (Error) لو سيرفر Strapi مش شغال
   if (error) {
     return (
       <div className="min-h-screen bg-transparent flex flex-col items-center justify-center pt-28 px-4 relative z-10">
@@ -133,12 +130,10 @@ const CoursesPage = () => {
     );
   }
 
-  // 3. الشاشة الرئيسية (الكورسات)
   return (
     <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
-        {/* Header & Search */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12 border-b border-white/10 pb-8">
           <div>
             <span className="text-pink-400 font-bold text-xs tracking-widest uppercase mb-2 block">Discover</span>
@@ -159,10 +154,8 @@ const CoursesPage = () => {
 
         <div className="flex flex-col lg:flex-row gap-8">
           
-          {/* Sidebar Filters */}
           <aside className="w-full lg:w-1/4 space-y-8 h-fit lg:sticky lg:top-28">
             
-            {/* Categories Filter (Pure Glass) */}
             <div className="bg-white/0 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
               <h3 className="text-white font-light text-lg mb-5 flex items-center gap-2 tracking-wide">
                 <FaFilter className="text-pink-400 text-sm" /> Categories
@@ -190,7 +183,6 @@ const CoursesPage = () => {
               </div>
             </div>
 
-            {/* Level & Price Filter (Pure Glass) */}
             <div className="bg-white/0 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
               <h3 className="text-white font-light text-lg mb-5 tracking-wide">Level & Price</h3>
               <div className="space-y-6">
@@ -212,7 +204,6 @@ const CoursesPage = () => {
                   ))}
                 </div>
 
-                {/* Price Toggle */}
                 <div className="flex gap-2 bg-white/5 p-1.5 rounded-xl border border-white/10">
                   {['All', 'Free', 'Paid'].map(price => (
                     <button 
@@ -232,7 +223,6 @@ const CoursesPage = () => {
             </div>
           </aside>
 
-          {/* Courses Grid */}
           <div className="w-full lg:w-3/4">
             {currentItems.length > 0 ? (
               <>
@@ -242,7 +232,6 @@ const CoursesPage = () => {
                   ))}
                 </div>
 
-                {/* Pagination Controls */}
                 {totalPages > 1 && (
                   <div className="flex justify-center items-center gap-2 mt-8">
                     <button 
@@ -278,7 +267,7 @@ const CoursesPage = () => {
                 )}
               </>
             ) : (
-              /* Empty State (Pure Glass) */
+              
               <div className="text-center py-24 bg-white/0 backdrop-blur-xl rounded-3xl border border-white/10 border-dashed flex flex-col items-center justify-center shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]">
                 <h3 className="text-2xl font-light text-white mb-2 tracking-wide">No courses found</h3>
                 <p className="text-slate-400 mb-8 font-light text-sm">We couldn't find any courses matching your filters.</p>

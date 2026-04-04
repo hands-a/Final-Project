@@ -90,14 +90,13 @@ const Global3D = () => {
         <directionalLight position={[-6, -6, 5]} intensity={LIGHT_CONFIG.fillLightIntensity} />
         <Environment preset="city" />
 
-        {/* 🌟 تأثير الغبار الفضائي هنا 🌟 */}
         <Sparkles 
-          count={150}        // عدد النقاط (مش كتير عشان الأداء)
-          scale={25}         // مساحة الانتشار (مغطية الشاشة كلها)
-          size={1.5}         // حجم النقطة (صغير وراقي)
-          speed={0.3}        // سرعة حركتها (بطيئة بتهدي الأعصاب)
-          opacity={0.25}     // شفافة عشان متغطيش على المحتوى
-          color="#e2e8f0"    // لون أبيض مايل للرصاصي الفاتح
+          count={150}       
+          scale={25}        
+          size={1.5}         
+          speed={0.3}        
+          opacity={0.25}    
+          color="#e2e8f0"    
         />
 
         <Suspense fallback={null}>

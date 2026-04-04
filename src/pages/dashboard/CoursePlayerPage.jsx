@@ -10,7 +10,6 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 
-// دالة ذكية لاستخراج الـ ID من أي لينك يوتيوب
 const getYouTubeEmbedUrl = (url) => {
   if (!url) return null;
   try {
@@ -44,7 +43,6 @@ const CoursePlayerPage = () => {
         const coursesRes = await axios.get(`http://localhost:1337/api/courses?populate=*`);
         const allCourses = coursesRes.data.data;
 
-        // ندور على الكورس بتاعنا
         const courseItem = allCourses.find(
           (c) => c.id.toString() === id.toString() || c.documentId === id
         );
@@ -56,13 +54,11 @@ const CoursePlayerPage = () => {
 
         let formattedLessons = [];
 
-        // 💡 2. الحل العبقري: بما إنك مش رابطهم بـ Relation، هنروح ندور في الـ Lesson بالاسم!
         try {
           const lessonsRes = await axios.get(`http://localhost:1337/api/lessons?filters[title][$eq]=${courseTitle}`);
           const lessonsData = lessonsRes.data.data;
 
           if (lessonsData && lessonsData.length > 0) {
-            // لقينا الدرس اللي اسمه زي اسم الكورس!
             const lessonItem = lessonsData[0];
             const lAttr = lessonItem.attributes || lessonItem;
             
@@ -71,15 +67,14 @@ const CoursePlayerPage = () => {
                 id: lessonItem.documentId || lessonItem.id,
                 title: lAttr.title || courseTitle,
                 duration: lAttr.duration || "00:00",
-                url: lAttr.videoUrl || null, // 👈 ده اللي هيجيب اللينك من الـ Lesson!
+                url: lAttr.videoUrl || null, 
               }
             ];
           }
         } catch (lessonError) {
-          console.log("لم يتم العثور على درس بهذا الاسم، أو الصلاحيات مغلقة.");
+          console.log("Lessons fetch error (handled gracefully):", lessonError);
         }
 
-        // لو ملقاش درس في الـ Lesson Collection يطابق الاسم، يحط رسالة فاضية
         if (formattedLessons.length === 0) {
           formattedLessons = [{
             id: 999,
@@ -164,7 +159,6 @@ const CoursePlayerPage = () => {
           </div>
 
           <div className="w-full aspect-video bg-black/50 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] relative flex items-center justify-center">
-            {/* عرض الفيديو لو اللينك موجود وسليم */}
             {activeLesson.url && getYouTubeEmbedUrl(activeLesson.url) ? (
               <iframe
                 className="w-full h-full absolute top-0 left-0"
@@ -192,7 +186,6 @@ const CoursePlayerPage = () => {
           </div>
         </div>
 
-        {/* --- Curriculum Sidebar --- */}
         <div className="w-full lg:w-1/3">
           <div className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl h-[calc(100vh-140px)] flex flex-col shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] overflow-hidden lg:sticky lg:top-28">
             <div className="p-6 border-b border-white/10 bg-white/5 flex items-center gap-3">

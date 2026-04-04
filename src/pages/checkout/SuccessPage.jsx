@@ -6,13 +6,10 @@ const SuccessPage = () => {
   return (
     <div className="min-h-screen bg-transparent flex items-center justify-center relative overflow-hidden p-4 sm:p-6">
       
-      {/* Subtle Emerald Glow for Success Vibe */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-      {/* Pure Water-like Glass Card */}
       <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-10 sm:p-12 rounded-3xl text-center max-w-md w-full relative z-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
         
-        {/* Glowing Glass Success Icon */}
         <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(16,185,129,0.15)]">
           <FaCheckCircle className="text-4xl text-emerald-400 drop-shadow-md" />
         </div>
@@ -22,12 +19,10 @@ const SuccessPage = () => {
           Thank you for your purchase. Your payment has been processed securely. You can now access your courses and start learning.
         </p>
 
-        {/* Colorful Primary Action Button */}
         <Link to="/courses" className="w-full py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium rounded-xl shadow-lg shadow-pink-500/20 transition-all flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]">
           Start Learning <FaArrowRight className="text-sm font-light opacity-80" />
         </Link>
         
-        {/* Minimalist Secondary Link */}
         <Link to="/" className="block mt-6 text-slate-500 text-[10px] uppercase tracking-widest hover:text-white transition-colors border-b border-transparent hover:border-white/30 w-fit mx-auto pb-0.5">
           Return to Home
         </Link>

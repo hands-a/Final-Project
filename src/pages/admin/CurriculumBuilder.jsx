@@ -8,7 +8,6 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
   const [activeSectionId, setActiveSectionId] = useState(null);
   const [newLesson, setNewLesson] = useState({ title: '', duration: '', type: 'video' });
 
-  // إضافة سكشن جديد
   const addSection = (e) => {
     e.preventDefault();
     if (!newSectionTitle.trim()) return;
@@ -43,7 +42,6 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
     setActiveSectionId(null);
   };
 
-  // حذف سكشن
   const deleteSection = (sectionId) => {
     const updated = sections.filter(s => s.id !== sectionId);
     setSections(updated);
@@ -51,11 +49,9 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
   };
 
   return (
-    // الحاوية الأساسية خليناها شفافة بالكامل لأنها أصلاً هتنزل جوه كارت زجاجي في الصفحة الأم
     <div className="mt-2 w-full">
       <div className="space-y-4 mb-8">
         {sections.map((section, index) => (
-          // كارت السكشن (زجاجي نقي)
           <div key={section.id} className="border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-md shadow-sm">
             
             <div className="p-4 sm:p-5 flex justify-between items-center border-b border-white/5">
@@ -96,7 +92,6 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
               )}
 
               {activeSectionId === section.id ? (
-                // فورم إضافة درس (Glassmorphism)
                 <div className="bg-black/20 p-4 rounded-xl border border-white/5 animate-fadeIn">
                   <input 
                     type="text" 
@@ -140,7 +135,6 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
                   </div>
                 </div>
               ) : (
-                // زرار إضافة درس جديد
                 <button 
                   type="button"
                   onClick={() => setActiveSectionId(section.id)}
@@ -154,7 +148,6 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
         ))}
       </div>
 
-      {/* إضافة سكشن جديد (Glassmorphism) */}
       <div className="flex flex-col sm:flex-row gap-3">
         <input 
           type="text" 

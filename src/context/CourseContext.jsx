@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-// import { coursesData as initialCourses } from '../data/coursesData';
 
 const CourseContext = createContext();
 
@@ -9,18 +8,13 @@ export const CourseProvider = ({ children }) => {
   
   const [courses, setCourses] = useState(() => {
     const savedCourses = localStorage.getItem('courses');
-    
-    return savedCourses ? JSON.parse(savedCourses) : initialCourses;
+    return savedCourses ? JSON.parse(savedCourses) : [];
   });
 
-  
   useEffect(() => {
     localStorage.setItem('courses', JSON.stringify(courses));
   }, [courses]);
 
-  
-
-  
   const addCourse = (newCourse) => {
     setCourses((prevCourses) => {
       const nextId = prevCourses.length > 0 ? Math.max(...prevCourses.map(c => c.id)) + 1 : 1;
@@ -34,14 +28,12 @@ export const CourseProvider = ({ children }) => {
     });
   };
 
-  
   const deleteCourse = (courseId) => {
     if (window.confirm("Are you sure you want to delete this course?")) {
        setCourses(prev => prev.filter(c => c.id !== courseId));
     }
   };
 
-  
   const updateCourse = (courseId, updatedData) => {
     setCourses((prevCourses) => 
       prevCourses.map((course) => 

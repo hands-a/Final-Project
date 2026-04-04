@@ -22,7 +22,6 @@ const ForgotPasswordPage = () => {
     <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
       
       <div className="relative z-10 w-full max-w-[500px]">
-        {/* Pure Water-like Glass Card / كارت زجاجي نقي مثل الماء */}
         <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
             
           <div className="text-center mb-8">
@@ -37,7 +36,6 @@ const ForgotPasswordPage = () => {
             {({ errors, touched }) => (
                 <Form className="space-y-5">
                 
-                {/* Email Input / حقل البريد الإلكتروني */}
                 <div>
                     <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Email Address</label>
                     <Field 
@@ -52,12 +50,10 @@ const ForgotPasswordPage = () => {
                     <ErrorMessage name="email" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
                 </div>
 
-                {/* Colorful Submit Button / زر الإرسال الملون */}
                 <button type="submit" className="w-full py-3.5 mt-2 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-bold rounded-xl shadow-lg shadow-pink-500/20 flex justify-center items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     Send Code <FaArrowRight />
                 </button>
 
-                {/* Back to Login Link / رابط العودة لتسجيل الدخول */}
                 <div className="text-center mt-6">
                     <Link to="/login" className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center justify-center gap-2 group">
                     <FaArrowLeft className="text-xs group-hover:-translate-x-1 transition-transform" /> Back to Login

@@ -7,14 +7,11 @@ const Hero = () => {
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-transparent text-white pt-20 lg:pt-0 mt-10">
       
-      {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,black,transparent)] z-0 pointer-events-none"></div>
 
-      {/* Blurred Gradient Circles */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-600/5 rounded-full blur-[150px] pointer-events-none z-0"></div>
 
-      {/* المحتوى الأساسي (متمركز في النص عشان يسيب الأطراف للـ 3D) */}
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center mt-12">
         
         {/* Badge */}
@@ -57,7 +54,6 @@ const Hero = () => {
           </Link>
         </div>
 
-        {/* Glassmorphism Stats Bar (بديل عصري لمربع الكود) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl w-full max-w-4xl">
           
           <div className="flex flex-col items-center justify-center space-y-2">

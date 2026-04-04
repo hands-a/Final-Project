@@ -88,7 +88,6 @@ const ProfilePage = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            {/* --- Left Column: Avatar & Info Summary (Pure Glass) --- */}
             <div className="lg:col-span-1">
               <div className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl p-8 text-center relative overflow-hidden sticky top-32 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
                 
@@ -103,7 +102,6 @@ const ProfilePage = () => {
                     className="w-full h-full rounded-full object-cover bg-white/5"
                   />
 
-                  {/* زرار الكاميرا اللي بيدوس على الـ input المخفي */}
                   <div
                     onClick={handleCameraClick}
                     className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer"
@@ -111,7 +109,6 @@ const ProfilePage = () => {
                     <FaCamera className="text-white text-2xl opacity-80" />
                   </div>
 
-                  {/* الـ Input المخفي لرفع الصورة */}
                   <input
                     type="file"
                     accept="image/*"
@@ -128,21 +125,18 @@ const ProfilePage = () => {
                   {user.role === "admin" ? "Administrator" : "Student"}
                 </p>
 
-                {/* Headline Display */}
                 {formData.headline && (
                   <p className="text-slate-300 font-medium text-sm mb-6 tracking-wide">
                     {formData.headline}
                   </p>
                 )}
 
-                {/* Bio Display */}
                 {formData.bio && (
                   <p className="text-slate-400 text-sm text-center font-light leading-relaxed mb-6 border-b border-white/10 pb-6">
                     "{formData.bio}"
                   </p>
                 )}
 
-                {/* Social Links Display */}
                 <div className="flex justify-center gap-5 mb-2">
                   {formData.github && (
                     <a href={formData.github} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-white transition-colors text-xl">
@@ -177,12 +171,10 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            {/* --- Right Column: Edit Form (Pure Glass) --- */}
             <div className="lg:col-span-2">
               <div className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
                 <form onSubmit={handleSubmit} className="space-y-10">
                   
-                  {/* --- Section 1: Personal Details --- */}
                   <div>
                     <h3 className="text-xl font-medium tracking-wide text-white mb-6 border-b border-white/10 pb-4">
                       Personal Details
@@ -215,7 +207,6 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  {/* --- Section 2: Professional Info --- */}
                   <div>
                     <h3 className="text-xl font-medium tracking-wide text-white mb-6 border-b border-white/10 pb-4">
                       Developer Profile
@@ -247,7 +238,6 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  {/* --- Section 3: Social Links --- */}
                   <div>
                     <h3 className="text-xl font-medium tracking-wide text-white mb-6 border-b border-white/10 pb-4">
                       Social Profiles
@@ -303,7 +293,6 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  {/* --- Section 4: Security --- */}
                   <div>
                     <h3 className="text-xl font-medium tracking-wide text-white mb-6 border-b border-white/10 pb-4">
                       Security
@@ -335,7 +324,6 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  {/* Submit Button */}
                   <div className="flex justify-end pt-6 border-t border-white/10 mt-8">
                     <button
                       type="submit"

@@ -6,7 +6,6 @@ import { FaCheckCircle, FaArrowLeft, FaShieldAlt } from 'react-icons/fa';
 
 const VerifyCodePage = () => {
   const navigate = useNavigate();
-  // مصفوفة لتخزين المراجع الخاصة بالخانات (Array of refs for the input fields)
   const inputRefs = useRef([]);
 
   const initialValues = { code: '' };
@@ -27,7 +26,6 @@ const VerifyCodePage = () => {
     <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
       
       <div className="relative z-10 w-full max-w-[500px]">
-        {/* Pure Water-like Glass Card / كارت زجاجي نقي */}
         <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
           
           <div className="text-center mb-8">
@@ -42,7 +40,6 @@ const VerifyCodePage = () => {
             {({ errors, touched, setFieldValue, values }) => (
               <Form className="space-y-6">
                 
-                {/* 4 Circular OTP Inputs / 4 خانات دائرية للرمز */}
                 <div>
                   <div className="flex justify-center gap-3 sm:gap-5" dir="ltr">
                     {[0, 1, 2, 3].map((index) => (
@@ -57,23 +54,19 @@ const VerifyCodePage = () => {
                             : 'border-white/10 focus:border-pink-400/50 focus:ring-1 focus:ring-pink-400/50 focus:bg-white/5'}`}
                         value={values.code[index] || ''}
                         onChange={(e) => {
-                          // السماح بالأرقام فقط (Allow only numbers)
                           const val = e.target.value.replace(/[^0-9]/g, '');
                           
-                          // تجميع الكود في نص واحد (Combine into a single string)
                           const newCodeArr = (values.code || '').padEnd(4, ' ').split('');
                           newCodeArr[index] = val;
                           const newCode = newCodeArr.join('').trim();
                           
                           setFieldValue('code', newCode);
 
-                          // الانتقال للخانة التالية تلقائياً (Auto-focus next input)
                           if (val && index < 3) {
                             inputRefs.current[index + 1].focus();
                           }
                         }}
                         onKeyDown={(e) => {
-                          // العودة للخانة السابقة عند الحذف (Auto-focus previous on Backspace)
                           if (e.key === 'Backspace' && !values.code[index] && index > 0) {
                             inputRefs.current[index - 1].focus();
                           }
@@ -82,23 +75,19 @@ const VerifyCodePage = () => {
                     ))}
                   </div>
                   
-                  {/* رسالة الخطأ (Error Message) */}
                   <div className="text-center mt-3">
                     <ErrorMessage name="code" component="span" className="text-red-400 text-[11px] tracking-wider" />
                   </div>
                 </div>
 
-                {/* Colorful Submit Button / زر الإرسال */}
                 <button type="submit" className="w-full py-3.5 mt-2 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-bold rounded-xl shadow-lg shadow-pink-500/20 flex justify-center items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   Verify & Continue <FaCheckCircle />
                 </button>
 
-                {/* Resend Code / إعادة الإرسال */}
                 <div className="text-center mt-4 text-xs text-slate-400">
                   Didn't receive the email? <button type="button" className="text-pink-400 font-bold hover:text-pink-300 transition-colors ml-1 uppercase tracking-wider">Resend Code</button>
                 </div>
 
-                {/* Back to Login / العودة لتسجيل الدخول */}
                 <div className="text-center mt-2">
                    <Link to="/login" className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center justify-center gap-2 group">
                     <FaArrowLeft className="text-xs group-hover:-translate-x-1 transition-transform" /> Back to Login

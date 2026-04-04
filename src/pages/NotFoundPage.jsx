@@ -6,11 +6,9 @@ const NotFoundPage = () => {
   return (
     <div className="min-h-screen bg-transparent flex items-center justify-center relative overflow-hidden text-center px-4 sm:px-6">
       
-      {/* Subtle Background Glows */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-pink-600/10 rounded-full blur-[150px] pointer-events-none"></div>
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[150px] pointer-events-none"></div>
 
-      {/* Pure Glass Container */}
       <div className="relative z-10 bg-white/0 backdrop-blur-xl border border-white/10 p-10 md:p-20 rounded-[3rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] max-w-2xl w-full mx-auto">
         
         <h1 className="text-[120px] md:text-[180px] font-light text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-violet-500 leading-none select-none tracking-tighter drop-shadow-lg mb-2">

@@ -34,7 +34,6 @@ const FAQSection = () => {
   return (
     <section className="py-24 bg-transparent relative overflow-hidden">
       
-      {/* Background Decoration */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
          <div className="absolute top-1/4 left-[-10%] w-96 h-96 bg-purple-600/10 rounded-full blur-[100px]"></div>
          <div className="absolute bottom-1/4 right-[-10%] w-96 h-96 bg-pink-600/10 rounded-full blur-[100px]"></div>
@@ -42,7 +41,6 @@ const FAQSection = () => {
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         
-        {/* Header */}
         <div className="text-center mb-16">
           <span className="text-purple-500 font-bold tracking-widest uppercase text-sm">Support</span>
           <h2 className="text-3xl md:text-5xl font-bold text-white mt-2 mb-4">
@@ -53,7 +51,6 @@ const FAQSection = () => {
           </p>
         </div>
 
-        {/* Accordion Items */}
         <div className="max-w-3xl mx-auto space-y-4">
           {faqs.map((faq, index) => (
             <div 

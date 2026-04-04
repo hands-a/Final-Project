@@ -52,7 +52,6 @@ const AboutPage = () => {
             </p>
           </div>
 
-          {/* 2. Stats Section */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-32 border-y border-white/10 py-12">
             {[
               { num: "10K+", label: "Students" },
@@ -67,10 +66,8 @@ const AboutPage = () => {
             ))}
           </div>
 
-          {/* 3. Mission & Vision (Grid) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center mb-32">
             
-            {/* Image Side */}
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-violet-600 rounded-[2rem] blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
               <img 
@@ -80,7 +77,6 @@ const AboutPage = () => {
               />
             </div>
             
-            {/* Text Side */}
             <div>
               <h2 className="text-3xl md:text-4xl font-light text-white mb-6 tracking-wide">Our Mission</h2>
               <p className="text-slate-400 mb-6 leading-relaxed font-light text-sm md:text-base">
@@ -92,7 +88,6 @@ const AboutPage = () => {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {features.map((feature, idx) => (
-                  // Pure Glass Feature Card
                   <div key={idx} className="flex items-start gap-4 p-5 bg-white/0 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/5 transition-all shadow-sm">
                     <div className="text-pink-400 text-xl mt-0.5 opacity-80">{feature.icon}</div>
                     <div>
@@ -105,9 +100,7 @@ const AboutPage = () => {
             </div>
           </div>
 
-          {/* 4. CTA Section (Pure Glassmorphism) */}
           <div className="relative w-full rounded-[3rem] overflow-hidden p-12 md:p-24 text-center border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] bg-white/0 backdrop-blur-xl">
-            {/* Inner Glow */}
             <div className="absolute inset-0 bg-gradient-to-br from-pink-900/20 via-transparent to-violet-900/20 pointer-events-none"></div>
             
             <div className="relative z-10 max-w-3xl mx-auto">

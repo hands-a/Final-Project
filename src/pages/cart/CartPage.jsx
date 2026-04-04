@@ -6,7 +6,6 @@ import { useCart } from '../../context/CartContext';
 const CartPage = () => {
   const { cartItems, removeFromCart } = useCart();
 
-  // 💡 التعديل هنا: حسبة ذكية وآمنة جداً عشان لو السعر بكلمة "Free" أو فيه مشكلة الكارت مايضربش
   const subtotal = cartItems.reduce((acc, item) => {
     const price = Number(item.price);
     return acc + (isNaN(price) ? 0 : price);
@@ -29,7 +28,6 @@ const CartPage = () => {
             {/* --- Cart Items List --- */}
             <div className="lg:w-2/3 space-y-6">
               {cartItems.map((item, index) => {
-                // 💡 التعديل هنا: بنأمن الـ ID والدروس عشان الداتا بتاعت استرابي
                 const uniqueId = item.documentId || item.id || index;
                 const safeLessons = typeof item.lessons === 'object' 
                                     ? (item.lessons?.data?.length || item.lessons?.length || 0) 
@@ -71,7 +69,6 @@ const CartPage = () => {
               })}
             </div>
 
-            {/* --- Order Summary --- */}
             <div className="lg:w-1/3 h-fit lg:sticky lg:top-32">
               <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
                 <h2 className="text-xl font-medium text-white mb-8 tracking-wide border-b border-white/10 pb-4">Order Summary</h2>

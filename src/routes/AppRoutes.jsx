@@ -1,11 +1,9 @@
 import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
 
-// Layout
+
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
-
-// Public & Auth Pages
 import Hero from '../pages/home/Hero';
 import HomeContent from '../pages/home/HomeContent';
 import LoginPage from '../pages/auth/LoginPage';
@@ -15,8 +13,6 @@ import VerifyCodePage from '../pages/auth/VerifyCodePage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 import FAQPage from '../pages/FAQPage';
 import AboutPage from '../pages/AboutPage';
-
-// Course & User Pages
 import CoursesPage from '../pages/courses/CoursesPage';
 import CourseDetailsPage from '../pages/courses/CourseDetailsPage';
 import CartPage from '../pages/cart/CartPage';
@@ -25,12 +21,10 @@ import SuccessPage from '../pages/checkout/SuccessPage';
 import MyCoursesPage from '../pages/dashboard/MyCoursesPage';
 import CoursePlayerPage from '../pages/dashboard/CoursePlayerPage';
 import ProfilePage from '../pages/dashboard/ProfilePage';
-
-// Admin Pages 💡 (تم تظبيط المسارات هنا)
 import AdminRoute from "../components/AdminRoute";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AddCoursePage from "../pages/admin/AddCoursePage";
-import EditCoursePage from "../pages/admin/EditCoursePage"; // 👈 المسار الصح اهو!
+import EditCoursePage from "../pages/admin/EditCoursePage"; 
 
 const Layout = () => {
   return (
@@ -48,7 +42,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        {/* الصفحة الرئيسية */}
+      
         <Route path="/" element={
           <>
             <Hero />
@@ -56,7 +50,7 @@ const AppRoutes = () => {
           </>
         } />
         
-        {/* مسارات المصادقة (Auth) */}
+        
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -76,7 +70,7 @@ const AppRoutes = () => {
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/about" element={<AboutPage />} />
 
-        {/* 👇 مسارات الأدمن المحمية (تم ترتيبها وإزالة التكرار) */}
+        
         <Route 
           path="/admin/dashboard" 
           element={

@@ -44,8 +44,6 @@ const RegisterPage = () => {
     <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
       
       <div className="relative z-10 w-full max-w-[500px]">
-        {/* Pure Water-like Glass Card / كارت زجاجي نقي مثل الماء */}
-        {/* bg-white/0 makes it completely transparent, backdrop-blur does the glass distortion */}
         <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
           
           <div className="text-center mb-8">
@@ -67,7 +65,6 @@ const RegisterPage = () => {
           >
             {({ errors, touched }) => (
               <Form className="space-y-5">
-                {/* First and Last Name / الاسم الأول والأخير */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">
@@ -112,7 +109,6 @@ const RegisterPage = () => {
                   </div>
                 </div>
 
-                {/* Email Field / حقل البريد الإلكتروني */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">
                     Email Address
@@ -134,7 +130,6 @@ const RegisterPage = () => {
                   />
                 </div>
 
-                {/* Password Field / حقل كلمة المرور */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">
                     Password
@@ -156,7 +151,6 @@ const RegisterPage = () => {
                   />
                 </div>
 
-                {/* Confirm Password / تأكيد كلمة المرور */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">
                     Confirm Password
@@ -178,7 +172,6 @@ const RegisterPage = () => {
                   />
                 </div>
 
-                {/* Colorful Submit Button / زر الإرسال الملون */}
                 <button
                   type="submit"
                   className="w-full py-3.5 mt-2 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-bold rounded-xl shadow-lg shadow-pink-500/20 flex justify-center items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
@@ -186,7 +179,6 @@ const RegisterPage = () => {
                   Create Account <FaArrowRight />
                 </button>
 
-                {/* Divider / فاصل */}
                 <div className="relative flex py-2 items-center opacity-70">
                   <div className="grow border-t border-white/10"></div>
                   <span className="shrink-0 mx-4 text-slate-400 text-[10px] uppercase tracking-wider">
@@ -195,7 +187,6 @@ const RegisterPage = () => {
                   <div className="grow border-t border-white/10"></div>
                 </div>
 
-                {/* Social Buttons / أزرار تسجيل الدخول الاجتماعي */}
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
@@ -216,7 +207,6 @@ const RegisterPage = () => {
             )}
           </Formik>
 
-          {/* Login Link / رابط تسجيل الدخول */}
           <p className="text-center mt-6 text-slate-300 text-sm">
             Already have an account?{" "}
             <Link

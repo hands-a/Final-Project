@@ -28,7 +28,6 @@ const ResetPasswordPage = () => {
     <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
       
       <div className="relative z-10 w-full max-w-[500px]">
-        {/* Pure Water-like Glass Card */}
         <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
           
           <div className="text-center mb-8">

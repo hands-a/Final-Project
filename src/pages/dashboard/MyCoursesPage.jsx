@@ -8,7 +8,6 @@ import { FaPlay, FaCheckCircle, FaBookOpen } from 'react-icons/fa';
 const MyCoursesPage = () => {
   const { enrolledCourses } = useStudent();
 
-  // --- حالة: الطالب لسه مشترش كورسات (Empty State) ---
   if (enrolledCourses.length === 0) {
     return (
       <>
@@ -36,7 +35,6 @@ const MyCoursesPage = () => {
     );
   }
 
-  // --- حالة: الطالب عنده كورسات (Enrolled State) ---
   return (
     <>
       <Navbar />
@@ -44,7 +42,6 @@ const MyCoursesPage = () => {
         
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           
-          {/* Header & Stats */}
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-white/10 pb-8">
             <div>
               <h1 className="text-3xl md:text-5xl font-light tracking-wide text-white mb-3">My Learning</h1>
@@ -52,12 +49,10 @@ const MyCoursesPage = () => {
             </div>
             
             <div className="flex gap-4">
-               {/* Enrolled Stat Card (Pure Glass) */}
                <div className="bg-white/0 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 min-w-[120px] text-center shadow-sm">
                   <span className="block text-3xl font-light text-white mb-1">{enrolledCourses.length}</span>
                   <span className="text-[10px] text-slate-400 uppercase tracking-widest font-medium">Enrolled</span>
                </div>
-               {/* Completed Stat Card (Pure Glass) */}
                <div className="bg-white/0 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 min-w-[120px] text-center shadow-sm">
                   <span className="block text-3xl font-light text-green-400 mb-1">
                      {enrolledCourses.filter(c => c.progress === 100).length}
@@ -67,18 +62,14 @@ const MyCoursesPage = () => {
             </div>
           </div>
 
-          {/* Courses Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {enrolledCourses.map((course) => {
               const isCompleted = course.progress === 100;
-              // 💡 التعديل هنا: بنتأكد إننا بنبعت الـ documentId لو موجود، ولو مش موجود نبعت الـ id العادي
               const courseUrlId = course.documentId || course.id;
 
               return (
-                // Course Card (Pure Glass)
                 <div key={course.id} className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:border-pink-500/30 transition-all duration-300 group flex flex-col hover:-translate-y-1 hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] shadow-[0_4px_24px_0_rgba(0,0,0,0.3)]">
                   
-                  {/* Image Section */}
                   <div className="relative h-48 bg-white/5 overflow-hidden border-b border-white/5">
                     <img 
                       src={course.image} 
@@ -86,7 +77,6 @@ const MyCoursesPage = () => {
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
                     />
                     
-                    {/* Play Overlay */}
                     <Link to={`/learn/${courseUrlId}`} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/40 backdrop-blur-sm z-20">
                       <div className="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
                         <FaPlay className="ml-1 text-lg opacity-80" />
@@ -94,7 +84,6 @@ const MyCoursesPage = () => {
                     </Link>
                   </div>
 
-                  {/* Content Section */}
                   <div className="p-8 flex-1 flex flex-col">
                     <div className="flex justify-between items-start mb-4">
                        <span className="text-[9px] font-bold text-pink-400 uppercase tracking-widest bg-white/5 px-3 py-1.5 rounded-full border border-white/10 shadow-sm">
@@ -108,7 +97,6 @@ const MyCoursesPage = () => {
                     </h3>
                     <p className="text-xs text-slate-500 mb-8 font-light uppercase tracking-widest">By {course.instructor}</p>
 
-                    {/* Progress Bar Area */}
                     <div className="mt-auto">
                       <div className="flex justify-between text-[11px] text-slate-400 mb-3 font-medium uppercase tracking-widest">
                         <span>{isCompleted ? 'Completed' : 'Progress'}</span>

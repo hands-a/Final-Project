@@ -16,14 +16,12 @@ const Navbar = () => {
   const { cartItems } = useCart();
   const { user, logout } = useAuth(); 
 
-  // Handle scroll effect for glassmorphism
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => { setIsOpen(false); }, [location]);
 
   const handleLogout = () => {
@@ -62,7 +60,6 @@ const Navbar = () => {
             <NavLink to="/about" className={getLinkClass}>About</NavLink>
           </div>
 
-          {/* 3. Right Side Icons & Auth */}
           <div className="flex items-center gap-5">
             
             {/* Cart Icon */}
@@ -77,11 +74,9 @@ const Navbar = () => {
             
             <div className="hidden lg:flex items-center gap-3">
               {user ? (
-                // --- Premium Profile Dropdown ---
                 <div className="relative group pl-4 border-l border-white/10">
                   <div className="flex items-center gap-3 cursor-pointer py-2">
                     
-                    {/* الصورة بدل الحرف */}
                     <div className="w-10 h-10 rounded-full bg-[#13151d] border-2 border-[#13151d] shadow-[0_0_15px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform overflow-hidden">
                       <img 
                         src={user?.avatar || `https://ui-avatars.com/api/?name=${user?.name || 'U'}&background=random`} 
@@ -98,14 +93,12 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  {/* Dropdown Menu (Hover) */}
                   <div className="absolute right-0 top-full mt-2 w-56 bg-[#13151d] border border-white/10 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 overflow-hidden">
                     <div className="p-2 space-y-1">
                       <Link to="/profile" className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 font-medium hover:text-white hover:bg-white/5 rounded-xl transition-colors">
                         <FaUserCircle className="text-lg text-slate-500" /> My Profile
                       </Link>
                       
-                      {/* 💡 التعديل هنا: المسار بقى /admin/dashboard */}
                       {user.role === 'admin' && (
                         <Link to="/admin/dashboard" className="flex items-center gap-3 px-4 py-2.5 text-sm text-purple-400 font-bold hover:text-purple-300 hover:bg-purple-500/10 rounded-xl transition-colors">
                            <RiRocketLine className="text-lg" /> Admin Dashboard
@@ -140,17 +133,12 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* ========================================= */}
-      {/* 4. PREMIUM MOBILE MENU (Side Drawer) */}
-      {/* ========================================= */}
       
-      {/* Backdrop */}
       <div 
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsOpen(false)}
       ></div>
 
-      {/* Drawer */}
       <div className={`fixed top-0 right-0 h-full w-[80%] max-w-sm bg-[#0f1117] border-l border-white/10 z-[70] transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         
         {/* Drawer Header */}
@@ -176,7 +164,6 @@ const Navbar = () => {
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider px-4 mb-2">My Account</span>
               <NavLink to="/profile" className={({isActive}) => `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? 'bg-purple-500/10 text-purple-400' : 'text-slate-300 hover:bg-white/5 hover:text-white'}`}>Profile Settings</NavLink>
               
-              {/* 💡 التعديل هنا كمان: المسار بقى /admin/dashboard */}
               {user.role === 'admin' && (
                 <NavLink to="/admin/dashboard" className={({isActive}) => `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? 'bg-purple-500/10 text-purple-400' : 'text-purple-400 hover:bg-purple-500/10'}`}>Admin Dashboard</NavLink>
               )}
@@ -184,7 +171,6 @@ const Navbar = () => {
           )}
         </div>
         
-        {/* Drawer Footer (Auth) */}
         <div className="p-6 border-t border-white/5 bg-[#13151d]">
           {user ? (
             <div>

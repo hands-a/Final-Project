@@ -105,13 +105,11 @@ const HomeContent = () => {
   return (
     <div className="w-full bg-transparent py-24 relative overflow-hidden">
       
-      {/* Background Glows (متوافقة مع 3D والهيرو) */}
       <div className="absolute top-20 left-0 w-[500px] h-[500px] bg-pink-900/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-40 right-0 w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
-        {/* --- Features Section (Pure Glass) --- */}
         <div className="text-center mb-16">
           <span className="inline-block py-1 px-4 rounded-full bg-white/5 border border-white/10 text-pink-400 text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
             Why Choose Us?
@@ -150,7 +148,6 @@ const HomeContent = () => {
           </div>
         </div>
 
-        {/* --- Popular Courses Section --- */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-white/10 pb-6">
           <div>
              <span className="text-pink-400 font-bold text-[10px] tracking-widest uppercase mb-2 block">Top Rated</span>
@@ -163,7 +160,6 @@ const HomeContent = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
           {loading ? (
-            // Skeleton Loader (Glassmorphism Style)
             [1, 2, 3].map(n => (
               <div key={n} className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl h-[440px] animate-pulse flex flex-col overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
                 <div className="h-52 bg-white/5 w-full border-b border-white/5"></div>
@@ -181,7 +177,6 @@ const HomeContent = () => {
           ) : popularCourses.length > 0 ? (
             popularCourses.map((course) => (
               
-              // --- Course Card (Pure Glass) ---
               <div key={course.id} className="group bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:border-pink-500/30 transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] flex flex-col hover:-translate-y-2">
                 
                 {/* Image Section */}

@@ -12,7 +12,7 @@ const CourseCard = ({ course }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#13151d] to-transparent opacity-40"></div>
         <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl"></div>
         
-        {/* اللوجو نفسه: خليناه contain عشان يظهر كامل */}
+        
         <img 
           src={course.image} 
           alt={course.title} 

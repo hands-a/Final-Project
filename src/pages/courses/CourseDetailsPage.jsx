@@ -49,7 +49,7 @@ const CourseDetailsPage = () => {
 
           setCourse({
             id: targetCourse.id || targetCourse.documentId,
-            title: attr.title || "بدون عنوان",
+            title: attr.title || "No Title Available",
             category: attr.category || "General",
             instructor: attr.instructor || "Unknown",
             rating: attr.rating || 0,
@@ -57,7 +57,7 @@ const CourseDetailsPage = () => {
             duration: attr.duration || "N/A",
             level: attr.level || "Beginner",
             price: attr.price || 0,
-            description: attr.description || "لا يوجد وصف متاح حالياً.",
+            description: attr.description || "No description available.",
             requirements: attr.requirements || "",
             image: imageUrl
           });
@@ -94,7 +94,7 @@ const CourseDetailsPage = () => {
       return;
     }
     addToCart(course);
-    navigate('/checkout'); // بتودي للدفع علطول
+    navigate('/checkout');
   };
 
   if (loading) {
@@ -154,7 +154,6 @@ const CourseDetailsPage = () => {
               </div>
             </div>
 
-            {/* 💡 مررنا الدالتين للموبايل */}
             <div className="lg:hidden mb-10">
                <EnrollmentCard course={course} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
             </div>
@@ -245,7 +244,6 @@ const CourseDetailsPage = () => {
 
           <div className="hidden lg:block lg:w-1/3 relative">
             <div className="sticky top-28">
-              {/* 💡 مررنا الدالتين للكمبيوتر */}
               <EnrollmentCard course={course} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
             </div>
           </div>
@@ -256,7 +254,6 @@ const CourseDetailsPage = () => {
   );
 };
 
-// 💡 استقبلنا الدالتين هنا وربطنا كل زرار بدالته الصح
 const EnrollmentCard = ({ course, onAddToCart, onBuyNow }) => (
   <div className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
     
@@ -323,7 +320,7 @@ const CurriculumItem = ({ section, idx }) => {
       >
         <div className="flex items-center gap-4">
           <div className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-             {isOpen ? <FaChevronUp className="text-pink-400 text-[10px]" /> : <FaChevronDown className="text-slate-400 text-[10px]" />}
+                  {isOpen ? <FaChevronUp className="text-pink-400 text-[10px]" /> : <FaChevronDown className="text-slate-400 text-[10px]" />}
           </div>
           <span className="font-medium text-white text-sm text-left tracking-wide">{section.title}</span>
         </div>

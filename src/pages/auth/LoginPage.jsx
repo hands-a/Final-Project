@@ -23,7 +23,6 @@ const LoginPage = () => {
   });
 
   const onSubmit = (values, { setSubmitting }) => {
-    // Simulate Login Logic
     setTimeout(() => {
       const userData = {
         name: values.email.split('@')[0], 
@@ -34,7 +33,6 @@ const LoginPage = () => {
       login(userData); 
       setSubmitting(false);
       
-      // Role-Based Navigation Logic
       if (values.email.includes('admin')) {
         navigate('/admin/dashboard');
       } else {
@@ -47,7 +45,6 @@ const LoginPage = () => {
     <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
       
       <div className="relative z-10 w-full max-w-[500px]">
-        {/* Pure Water-like Glass Card / كارت زجاجي نقي مثل الماء */}
         <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
           
           {/* Header */}
@@ -67,7 +64,6 @@ const LoginPage = () => {
             {({ errors, touched, isSubmitting }) => (
               <Form className="space-y-5">
                 
-                {/* Email Input / حقل البريد الإلكتروني */}
                 <div>
                   <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Email Address</label>
                   <Field 
@@ -82,7 +78,6 @@ const LoginPage = () => {
                   <ErrorMessage name="email" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
                 </div>
 
-                {/* Password Input / حقل كلمة المرور */}
                 <div>
                   <div className="flex justify-between items-center mb-2 ml-1">
                     <label className="block text-[11px] uppercase tracking-widest text-slate-300">Password</label>
@@ -102,7 +97,6 @@ const LoginPage = () => {
                   <ErrorMessage name="password" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
                 </div>
 
-                {/* Colorful Submit Button / زر الإرسال الملون */}
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
@@ -113,14 +107,12 @@ const LoginPage = () => {
                   )}
                 </button>
 
-                {/* Divider / فاصل */}
                 <div className="relative flex py-2 items-center opacity-70">
                     <div className="grow border-t border-white/10"></div>
                     <span className="shrink-0 mx-4 text-slate-400 text-[10px] uppercase tracking-wider">Or continue with</span>
                     <div className="grow border-t border-white/10"></div>
                 </div>
 
-                {/* Social Login / أزرار تسجيل الدخول الاجتماعي */}
                 <div className="grid grid-cols-2 gap-3">
                   <button type="button" className="py-2.5 bg-transparent border border-white/10 text-white rounded-xl font-semibold hover:bg-white/5 transition-all flex justify-center items-center gap-2 text-sm group">
                     <FaGoogle className="text-red-400 group-hover:scale-110 transition-transform" /> Google
@@ -134,7 +126,6 @@ const LoginPage = () => {
             )}
           </Formik>
 
-          {/* Register Link / رابط التسجيل */}
           <p className="text-center mt-6 text-slate-300 text-sm">
             Don't have an account? <Link to="/register" className="text-pink-400 font-bold hover:text-pink-300 transition-colors ml-1">Sign Up Free</Link>
           </p>

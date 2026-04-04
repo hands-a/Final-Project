@@ -49,17 +49,14 @@ const CheckoutPage = () => {
   };
 
   return (
-// هتبقى كده
 <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <h1 className="text-3xl font-light text-white mb-8 tracking-widest uppercase">Checkout</h1>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           
-          {/* Left Side: Forms */}
           <div className="lg:w-2/3 space-y-8">
             
-            {/* 1. Billing Details (Pure Glass) */}
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
               <h2 className="text-xl font-medium text-white mb-8 flex items-center gap-3 tracking-wide">
                 <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-violet-600 text-sm font-bold flex items-center justify-center shadow-lg">1</span>
@@ -74,7 +71,6 @@ const CheckoutPage = () => {
               </form>
             </div>
 
-            {/* 2. Payment Method (Pure Glass) */}
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
               <h2 className="text-xl font-medium text-white mb-8 flex items-center gap-3 tracking-wide">
                 <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-violet-600 text-sm font-bold flex items-center justify-center shadow-lg">2</span>
@@ -111,7 +107,6 @@ const CheckoutPage = () => {
 
           </div>
 
-          {/* Right Side: Order Summary (Pure Glass) */}
           <div className="lg:w-1/3">
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 rounded-3xl sticky top-28 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
               <h2 className="text-xl font-medium text-white mb-6 tracking-wide">Order Summary</h2>
@@ -162,7 +157,6 @@ const CheckoutPage = () => {
   );
 };
 
-// Removed icons inside input to match the clean glassmorphism theme
 const InputGroup = ({ label, placeholder, type = "text", full }) => (
   <div className={full ? "col-span-1 md:col-span-2" : ""}>
     <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">{label}</label>
@@ -176,7 +170,6 @@ const InputGroup = ({ label, placeholder, type = "text", full }) => (
   </div>
 );
 
-// Glassmorphism Payment Option
 const PaymentOption = ({ id, icon: Icon, label, selected, onClick }) => (
   <button 
     onClick={onClick}
