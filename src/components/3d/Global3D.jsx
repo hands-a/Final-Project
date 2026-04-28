@@ -12,7 +12,7 @@ const LIGHT_CONFIG = {
 const LOGO_COLORS = {
   java: 0x5382a1,
   docker: 0x0db7ed,
-  javascript: 0xf7df1e,
+  javascript: 0xf7df1e &&  0x000000,
   typescript: 0x3178c6, 
   react: 0x61dafb,
   mongo: 0x47a248,
@@ -74,17 +74,18 @@ const Global3D = () => {
   }, []);
 
   const ELEMENTS = [
-    { path: '/java.glb', position: isMobile ? [-2.5, 4, -5] : [-7, 4, -4], scale: isMobile ? 0.25 : 0.4, color: 'java', speed: 0.002 },
-    { path: '/docker.glb', position: isMobile ? [2.5, 5, -5] : [7, 4, -5], scale: isMobile ? 3.5 : 5.5, color: 'docker', speed: -0.002 },
-    { path: '/javascript.glb', position: isMobile ? [-2.5, -1, -5] : [-8, -1, -4], scale: isMobile ? 3.2 : 5.2, color: 'javascript', speed: 0.003 },
-    { path: '/react_logo.glb', position: isMobile ? [2.5, -1.5, -5] : [8, -1, -4], scale: isMobile ? 0.1 : 0.2, color: 'react', speed: -0.0015 },
+    { path: '/java.glb', position: isMobile ? [-2.5, 4, -5] : [-5, 1, -2], scale: isMobile ? 0.18 : 0.2, color: 'java', speed: 0.002 },
+    { path: '/docker.glb', position: isMobile ? [2.5, 5, -5] : [7, 2, -5], scale: isMobile ? 3.5 : 5.5, color: 'docker', speed: -0.002 },
+    { path: '/js-logo.glb', position: isMobile ? [-2.5, -1, -5] : [-6, -2, -5], scale: isMobile ? 3.2 : 4.2, color: 'javascript', speed: 0.003 },
+    { path: '/react_logo.glb', position: isMobile ? [2.5, -1.5, -5] : [8, -1, -4], scale: isMobile ? 0.1 : 0.1, color: 'react', speed: -0.0015 },
     { path: '/mongo.glb', position: isMobile ? [-2.5, -6, -5] : [-7, -5, -3], scale: isMobile ? 4.2 : 6.2, color: 'mongo', speed: 0.001 },
-    { path: '/Robot.glb', position: isMobile ? [2.5, -7, -5] : [6, -5, -5], scale: isMobile ? 0.25 : 0.4, color: 'robot', speed: -0.002 },
+    { path: '/Robot.glb', position: isMobile ? [2.5, -7, -5] : [6, -5, -5], scale: isMobile ? 0.25 : 0.2, color: 'robot', speed: -0.002 },
+    
   ];
 
   return (
     <div className="fixed top-0 left-0 w-full h-screen -z-50 pointer-events-none opacity-80">
-      <Canvas camera={{ position: [0, 0, 12], fov: 45 }} dpr={[1, 2]}>
+      <Canvas camera={{ position: [0, 0, 12], fov: 35 }} dpr={[1, 2]}>
         <ambientLight intensity={LIGHT_CONFIG.ambientIntensity} />
         <directionalLight position={[8, 10, 8]} intensity={LIGHT_CONFIG.keyLightIntensity} />
         <directionalLight position={[-6, -6, 5]} intensity={LIGHT_CONFIG.fillLightIntensity} />

@@ -36,7 +36,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="w-full pt-20 pb-8 border-t border-white/10 bg-[#0a0a0a] text-slate-300">
+    <footer className="w-full pt-20 pb-8 border-t border-white/10 bg-[#020202] text-slate-300">
       <div className="container mx-auto px-6">
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">

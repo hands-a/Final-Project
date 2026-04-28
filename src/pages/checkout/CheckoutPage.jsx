@@ -6,7 +6,8 @@ import { FaCreditCard, FaPaypal, FaShieldAlt } from 'react-icons/fa';
 
 const CheckoutPage = () => {
   const { cartItems, setCartItems } = useCart(); 
-  // 💡 تأمين الـ Context: لو مش موجود ميعملش Crash
+  
+  // Context Protection: Ensure it doesn't crash if context is missing
   const studentContext = useStudent(); 
   const enrollCourses = studentContext?.enrollCourses;
 
@@ -14,23 +15,24 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // حساب الإجمالي
+  // Calculate Totals
   const subtotal = cartItems ? cartItems.reduce((acc, item) => acc + Number(item.price), 0) : 0;
   const tax = subtotal * 0.14;
   const total = subtotal + tax;
 
+  // Handle Payment Submission
   const handlePayment = (e) => {
     e.preventDefault();
     setIsProcessing(true);
 
     setTimeout(() => {
       try {
-        // 1. نقل الكورسات (مع التأكد إن الدالة موجودة عشان الكود ميعلقش)
+        // 1. Safely transfer courses to student dashboard
         if (typeof enrollCourses === 'function') {
           enrollCourses(cartItems);
         }
 
-        // 2. تفريغ السلة
+        // 2. Safely clear the cart
         if (typeof setCartItems === 'function') {
           setCartItems([]); 
         }
@@ -41,7 +43,7 @@ const CheckoutPage = () => {
         
       } catch (error) {
         console.error("Checkout Error:", error);
-        // في حالة حدوث أي خطأ، الزرار هيرجع طبيعي وهينقلك بردو عشان ميفضلش معلق
+        // Fallback: prevent hanging state and redirect anyway
         setIsProcessing(false);
         navigate('/success');
       }
@@ -49,17 +51,19 @@ const CheckoutPage = () => {
   };
 
   return (
-<div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
+    <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden text-slate-300">      
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <h1 className="text-3xl font-light text-white mb-8 tracking-widest uppercase">Checkout</h1>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           
+          {/* Left Column: Forms */}
           <div className="lg:w-2/3 space-y-8">
             
-            <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+            {/* Billing Details Panel */}
+            <div className="glass-panel p-8 sm:p-10">
               <h2 className="text-xl font-medium text-white mb-8 flex items-center gap-3 tracking-wide">
-                <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-violet-600 text-sm font-bold flex items-center justify-center shadow-lg">1</span>
+                <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-violet-600 text-sm font-bold flex items-center justify-center shadow-lg text-white">1</span>
                 Billing Details
               </h2>
               <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -71,9 +75,10 @@ const CheckoutPage = () => {
               </form>
             </div>
 
-            <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+            {/* Payment Method Panel */}
+            <div className="glass-panel p-8 sm:p-10">
               <h2 className="text-xl font-medium text-white mb-8 flex items-center gap-3 tracking-wide">
-                <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-violet-600 text-sm font-bold flex items-center justify-center shadow-lg">2</span>
+                <span className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-violet-600 text-sm font-bold flex items-center justify-center shadow-lg text-white">2</span>
                 Payment Method
               </h2>
               
@@ -107,14 +112,15 @@ const CheckoutPage = () => {
 
           </div>
 
+          {/* Right Column: Order Summary */}
           <div className="lg:w-1/3">
-            <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 rounded-3xl sticky top-28 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+            <div className="glass-panel p-8 sticky top-28">
               <h2 className="text-xl font-medium text-white mb-6 tracking-wide">Order Summary</h2>
               
               <div className="space-y-4 mb-6 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
                 {cartItems && cartItems.length > 0 ? (
                   cartItems.map((item) => (
-                    <div key={item.id} className="flex gap-4 items-center bg-white/5 p-3 rounded-2xl border border-white/5">
+                    <div key={item.id || item.documentId} className="flex gap-4 items-center bg-white/5 p-3 rounded-2xl border border-white/5">
                       <img src={item.image} alt="" className="w-14 h-14 rounded-xl object-cover bg-black/20" />
                       <div className="flex-grow">
                         <p className="text-sm text-white font-medium line-clamp-1 tracking-wide">{item.title}</p>
@@ -139,7 +145,7 @@ const CheckoutPage = () => {
               <button 
                 onClick={handlePayment}
                 disabled={isProcessing || !cartItems || cartItems.length === 0}
-                className="w-full py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium rounded-xl shadow-lg shadow-pink-500/20 transition-all flex items-center justify-center gap-2 mb-6 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+                className="btn-primary w-full py-4 mb-6"
               >
                 {isProcessing ? 'Processing...' : `Pay $${total.toFixed(2)}`}
               </button>
@@ -157,14 +163,15 @@ const CheckoutPage = () => {
   );
 };
 
+// Reusable Sub-components
 const InputGroup = ({ label, placeholder, type = "text", full }) => (
   <div className={full ? "col-span-1 md:col-span-2" : ""}>
-    <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">{label}</label>
+    <label className="label-text">{label}</label>
     <div className="relative">
       <input 
         type={type} 
         placeholder={placeholder} 
-        className="w-full bg-transparent border border-white/10 rounded-xl py-3.5 px-4 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all placeholder:text-slate-500/50 tracking-wider"
+        className="input-field tracking-wider"
       />
     </div>
   </div>

@@ -7,8 +7,10 @@ import { FaLock, FaRocket } from 'react-icons/fa';
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
 
+  // Initial Form State
   const initialValues = { password: '', confirmPassword: '' };
 
+  // Validation Schema
   const validationSchema = Yup.object({
     password: Yup.string()
       .min(8, 'Min 8 characters')
@@ -19,17 +21,24 @@ const ResetPasswordPage = () => {
       .required('Required'),
   });
 
-  const onSubmit = (values) => {
-    console.log("New Password Set:", values);
-    navigate('/login');
+  // Handle Form Submission
+  const onSubmit = (values, { setSubmitting }) => {
+    // Simulating API call delay
+    setTimeout(() => {
+      console.log("New Password Set:", values);
+      setSubmitting(false);
+      navigate('/login');
+    }, 1000);
   };
 
   return (
     <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
       
       <div className="relative z-10 w-full max-w-[500px]">
-        <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+        {/* Reusable Glass Panel */}
+        <div className="glass-panel p-8 sm:p-10">
           
+          {/* Header Section */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-pink-500 to-violet-600 rounded-2xl mb-4 shadow-lg shadow-pink-500/30">
               <FaLock className="text-white text-xl" />
@@ -38,43 +47,49 @@ const ResetPasswordPage = () => {
             <p className="text-slate-300/80 text-sm">Create a new strong password.</p>
           </div>
 
-          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-            {({ errors, touched }) => (
+          {/* Formik Integration */}
+          <Formik 
+            initialValues={initialValues} 
+            validationSchema={validationSchema} 
+            onSubmit={onSubmit}
+          >
+            {({ errors, touched, isSubmitting }) => (
               <Form className="space-y-5">
                 
                 {/* New Password Input */}
                 <div>
-                  <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">New Password</label>
+                  <label className="label-text">New Password</label>
                   <Field 
                     type="password"
                     name="password"
                     placeholder="••••••••" 
-                    className={`w-full px-4 py-3 bg-transparent border rounded-xl focus:bg-white/5 outline-none transition-all text-white text-sm placeholder:text-slate-500/50 tracking-widest
-                      ${errors.password && touched.password 
-                        ? 'border-red-500/50 focus:border-red-500' 
-                        : 'border-white/10 focus:border-pink-400/50 focus:ring-1 focus:ring-pink-400/50'}`} 
+                    // Added tracking-widest specifically here for the bullet points effect
+                    className={`input-field tracking-widest ${errors.password && touched.password ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
                   />
                   <ErrorMessage name="password" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
                 </div>
 
                 {/* Confirm Password Input */}
                 <div>
-                  <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Confirm Password</label>
+                  <label className="label-text">Confirm Password</label>
                   <Field 
                     type="password"
                     name="confirmPassword"
                     placeholder="••••••••" 
-                    className={`w-full px-4 py-3 bg-transparent border rounded-xl focus:bg-white/5 outline-none transition-all text-white text-sm placeholder:text-slate-500/50 tracking-widest
-                      ${errors.confirmPassword && touched.confirmPassword 
-                        ? 'border-red-500/50 focus:border-red-500' 
-                        : 'border-white/10 focus:border-pink-400/50 focus:ring-1 focus:ring-pink-400/50'}`} 
+                    className={`input-field tracking-widest ${errors.confirmPassword && touched.confirmPassword ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
                   />
                   <ErrorMessage name="confirmPassword" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit" className="w-full py-3.5 mt-2 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-bold rounded-xl shadow-lg shadow-pink-500/20 flex justify-center items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                  Set New Password <FaRocket className="text-sm opacity-90" />
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="btn-primary w-full py-3.5 mt-2"
+                >
+                  {isSubmitting ? 'Updating...' : (
+                    <>Set New Password <FaRocket className="text-sm opacity-90" /></>
+                  )}
                 </button>
 
               </Form>

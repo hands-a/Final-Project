@@ -10,6 +10,7 @@ const HomeContent = () => {
   const [popularCourses, setPopularCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetch Popular Courses from API
   useEffect(() => {
     axios.get('http://localhost:1337/api/courses?populate=*')
       .then(response => {
@@ -24,12 +25,11 @@ const HomeContent = () => {
 
           return {
             id: item.id || item.documentId,
-            title: attr.title || "بدون عنوان",
+            title: attr.title || "Untitled Course",
             category: attr.category || "General",
             price: attr.price || 0,
             rating: attr.rating || 0,
             instructor: attr.instructor || "Unknown",
-            // 💡 التعديل هنا: خلينا الكود يعد الدروس بدل ما يجيب الداتا كلها
             lessons: attr.lessons?.data?.length || attr.lessons?.length || 0,
             image: imageUrl
           };
@@ -44,6 +44,7 @@ const HomeContent = () => {
       });
   }, []);
 
+  // Features Data
   const features = [
     {
       id: 1,
@@ -68,13 +69,7 @@ const HomeContent = () => {
     }
   ];
 
-  const stats = [
-    { label: "Active Learners", value: "50K+" },
-    { label: "Video Hours", value: "1200+" },
-    { label: "Expert Mentors", value: "40+" },
-    { label: "Success Rate", value: "95%" },
-  ];
-
+  // Reviews Data
   const reviews = [
     {
       id: 1,
@@ -105,11 +100,13 @@ const HomeContent = () => {
   return (
     <div className="w-full bg-transparent py-24 relative overflow-hidden">
       
+      {/* Background Glow Effects */}
       <div className="absolute top-20 left-0 w-[500px] h-[500px] bg-pink-900/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-40 right-0 w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
+        {/* Why Choose Us Header */}
         <div className="text-center mb-16">
           <span className="inline-block py-1 px-4 rounded-full bg-white/5 border border-white/10 text-pink-400 text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
             Why Choose Us?
@@ -122,9 +119,11 @@ const HomeContent = () => {
           </p>
         </div>
 
+        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
           {features.map((item) => (
-            <div key={item.id} className="bg-white/0 backdrop-blur-xl p-8 sm:p-10 rounded-3xl border border-white/10 hover:border-pink-400/30 hover:bg-white/5 transition-all duration-500 hover:-translate-y-2 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] group">
+            // Reusable glass-panel class applied
+            <div key={item.id} className="glass-panel p-8 sm:p-10 hover:border-pink-400/30 hover:bg-white/5 transition-all duration-500 hover:-translate-y-2 group">
               <div className={`w-14 h-14 rounded-2xl ${item.iconBg} flex items-center justify-center text-2xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                 {item.icon}
               </div>
@@ -134,20 +133,7 @@ const HomeContent = () => {
           ))}
         </div>
 
-        {/* --- Stats Section (Pure Glass) --- */}
-        <div className="mb-32 bg-white/0 backdrop-blur-xl rounded-[3rem] border border-white/10 p-12 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] relative overflow-hidden">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative z-10">
-            {stats.map((stat, idx) => (
-              <div key={idx} className="flex flex-col gap-2">
-                <h3 className="text-4xl md:text-5xl font-light text-white tracking-wide drop-shadow-md">
-                  {stat.value}
-                </h3>
-                <p className="text-pink-400 text-[10px] font-bold tracking-widest uppercase">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
+        {/* Popular Courses Header */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-white/10 pb-6">
           <div>
              <span className="text-pink-400 font-bold text-[10px] tracking-widest uppercase mb-2 block">Top Rated</span>
@@ -158,10 +144,12 @@ const HomeContent = () => {
           </Link>
         </div>
 
+        {/* Popular Courses Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
           {loading ? (
+            // Skeleton Loader (using glass-panel)
             [1, 2, 3].map(n => (
-              <div key={n} className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl h-[440px] animate-pulse flex flex-col overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+              <div key={n} className="glass-panel h-[440px] animate-pulse flex flex-col overflow-hidden">
                 <div className="h-52 bg-white/5 w-full border-b border-white/5"></div>
                 <div className="p-8 flex-1 flex flex-col gap-5">
                   <div className="flex justify-between">
@@ -176,8 +164,8 @@ const HomeContent = () => {
             ))
           ) : popularCourses.length > 0 ? (
             popularCourses.map((course) => (
-              
-              <div key={course.id} className="group bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:border-pink-500/30 transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] flex flex-col hover:-translate-y-2">
+              // Course Card (using glass-panel)
+              <div key={course.id} className="glass-panel group overflow-hidden hover:border-pink-500/30 transition-all duration-500 hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] flex flex-col hover:-translate-y-2">
                 
                 {/* Image Section */}
                 <Link to={`/course/${course.id}`} className="relative h-52 overflow-hidden block bg-white/5 border-b border-white/5">
@@ -227,14 +215,13 @@ const HomeContent = () => {
                   </div>
                 </div>
               </div>
-
             ))
           ) : (
             <div className="col-span-3 text-center py-10 text-slate-500 font-light tracking-wider">No courses available at the moment.</div>
           )}
         </div>
 
-        {/* --- Reviews Section (Pure Glass) --- */}
+        {/* Reviews Section */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-light text-white mb-4 tracking-wide">Loved by Students</h2>
           <p className="text-slate-400 font-light tracking-wide text-sm">Real feedback from our global community.</p>
@@ -242,7 +229,8 @@ const HomeContent = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-32">
           {reviews.map((review) => (
-            <div key={review.id} className="relative bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl hover:bg-white/5 hover:border-pink-400/30 transition-all duration-300 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] group">
+            // Reusable glass-panel class applied
+            <div key={review.id} className="relative glass-panel p-8 sm:p-10 hover:bg-white/5 hover:border-pink-400/30 transition-all duration-300 group">
               <FaQuoteRight className="absolute top-8 right-8 text-white/5 text-5xl group-hover:text-pink-500/10 transition-colors" />
               
               <div className="flex items-center gap-4 mb-6 relative z-10">
@@ -262,7 +250,8 @@ const HomeContent = () => {
           ))}
         </div>
 
-        {/* --- Final CTA Section (Glassmorphism) --- */}
+        {/* Final CTA Section */}
+        {/* Note: Left specific rounded and padding utilities to preserve the unique shape */}
         <div className="relative w-full rounded-[3rem] overflow-hidden p-12 md:p-24 text-center border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] mb-10 bg-white/0 backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-pink-900/20 via-transparent to-violet-900/20 pointer-events-none"></div>
           
@@ -277,13 +266,13 @@ const HomeContent = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
               <Link 
                 to="/register" 
-                className="px-10 py-4 bg-gradient-to-r from-pink-500 to-violet-600 text-white rounded-xl font-medium tracking-wide hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-pink-500/20"
+                className="btn-primary px-10 py-4"
               >
                 Create Free Account
               </Link>
               <Link 
                 to="/courses" 
-                className="px-10 py-4 bg-white/5 border border-white/10 text-white rounded-xl font-medium tracking-wide hover:bg-white/10 hover:border-white/30 transition-all shadow-sm"
+                className="px-10 py-4 bg-white/5 border border-white/10 text-white rounded-xl font-bold tracking-wide hover:bg-white/10 hover:border-white/30 transition-all shadow-sm"
               >
                 Browse Courses
               </Link>
