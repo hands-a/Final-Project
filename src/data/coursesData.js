@@ -1,7 +1,3 @@
-// ==================== استيراد الصور من مجلد photo ====================
-// ملاحظة: تأكد إن مسار الاستيراد '../photo/' أو './photo/' صحيح حسب مكان هذا الملف بالنسبة لمجلد photo
-// ==================== استيراد الصور من مجلد photo ====================
-// ==================== استيراد الصور من مجلد photo ====================
 import imgFlutter from '../assets/photo/0dbfcc7a59cd1cf16282.png';
 import imgAws from '../assets/photo/amazon.jpg';
 import imgCsharp from '../assets/photo/C_Sharp_wordmark.svg.png';

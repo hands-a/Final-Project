@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCloudUploadAlt, FaSave, FaArrowLeft, FaDollarSign, FaList, FaImage } from 'react-icons/fa';
-// 👇 تأكد إن المسار ده صح والملفات دي موجودة
 import { useCourses } from '../../context/CourseContext';
 import CurriculumBuilder from "./CurriculumBuilder";
-
 const AddCoursePage = () => {
   const navigate = useNavigate();
   const { addCourse } = useCourses();
-  
-  // State لتخزين البيانات
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -19,16 +15,13 @@ const AddCoursePage = () => {
     image: null
   });
 
-  // State لتخزين المنهج (السكاشن والدروس)
   const [sections, setSections] = useState([]);
   const [preview, setPreview] = useState(null);
 
-  // دالة التعامل مع الكتابة
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // دالة رفع الصورة
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -40,13 +33,11 @@ const AddCoursePage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // التحقق من وجود دروس
     if (sections.length === 0) {
       alert("Please add at least one section to the curriculum!");
       return;
     }
 
-    // تجهيز البيانات النهائية
     const newCourse = {
       title: formData.title,
       category: formData.category,
@@ -55,7 +46,7 @@ const AddCoursePage = () => {
       description: formData.description,
       instructor: "Admin User",
       image: preview || "https://via.placeholder.com/300x200?text=No+Image",
-      sections: sections, // 👈 إضافة المنهج للكورس
+      sections: sections,   
       students: 0,
       rating: 0
     };
@@ -133,7 +124,7 @@ const AddCoursePage = () => {
             </div>
           </div>
 
-          {/* 2. Pricing & Description (Pure Glass) */}
+          {/* 2. Pricing  */}
           <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
             <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
               <FaDollarSign className="text-pink-400 opacity-80" /> Details & Pricing
@@ -189,7 +180,6 @@ const AddCoursePage = () => {
           </div>
 
           {/* 4. Curriculum Builder Wrapper */}
-          {/* حطيناها جوه كارت زجاجي عشان لو الكومبوننت نفسه مش زجاجي، يبقى متوحد مع الباقي */}
           <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
              <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
                 <FaList className="text-pink-400 opacity-80" /> Curriculum Builder

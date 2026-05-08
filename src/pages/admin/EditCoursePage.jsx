@@ -8,19 +8,17 @@ const EditCoursePage = () => {
   const { id } = useParams(); 
   const navigate = useNavigate();
 
-  // الحالة (State) لتخزين البيانات
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Development');
   const [level, setLevel] = useState('Beginner');
   const [price, setPrice] = useState('');
-  const [image, setImage] = useState(null); // File object لو المستخدم اختار صورة جديدة
+  const [image, setImage] = useState(null); 
   const [imagePreview, setImagePreview] = useState(null);
   const [sections, setSections] = useState([]);
   
   const [loading, setLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false); // عشان زرار الحفظ
+  const [isSaving, setIsSaving] = useState(false); 
 
-  // 1. تحميل بيانات الكورس من Strapi عند فتح الصفحة
   useEffect(() => {
     axios.get(`http://localhost:1337/api/courses/${id}?populate=*`)
       .then((response) => {
@@ -36,10 +34,7 @@ const EditCoursePage = () => {
         setCategory(attr.category || 'Development');
         setLevel(attr.level || 'Beginner');
         setPrice(attr.price || '');
-        // لو عندك حقل للدروس
-        // setSections(attr.curriculum || []); 
         
-        // التعامل مع الصورة الجاية من السيرفر
         if (attr.image?.url) {
           setImagePreview(`http://localhost:1337${attr.image.url}`);
         } else if (attr.image?.data?.attributes?.url) {
@@ -50,7 +45,7 @@ const EditCoursePage = () => {
       })
       .catch((error) => {
         console.error("Error fetching course for edit:", error);
-        navigate('/admin/dashboard'); // لو الكورس مش موجود ارجع للوحة التحكم
+        navigate('/admin/dashboard'); 
       });
   }, [id, navigate]);
 
@@ -58,11 +53,10 @@ const EditCoursePage = () => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file)); // عرض الصورة مؤقتاً قبل الرفع
+      setImagePreview(URL.createObjectURL(file)); 
     }
   };
 
-  // 2. دالة حفظ التعديلات في Strapi
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
@@ -70,40 +64,34 @@ const EditCoursePage = () => {
     try {
       let imageId = null;
 
-      // أ. لو المستخدم اختار صورة جديدة (File)، نرفعها الأول لـ Strapi
       if (image instanceof File) {
         const formData = new FormData();
         formData.append('files', image);
         
         const uploadResponse = await axios.post('http://localhost:1337/api/upload', formData);
-        imageId = uploadResponse.data[0].id; // ناخد الـ ID بتاع الصورة المرفوعة
+        imageId = uploadResponse.data[0].id; 
       }
 
-      // ب. نجهز البيانات اللي هتتحدث
       const courseData = {
         title,
         category,
         level,
         price: parseFloat(price) || 0,
-        // sections: sections, // لو هتحفظ المنهج هنا
       };
 
-      // لو رفعنا صورة جديدة، نربطها بالكورس
       if (imageId) {
         courseData.image = imageId;
       }
 
-      // ج. نبعت أمر التعديل (PUT) لـ Strapi
       await axios.put(`http://localhost:1337/api/courses/${id}`, {
         data: courseData
       });
 
-      // د. نرجع للوحة التحكم بعد النجاح
       navigate('/admin/dashboard');
 
     } catch (error) {
       console.error("Error updating course:", error);
-      alert("حدث خطأ أثناء حفظ التعديلات. تأكد من تشغيل السيرفر.");
+      alert("Failed to update the course. Please try again.");
       setIsSaving(false);
     }
   };
@@ -116,7 +104,7 @@ const EditCoursePage = () => {
       </div>
     );
   }
-
+ 
   return (
     <div className="min-h-screen bg-transparent pt-32 pb-24 px-6 md:px-12 relative overflow-hidden">
       <div className="max-w-5xl mx-auto relative z-10">

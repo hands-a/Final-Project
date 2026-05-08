@@ -1,6 +1,4 @@
 @import "tailwindcss";
-
-/* 1. الإعدادات الأساسية للموقع (Base) */
 @layer base {
   body {
     @apply font-sans antialiased text-slate-300 bg-[#050511]; 

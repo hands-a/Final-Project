@@ -1,7 +1,5 @@
 import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
-
-
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Hero from '../pages/home/Hero';
@@ -56,8 +54,6 @@ const AppRoutes = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-code" element={<VerifyCodePage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        
-        {/* مسارات الكورسات والمستخدم */}
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
         <Route path="/course/:id" element={<CourseDetailsPage />} />

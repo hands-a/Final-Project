@@ -6,9 +6,7 @@ const CourseCard = ({ course }) => {
   return (
     <div className="group relative bg-[#13151d] border border-white/5 rounded-3xl overflow-hidden hover:border-purple-500/30 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col h-full">
       
-      {/* 1. منطقة الصورة (تم التعديل لتناسب اللوجوهات) */}
       <Link to={`/courses/${course.id}`} className="relative h-52 overflow-hidden block cursor-pointer bg-[#0f1119] p-8 flex items-center justify-center">
-        {/* خلفية جمالية خفيفة ورا اللوجو */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#13151d] to-transparent opacity-40"></div>
         <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl"></div>
         
@@ -26,7 +24,6 @@ const CourseCard = ({ course }) => {
         </div>
       </Link>
 
-      {/* 2. المحتوى */}
       <div className="p-5 flex flex-col flex-grow relative z-20 border-t border-white/5">
         
         <div className="flex justify-between items-center mb-3">
