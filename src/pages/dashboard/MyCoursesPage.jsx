@@ -13,7 +13,7 @@ const MyCoursesPage = () => {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-transparent pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center relative overflow-hidden text-slate-300">
+        <div className="min-h-screen bg-[#050511] pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center relative overflow-hidden text-slate-300">
           
           <div className="relative z-10 glass-panel p-12 max-w-lg w-full">
             <div className="w-20 h-20 bg-gradient-to-tr from-pink-500/20 to-violet-600/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10 shadow-[0_0_15px_rgba(244,114,182,0.1)] animate-pulse">
@@ -101,7 +101,11 @@ const MyCoursesPage = () => {
                     <h3 className="text-xl font-medium tracking-wide text-white mb-2 line-clamp-1 group-hover:text-pink-400 transition-colors">
                       {course.title}
                     </h3>
-                    <p className="text-xs text-slate-500 mb-8 font-light uppercase tracking-widest">By {course.instructor}</p>
+                    
+                    <p className="text-sm text-slate-300 mb-8 font-medium capitalize tracking-wide flex items-center gap-1.5">
+                      <span className="text-pink-400 text-[10px] uppercase tracking-widest opacity-80">By</span> 
+                      {course.instructor}
+                    </p>
 
                     <div className="mt-auto">
                       {/* Progress Stats */}
@@ -139,7 +143,6 @@ const MyCoursesPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom"; 
 import axios from "axios";
+import { useStudent } from '../../context/StudentContext'; 
 import {
   FaPlayCircle,
   FaCheckCircle,
@@ -10,7 +11,6 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 
-// Helper function to extract and format YouTube embed URLs
 const getYouTubeEmbedUrl = (url) => {
   if (!url) return null;
   try {
@@ -31,14 +31,16 @@ const getYouTubeEmbedUrl = (url) => {
 
 const CoursePlayerPage = () => {
   const { id } = useParams();
-
+  const navigate = useNavigate();
+  const { updateCourseProgress } = useStudent(); 
   const [courseData, setCourseData] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isCompleted, setIsCompleted] = useState(false); 
 
   useEffect(() => {
-    let isMounted = true; // Cleanup flag to prevent memory leaks
+    let isMounted = true; 
 
     const fetchCourseAndLessons = async () => {
       try {
@@ -60,7 +62,7 @@ const CoursePlayerPage = () => {
 
         let formattedLessons = [];
 
-        // 2. Fetch specific lessons matching the course title
+        // 2. Fetch specific lessons
         try {
           const lessonsRes = await axios.get(`http://localhost:1337/api/lessons?filters[title][$eq]=${courseTitle}`);
           const lessonsData = lessonsRes.data.data;
@@ -82,7 +84,6 @@ const CoursePlayerPage = () => {
           console.log("Lessons fetch error (handled gracefully):", lessonError);
         }
 
-        // Fallback if no lessons are found
         if (formattedLessons.length === 0) {
           formattedLessons = [{
             id: 999,
@@ -116,15 +117,25 @@ const CoursePlayerPage = () => {
 
     fetchCourseAndLessons();
 
-    // Cleanup function
     return () => {
       isMounted = false;
     };
   }, [id]);
 
+  const handleCompleteCourse = () => {
+    if (updateCourseProgress) {
+      updateCourseProgress(id, 100); 
+      setIsCompleted(true);
+      
+      setTimeout(() => {
+        navigate('/my-courses');
+      }, 1500);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-transparent flex flex-col items-center justify-center text-slate-300">
+      <div className="min-h-screen bg-[#050511] flex flex-col items-center justify-center text-slate-300">
         <FaSpinner className="text-pink-500 text-5xl animate-spin mb-4" />
         <h2 className="text-white text-xl font-light tracking-widest uppercase">
           Loading Player...
@@ -138,14 +149,9 @@ const CoursePlayerPage = () => {
       <div className="min-h-screen bg-[#050511] text-white flex flex-col items-center justify-center px-4 relative z-10">
         <div className="glass-panel p-12 text-center max-w-lg">
           <FaExclamationTriangle className="text-yellow-500 text-6xl mb-6 mx-auto opacity-80" />
-          <h2 className="text-3xl font-light mb-4 text-center tracking-wide">
-            Oops! Something went wrong.
-          </h2>
+          <h2 className="text-3xl font-light mb-4 text-center tracking-wide">Oops! Something went wrong.</h2>
           <p className="text-slate-400 mb-8 text-center font-light leading-relaxed">{errorMessage}</p>
-          <Link
-            to="/my-courses"
-            className="btn-primary px-8 py-3.5 w-fit mx-auto"
-          >
+          <Link to="/my-courses" className="btn-primary px-8 py-3.5 w-fit mx-auto">
             Back to My Courses
           </Link>
         </div>
@@ -156,7 +162,6 @@ const CoursePlayerPage = () => {
   return (
     <div className="min-h-screen bg-[#050511] pt-28 pb-12 px-4 lg:px-8 relative overflow-hidden text-slate-300">
       
-      {/* Background Glow */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-pink-900/10 rounded-full blur-[150px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-violet-900/10 rounded-full blur-[150px] pointer-events-none"></div>
 
@@ -165,12 +170,8 @@ const CoursePlayerPage = () => {
         {/* --- Video Player Section --- */}
         <div className="w-full lg:w-2/3 flex flex-col gap-6">
           
-          {/* Header */}
           <div className="flex items-center gap-4">
-            <Link
-              to="/my-courses"
-              className="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-slate-300 hover:text-white transition-all"
-            >
+            <Link to="/my-courses" className="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-slate-300 hover:text-white transition-all">
               <FaArrowLeft />
             </Link>
             <h1 className="text-2xl font-light text-white tracking-wide truncate">
@@ -178,7 +179,6 @@ const CoursePlayerPage = () => {
             </h1>
           </div>
 
-          {/* Video Container */}
           <div className="w-full aspect-video glass-panel !p-0 bg-black/50 overflow-hidden relative flex items-center justify-center">
             {activeLesson.url && getYouTubeEmbedUrl(activeLesson.url) ? (
               <iframe
@@ -197,30 +197,39 @@ const CoursePlayerPage = () => {
             )}
           </div>
 
-          {/* Lesson Details */}
-          <div className="glass-panel p-6 sm:p-8">
-            <h2 className="text-2xl font-medium text-white mb-2 tracking-wide">
-              {activeLesson.title}
-            </h2>
-            <p className="text-pink-400 text-xs font-bold uppercase tracking-widest">
-              Duration: {activeLesson.duration}
-            </p>
+          <div className="glass-panel p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h2 className="text-2xl font-medium text-white mb-2 tracking-wide">
+                {activeLesson.title}
+              </h2>
+              <p className="text-pink-400 text-xs font-bold uppercase tracking-widest">
+                Duration: {activeLesson.duration}
+              </p>
+            </div>
+            
+            <button 
+              onClick={handleCompleteCourse}
+              disabled={isCompleted}
+              className={`px-6 py-3 rounded-xl font-medium text-sm flex items-center gap-2 transition-all border ${
+                isCompleted 
+                  ? 'bg-green-500/20 text-green-400 border-green-500/30 cursor-not-allowed' 
+                  : 'bg-white/5 text-white border-white/20 hover:bg-green-500/10 hover:border-green-500/30 hover:text-green-400'
+              }`}
+            >
+              <FaCheckCircle className={isCompleted ? 'animate-pulse' : ''} /> 
+              {isCompleted ? 'Course Completed!' : 'Mark as Completed'}
+            </button>
           </div>
         </div>
 
         {/* --- Sidebar (Course Content) --- */}
         <div className="w-full lg:w-1/3">
           <div className="glass-panel h-[calc(100vh-140px)] flex flex-col overflow-hidden lg:sticky lg:top-28 !p-0">
-            
-            {/* Sidebar Header */}
             <div className="p-6 border-b border-white/10 bg-white/5 flex items-center gap-3">
               <FaListUl className="text-pink-400" />
-              <h3 className="text-lg font-medium text-white tracking-wide">
-                Course Content
-              </h3>
+              <h3 className="text-lg font-medium text-white tracking-wide">Course Content</h3>
             </div>
 
-            {/* Lessons List */}
             <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
               {courseData.sections.map((section, sIdx) => (
                 <div key={section.id || sIdx}>
@@ -237,26 +246,15 @@ const CoursePlayerPage = () => {
                           key={lesson.id || lIdx}
                           onClick={() => setActiveLesson(lesson)}
                           className={`w-full text-left p-4 rounded-2xl flex items-start gap-4 transition-all duration-300 border
-                            ${
-                              isActive
-                                ? "bg-pink-500/10 border-pink-500/30 shadow-[0_0_15px_rgba(244,114,182,0.1)]"
-                                : "bg-white/5 border-transparent hover:bg-white/10 hover:border-white/10"
-                            }`}
+                            ${isActive ? "bg-pink-500/10 border-pink-500/30 shadow-[0_0_15px_rgba(244,114,182,0.1)]" : "bg-white/5 border-transparent hover:bg-white/10 hover:border-white/10"}
+                          `}
                         >
-                          <div
-                            className={`mt-0.5 ${isActive ? "text-pink-400" : "text-slate-500"}`}
-                          >
-                            {isActive ? (
-                              <FaPlayCircle className="text-lg animate-pulse" />
-                            ) : (
-                              <FaCheckCircle className="text-lg opacity-50" />
-                            )}
+                          <div className={`mt-0.5 ${isActive ? "text-pink-400" : "text-slate-500"}`}>
+                            {isActive ? <FaPlayCircle className="text-lg animate-pulse" /> : <FaCheckCircle className="text-lg opacity-50" />}
                           </div>
 
                           <div className="flex-1">
-                            <p
-                              className={`text-sm font-medium tracking-wide leading-snug line-clamp-2 ${isActive ? "text-white" : "text-slate-300"}`}
-                            >
+                            <p className={`text-sm font-medium tracking-wide leading-snug line-clamp-2 ${isActive ? "text-white" : "text-slate-300"}`}>
                               {lIdx + 1}. {lesson.title}
                             </p>
                             <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1 inline-block">

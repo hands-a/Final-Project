@@ -11,12 +11,10 @@ export const StudentProvider = ({ children }) => {
     return savedCourses ? JSON.parse(savedCourses) : [];
   });
 
-  
   useEffect(() => {
     localStorage.setItem('enrolledCourses', JSON.stringify(enrolledCourses));
   }, [enrolledCourses]);
 
-  
   const enrollCourses = (cartItems) => {
     setEnrolledCourses((prevCourses) => {
       
@@ -24,7 +22,6 @@ export const StudentProvider = ({ children }) => {
         (item) => !prevCourses.find((course) => course.id === item.id)
       );
 
-      
       const coursesWithProgress = newCourses.map(course => ({
         ...course,
         progress: 0 
@@ -34,8 +31,17 @@ export const StudentProvider = ({ children }) => {
     });
   };
 
+  const updateCourseProgress = (courseId, newProgress) => {
+    setEnrolledCourses((prevCourses) =>
+      prevCourses.map((course) =>
+        String(course.id) === String(courseId) || String(course.documentId) === String(courseId)
+          ? { ...course, progress: newProgress }
+          : course
+      )
+    );
+  };
   return (
-    <StudentContext.Provider value={{ enrolledCourses, enrollCourses }}>
+    <StudentContext.Provider value={{ enrolledCourses, enrollCourses, updateCourseProgress }}>
       {children}
     </StudentContext.Provider>
   );

@@ -15,13 +15,8 @@ import {
 
 const ProfilePage = () => {
   const { user } = useAuth();
-
-  // 1. Ref لزرار رفع الصورة المخفي
   const fileInputRef = useRef(null);
-
-  // 2. State لعرض الصورة اللي الطالب اختارها (Preview)
   const [avatarPreview, setAvatarPreview] = useState(null);
-
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -33,33 +28,28 @@ const ProfilePage = () => {
     portfolio: "",
     currentPassword: "",
     newPassword: "",
-    avatarFile: null, // عشان نحفظ الملف الحقيقي ونبعته للباك اند بعدين
+    avatarFile: null, 
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 3. دالة بتفتح نافذة اختيار الملفات
   const handleCameraClick = () => {
     fileInputRef.current.click();
   };
 
-  // 4. دالة بتستقبل الصورة وتعرضها
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // حفظ الملف الحقيقي عشان الـ API
       setFormData({ ...formData, avatarFile: file });
-      // عمل رابط مؤقت لعرض الصورة للمستخدم
       setAvatarPreview(URL.createObjectURL(file));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Profile and Avatar updated successfully! 🚀");
-    // هنا في المستقبل هنبعت الـ formData (بما فيها الصورة) لـ Strapi
+    alert("Profile and Avatar updated successfully! ");
   };
 
   if (!user) {
