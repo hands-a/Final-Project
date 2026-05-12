@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // 💡 غيرنا الـ Context بـ Axios
+import axios from 'axios'; 
 import CurriculumBuilder from './CurriculumBuilder'; 
 import { FaSave, FaArrowLeft, FaList, FaImage, FaSpinner } from "react-icons/fa";
 
@@ -20,7 +20,7 @@ const EditCoursePage = () => {
   const [isSaving, setIsSaving] = useState(false); 
 
   useEffect(() => {
-    axios.get(`http://localhost:1337/api/courses/${id}?populate=*`)
+    axios.get(`https://futuredev-backend.onrender.com/api/courses/${id}?populate=*`)
       .then((response) => {
         const item = response.data.data;
         if (!item) {
@@ -36,15 +36,16 @@ const EditCoursePage = () => {
         setPrice(attr.price || '');
         
         if (attr.image?.url) {
-          setImagePreview(`http://localhost:1337${attr.image.url}`);
+          setImagePreview(attr.image.url.startsWith('http') ? attr.image.url : `https://futuredev-backend.onrender.com${attr.image.url}`);
         } else if (attr.image?.data?.attributes?.url) {
-          setImagePreview(`http://localhost:1337${attr.image.data.attributes.url}`);
+          const url = attr.image.data.attributes.url;
+          setImagePreview(url.startsWith('http') ? url : `https://futuredev-backend.onrender.com${url}`);
         }
 
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching course for edit:", error);
+        console.error(error);
         navigate('/admin/dashboard'); 
       });
   }, [id, navigate]);
@@ -68,7 +69,7 @@ const EditCoursePage = () => {
         const formData = new FormData();
         formData.append('files', image);
         
-        const uploadResponse = await axios.post('http://localhost:1337/api/upload', formData);
+        const uploadResponse = await axios.post('https://futuredev-backend.onrender.com/api/upload', formData);
         imageId = uploadResponse.data[0].id; 
       }
 
@@ -83,14 +84,14 @@ const EditCoursePage = () => {
         courseData.image = imageId;
       }
 
-      await axios.put(`http://localhost:1337/api/courses/${id}`, {
+      await axios.put(`https://futuredev-backend.onrender.com/api/courses/${id}`, {
         data: courseData
       });
 
       navigate('/admin/dashboard');
 
     } catch (error) {
-      console.error("Error updating course:", error);
+      console.error(error);
       alert("Failed to update the course. Please try again.");
       setIsSaving(false);
     }
@@ -109,7 +110,6 @@ const EditCoursePage = () => {
     <div className="min-h-screen bg-transparent pt-32 pb-24 px-6 md:px-12 relative overflow-hidden">
       <div className="max-w-5xl mx-auto relative z-10">
         
-        {/* Header */}
         <div className="flex items-center gap-6 mb-10 border-b border-white/10 pb-8">
           <button 
             onClick={() => navigate('/admin/dashboard')} 
@@ -125,7 +125,6 @@ const EditCoursePage = () => {
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* --- Left Column: Basic Info & Curriculum --- */}
           <div className="lg:col-span-2 space-y-8">
             
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] space-y-6">
@@ -194,7 +193,6 @@ const EditCoursePage = () => {
 
           </div>
 
-          {/* --- Right Column: Image & Actions --- */}
           <div className="space-y-8">
             
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] text-center">

@@ -13,19 +13,20 @@ export const CartProvider = ({ children }) => {
     if (isExist) return; 
     setCartItems([...cartItems, course]);
   };
-
   const removeFromCart = (courseId) => {
     setCartItems(cartItems.filter((item) => item.id !== courseId));
   };
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cart');
+  };
 
-  
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
   return (
-    
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, setCartItems }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, setCartItems, clearCart }}>
       {children}
     </CartContext.Provider>
   );

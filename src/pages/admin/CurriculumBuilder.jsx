@@ -22,7 +22,6 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
     setNewSectionTitle('');
   };
 
-  // إضافة درس جديد
   const addLesson = (sectionId) => {
     if (!newLesson.title.trim()) return;
     

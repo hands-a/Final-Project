@@ -6,35 +6,35 @@ import Pagination from '../../components/courses/Pagination';
 import { FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
 
 const CoursesPage = () => {
-  // 1. States (Data)
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(false); 
   
-  // 2. States (Filters)
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedLevel, setSelectedLevel] = useState('All');
   const [priceFilter, setPriceFilter] = useState('All');
 
-  // 3. States (Pagination)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6; 
 
-  const categories = ['All', 'Data Science', 'Mobile App', 'Cyber Security', 'DevOps', 'Front-end', 'Back-End'
-  ];
+  const categories = ['All', 'Data Science', 'Mobile App', 'Cyber Security', 'DevOps', 'Front-end', 'Back-End'];
   const levels = ['All', 'Beginner', 'Intermediate', 'Advanced'];
 
-  // Fetch Courses (Logic)
   useEffect(() => {
-    axios.get('http://localhost:1337/api/courses?populate=*')
+    axios.get('https://futuredev-backend.onrender.com/api/courses?populate=*')
       .then((response) => {
         const formattedCourses = response.data.data.map((item) => {
           const attr = item.attributes || item; 
           
           let imageUrl = 'https://via.placeholder.com/400x200?text=No+Image';
-          if (attr.image?.url) imageUrl = `http://localhost:1337${attr.image.url}`;
-          else if (attr.image?.data?.attributes?.url) imageUrl = `http://localhost:1337${attr.image.data.attributes.url}`;
+          
+          if (attr.image?.url) {
+            imageUrl = attr.image.url.startsWith('http') ? attr.image.url : `https://futuredev-backend.onrender.com${attr.image.url}`;
+          } else if (attr.image?.data?.attributes?.url) {
+            const url = attr.image.data.attributes.url;
+            imageUrl = url.startsWith('http') ? url : `https://futuredev-backend.onrender.com${url}`;
+          }
           
           return {
             id: item.id || item.documentId,
@@ -52,7 +52,8 @@ const CoursesPage = () => {
         setCourses(formattedCourses);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error(err);
         setError(true); 
         setLoading(false);
       });
@@ -79,7 +80,6 @@ const CoursesPage = () => {
     return result;
   }, [courses, searchTerm, selectedCategory, selectedLevel, priceFilter]);
 
-  // Pagination Math (بيعتمد على النتيجة اللي طالعة من useMemo)
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredCourses.slice(indexOfFirstItem, indexOfLastItem);
@@ -100,7 +100,6 @@ const CoursesPage = () => {
     setCurrentPage(1);
   };
 
-  // Views
   if (loading) return <LoadingView />;
   if (error) return <ErrorView />;
 
@@ -108,7 +107,6 @@ const CoursesPage = () => {
     <div className="min-h-screen bg-transparent pt-32 pb-20 relative overflow-hidden">      
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
-        {/* Header & Search */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12 border-b border-white/10 pb-8">
           <div>
             <span className="text-pink-400 font-bold text-xs tracking-widest uppercase mb-2 block">Discover</span>
@@ -128,7 +126,6 @@ const CoursesPage = () => {
 
         <div className="flex flex-col lg:flex-row gap-8">
           
-          {/* Imported Filters Component */}
           <CourseFilters 
             categories={categories}
             levels={levels}
@@ -141,7 +138,6 @@ const CoursesPage = () => {
             setPriceFilter={(val) => handleFilterChange(setPriceFilter, val)}
           />
 
-          {/* Courses Grid */}
           <div className="w-full lg:w-3/4">
             {currentItems.length > 0 ? (
               <>
@@ -161,7 +157,6 @@ const CoursesPage = () => {
   );
 };
 
-// Sub-components
 const LoadingView = () => (
   <div className="min-h-screen bg-transparent flex flex-col items-center justify-center pt-28">
     <FaSpinner className="text-pink-500 text-5xl animate-spin mb-4" />

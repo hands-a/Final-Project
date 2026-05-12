@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom"; 
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useStudent } from '../../context/StudentContext'; 
+import { useStudent } from '../../context/StudentContext';
 import {
   FaPlayCircle,
   FaCheckCircle,
@@ -32,22 +32,21 @@ const getYouTubeEmbedUrl = (url) => {
 const CoursePlayerPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { updateCourseProgress } = useStudent(); 
+  const { updateCourseProgress } = useStudent();
   const [courseData, setCourseData] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isCompleted, setIsCompleted] = useState(false); 
+  const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
-    let isMounted = true; 
+    let isMounted = true;
 
     const fetchCourseAndLessons = async () => {
       try {
         setLoading(true);
         
-        // 1. Fetch courses first
-        const coursesRes = await axios.get(`http://localhost:1337/api/courses?populate=*`);
+        const coursesRes = await axios.get(`https://futuredev-backend.onrender.com/api/courses?populate=*`);
         if (!isMounted) return;
         
         const allCourses = coursesRes.data.data;
@@ -62,9 +61,8 @@ const CoursePlayerPage = () => {
 
         let formattedLessons = [];
 
-        // 2. Fetch specific lessons
         try {
-          const lessonsRes = await axios.get(`http://localhost:1337/api/lessons?filters[title][$eq]=${courseTitle}`);
+          const lessonsRes = await axios.get(`https://futuredev-backend.onrender.com/api/lessons?filters[title][$eq]=${courseTitle}`);
           const lessonsData = lessonsRes.data.data;
 
           if (lessonsData && lessonsData.length > 0) {
@@ -76,12 +74,12 @@ const CoursePlayerPage = () => {
                 id: lessonItem.documentId || lessonItem.id,
                 title: lAttr.title || courseTitle,
                 duration: lAttr.duration || "00:00",
-                url: lAttr.videoUrl || null, 
+                url: lAttr.videoUrl || null,
               }
             ];
           }
         } catch (lessonError) {
-          console.log("Lessons fetch error (handled gracefully):", lessonError);
+          console.log(lessonError);
         }
 
         if (formattedLessons.length === 0) {
@@ -108,7 +106,7 @@ const CoursePlayerPage = () => {
         }
 
       } catch (error) {
-        console.error("Fetch error:", error);
+        console.error(error);
         if (isMounted) setErrorMessage(error.message);
       } finally {
         if (isMounted) setLoading(false);
@@ -124,7 +122,7 @@ const CoursePlayerPage = () => {
 
   const handleCompleteCourse = () => {
     if (updateCourseProgress) {
-      updateCourseProgress(id, 100); 
+      updateCourseProgress(id, 100);
       setIsCompleted(true);
       
       setTimeout(() => {
@@ -167,7 +165,6 @@ const CoursePlayerPage = () => {
 
       <div className="max-w-[1400px] mx-auto relative z-10 flex flex-col lg:flex-row gap-8">
         
-        {/* --- Video Player Section --- */}
         <div className="w-full lg:w-2/3 flex flex-col gap-6">
           
           <div className="flex items-center gap-4">
@@ -222,7 +219,6 @@ const CoursePlayerPage = () => {
           </div>
         </div>
 
-        {/* --- Sidebar (Course Content) --- */}
         <div className="w-full lg:w-1/3">
           <div className="glass-panel h-[calc(100vh-140px)] flex flex-col overflow-hidden lg:sticky lg:top-28 !p-0">
             <div className="p-6 border-b border-white/10 bg-white/5 flex items-center gap-3">

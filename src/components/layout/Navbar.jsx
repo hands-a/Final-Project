@@ -13,7 +13,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const { user, logout } = useAuth();
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const Navbar = () => {
   }, [location]);
 
   const handleLogout = () => {
+    clearCart();
     logout();
     navigate("/");
     setIsOpen(false);
@@ -47,7 +48,6 @@ const Navbar = () => {
         className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${scrolled ? "bg-[#0a0a0a]/90 backdrop-blur-xl border-white/10 shadow-lg py-3" : "bg-transparent border-transparent py-5"}`}
       >
         <div className="container mx-auto px-6 flex items-center justify-between">
-          {/* 1. Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <img
               src={Logo}
@@ -62,7 +62,6 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* 2. Desktop Links */}
           <div className="hidden lg:flex items-center gap-8 bg-white/5 px-8 py-2.5 rounded-full border border-white/5 backdrop-blur-sm shadow-inner">
             <NavLink to="/" className={getLinkClass}>
               Home
@@ -81,13 +80,12 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-5">
-            {/* Cart Icon */}
             <Link
               to="/cart"
               className="relative group flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/5 transition-colors"
             >
               <FaShoppingCart className="text-xl text-slate-300 group-hover:text-purple-400 transition-colors" />
-              {cartItems.length > 0 && (
+              {user && cartItems.length > 0 && (
                 <span className="absolute top-0 right-0 w-4 h-4 bg-pink-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-[#0a0a0a]">
                   {cartItems.length}
                 </span>
@@ -150,7 +148,6 @@ const Navbar = () => {
                   </div>
                 </div>
               ) : (
-                // --- Login / Register Buttons ---
                 <div className="flex items-center gap-3 pl-4 border-l border-white/10">
                   <Link
                     to="/login"
@@ -168,7 +165,6 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsOpen(true)}
               className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white hover:bg-white/10 transition-colors"
@@ -187,7 +183,6 @@ const Navbar = () => {
       <div
         className={`fixed top-0 right-0 h-full w-[80%] max-w-sm bg-[#0f1117] border-l border-white/10 z-[70] transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
-        {/* Drawer Header */}
         <div className="p-6 flex items-center justify-between border-b border-white/5">
           <span className="text-xl font-bold text-white">Menu</span>
           <button
@@ -198,7 +193,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Drawer Links */}
         <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-2">
           <NavLink
             to="/"

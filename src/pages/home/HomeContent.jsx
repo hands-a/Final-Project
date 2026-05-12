@@ -10,17 +10,19 @@ const HomeContent = () => {
   const [popularCourses, setPopularCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch Popular Courses from API
   useEffect(() => {
-    axios.get('http://localhost:1337/api/courses?populate=*')
+    axios.get('https://futuredev-backend.onrender.com/api/courses?populate=*')
       .then(response => {
         const fetchedCourses = response.data.data.slice(0, 3).map(item => {
           const attr = item.attributes || item;
           
           let imageUrl = 'https://via.placeholder.com/400x200?text=No+Image';
-          if (attr.image) {
-            if (attr.image.url) imageUrl = `http://localhost:1337${attr.image.url}`;
-            else if (attr.image.data?.attributes?.url) imageUrl = `http://localhost:1337${attr.image.data.attributes.url}`;
+          
+          if (attr.image?.url) {
+            imageUrl = attr.image.url.startsWith('http') ? attr.image.url : `https://futuredev-backend.onrender.com${attr.image.url}`;
+          } else if (attr.image?.data?.attributes?.url) {
+            const url = attr.image.data.attributes.url;
+            imageUrl = url.startsWith('http') ? url : `https://futuredev-backend.onrender.com${url}`;
           }
 
           return {
@@ -39,12 +41,11 @@ const HomeContent = () => {
         setLoading(false);
       })
       .catch(error => {
-        console.error("Error fetching home courses:", error);
+        console.error(error);
         setLoading(false);
       });
   }, []);
 
-  // Features Data
   const features = [
     {
       id: 1,
@@ -69,7 +70,6 @@ const HomeContent = () => {
     }
   ];
 
-  // Reviews Data
   const reviews = [
     {
       id: 1,
@@ -100,13 +100,11 @@ const HomeContent = () => {
   return (
     <div className="w-full bg-transparent py-24 relative overflow-hidden">
       
-      {/* Background Glow Effects */}
       <div className="absolute top-20 left-0 w-[500px] h-[500px] bg-pink-900/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-40 right-0 w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
-        {/* Why Choose Us Header */}
         <div className="text-center mb-16">
           <span className="inline-block py-1 px-4 rounded-full bg-white/5 border border-white/10 text-pink-400 text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm">
             Why Choose Us?
@@ -119,10 +117,8 @@ const HomeContent = () => {
           </p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
           {features.map((item) => (
-            // Reusable glass-panel class applied
             <div key={item.id} className="glass-panel p-8 sm:p-10 hover:border-pink-400/30 hover:bg-white/5 transition-all duration-500 hover:-translate-y-2 group">
               <div className={`w-14 h-14 rounded-2xl ${item.iconBg} flex items-center justify-center text-2xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                 {item.icon}
@@ -133,7 +129,6 @@ const HomeContent = () => {
           ))}
         </div>
 
-        {/* Popular Courses Header */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-white/10 pb-6">
           <div>
              <span className="text-pink-400 font-bold text-[10px] tracking-widest uppercase mb-2 block">Top Rated</span>
@@ -144,10 +139,8 @@ const HomeContent = () => {
           </Link>
         </div>
 
-        {/* Popular Courses Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
           {loading ? (
-            // Skeleton Loader (using glass-panel)
             [1, 2, 3].map(n => (
               <div key={n} className="glass-panel h-[440px] animate-pulse flex flex-col overflow-hidden">
                 <div className="h-52 bg-white/5 w-full border-b border-white/5"></div>
@@ -164,14 +157,11 @@ const HomeContent = () => {
             ))
           ) : popularCourses.length > 0 ? (
             popularCourses.map((course) => (
-              // Course Card (using glass-panel)
               <div key={course.id} className="glass-panel group overflow-hidden hover:border-pink-500/30 transition-all duration-500 hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] flex flex-col hover:-translate-y-2">
                 
-                {/* Image Section */}
                 <Link to={`/course/${course.id}`} className="relative h-52 overflow-hidden block bg-white/5 border-b border-white/5">
                   <img src={course.image} alt={course.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
                   
-                  {/* Glass Play Overlay */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-black/40 backdrop-blur-sm z-20">
                     <div className="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
                       <FaPlayCircle className="text-3xl opacity-90" />
@@ -179,7 +169,6 @@ const HomeContent = () => {
                   </div>
                 </Link>
 
-                {/* Content Section */}
                 <div className="p-8 flex flex-col flex-grow relative z-20">
                   <div className="flex justify-between items-start mb-5">
                     <span className="bg-white/5 border border-white/10 text-pink-400 text-[9px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 uppercase tracking-widest shadow-sm">
@@ -201,7 +190,6 @@ const HomeContent = () => {
                     <span className="flex items-center gap-1.5"><FaPlayCircle className="text-pink-400 opacity-80 text-sm" /> {course.lessons} Lessons</span>
                   </div>
 
-                  {/* Card Footer (Price & Action) */}
                   <div className="mt-auto flex items-center justify-between pt-5 border-t border-white/10">
                     <span className={`text-2xl font-light tracking-wider ${course.price === 0 || course.price === "Free" ? "text-pink-400" : "text-white"}`}>
                       {course.price === 0 || course.price === "Free" ? "Free" : `$${course.price}`}
@@ -221,7 +209,6 @@ const HomeContent = () => {
           )}
         </div>
 
-        {/* Reviews Section */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-light text-white mb-4 tracking-wide">Loved by Students</h2>
           <p className="text-slate-400 font-light tracking-wide text-sm">Real feedback from our global community.</p>
@@ -229,7 +216,6 @@ const HomeContent = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-32">
           {reviews.map((review) => (
-            // Reusable glass-panel class applied
             <div key={review.id} className="relative glass-panel p-8 sm:p-10 hover:bg-white/5 hover:border-pink-400/30 transition-all duration-300 group">
               <FaQuoteRight className="absolute top-8 right-8 text-white/5 text-5xl group-hover:text-pink-500/10 transition-colors" />
               
@@ -250,8 +236,6 @@ const HomeContent = () => {
           ))}
         </div>
 
-        {/* Final CTA Section */}
-        {/* Note: Left specific rounded and padding utilities to preserve the unique shape */}
         <div className="relative w-full rounded-[3rem] overflow-hidden p-12 md:p-24 text-center border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] mb-10 bg-white/0 backdrop-blur-xl">
           <div className="absolute inset-0 bg-gradient-to-br from-pink-900/20 via-transparent to-violet-900/20 pointer-events-none"></div>
           
