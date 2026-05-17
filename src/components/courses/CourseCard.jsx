@@ -4,19 +4,24 @@ import { FaStar, FaUserTie, FaLayerGroup, FaArrowRight } from 'react-icons/fa';
 
 const CourseCard = ({ course }) => {
   return (
-    <div className="glass-panel !p-0 group relative overflow-hidden bg-[#0a0a0a]/40 border border-white/10 hover:border-pink-500/30 transition-all duration-500 shadow-lg hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] flex flex-col h-full hover:-translate-y-2 rounded-2xl">
+    <div className="glass-panel !p-0 group relative overflow-hidden bg-[#0d0d14] border border-white/5 hover:border-pink-500/30 transition-all duration-500 shadow-lg hover:shadow-[0_8px_32px_0_rgba(244,114,182,0.15)] flex flex-col h-full hover:-translate-y-2 rounded-2xl">
       
-      <Link to={`/courses/${course.id}`} className="relative aspect-video overflow-hidden block cursor-pointer bg-[#050511] border-b border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050511] via-transparent to-transparent opacity-80 z-10 pointer-events-none"></div>
+      <Link to={`/courses/${course.id}`} className="relative h-52 w-full block overflow-hidden bg-[#050511] border-b border-white/10">
+        
+        <img 
+          src={course.image} 
+          alt="" 
+          className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110 pointer-events-none" 
+        />
         
         <img 
           src={course.image} 
           alt={course.title} 
-          className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 relative z-0 opacity-90 group-hover:opacity-100" 
+          className="relative z-10 w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-700 drop-shadow-xl" 
         />
         
         <div className="absolute top-4 left-4 z-20">
-          <span className="bg-black/50 backdrop-blur-md border border-white/10 text-pink-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
+          <span className="bg-black/60 backdrop-blur-md border border-white/10 text-pink-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
             {course.category}
           </span>
         </div>
