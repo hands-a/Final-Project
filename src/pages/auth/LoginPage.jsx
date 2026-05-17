@@ -111,23 +111,7 @@ const LoginPage = () => {
                   )}
                 </button>
 
-                {/* Divider Line */}
-                <div className="relative flex py-2 items-center opacity-70">
-                    <div className="grow border-t border-white/10"></div>
-                    <span className="shrink-0 mx-4 text-slate-400 text-[10px] uppercase tracking-wider">Or continue with</span>
-                    <div className="grow border-t border-white/10"></div>
-                </div>
-
-                {/* Social Login Buttons */}
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Note: 'group' class is kept inline to avoid Vite compiler errors */}
-                  <button type="button" className="btn-social group">
-                    <FaGoogle className="text-red-400 group-hover:scale-110 transition-transform" /> Google
-                  </button>
-                  <button type="button" className="btn-social group">
-                    <FaFacebook className="text-blue-500 group-hover:scale-110 transition-transform" /> Facebook
-                  </button>
-                </div>
+                
 
               </Form>
             )}

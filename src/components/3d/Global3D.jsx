@@ -74,12 +74,12 @@ const Global3D = () => {
   }, []);
 
   const ELEMENTS = [
-    { path: '/java.glb', position: isMobile ? [-2.5, 4, -5] : [-5, 1, -2], scale: isMobile ? 0.18 : 0.2, color: 'java', speed: 0.002 },
-    { path: '/docker.glb', position: isMobile ? [2.5, 5, -5] : [7, 2, -5], scale: isMobile ? 3.5 : 5.5, color: 'docker', speed: -0.002 },
-    { path: '/js-logo.glb', position: isMobile ? [-2.5, -1, -5] : [-6, -2, -5], scale: isMobile ? 3.2 : 4.2, color: 'javascript', speed: 0.003 },
-    { path: '/react_logo.glb', position: isMobile ? [2.5, -1.5, -5] : [8, -1, -4], scale: isMobile ? 0.1 : 0.1, color: 'react', speed: -0.0015 },
-    { path: '/mongo.glb', position: isMobile ? [-2.5, -6, -5] : [-7, -5, -3], scale: isMobile ? 4.2 : 6.2, color: 'mongo', speed: 0.001 },
-    { path: '/Robot.glb', position: isMobile ? [2.5, -7, -5] : [6, -5, -5], scale: isMobile ? 0.25 : 0.2, color: 'robot', speed: -0.002 },
+    { path: '/java.glb', position: isMobile ? [-1.3, 1, -5] : [-5, 1, -2], scale: isMobile ? 0.18 : 0.2, color: 'java', speed: 0.002 },
+    { path: '/docker.glb', position: isMobile ? [1.8, 5, -7] : [7, 2, -5], scale: isMobile ? 3.5 : 5.5, color: 'docker', speed: -0.002 },
+    { path: '/js-logo.glb', position: isMobile ? [-1.1, -3, -7] : [-6, -2, -5], scale: isMobile ? 3.2 : 4.2, color: 'javascript', speed: 0.003 },
+    { path: '/react_logo.glb', position: isMobile ? [1.5, -1.5, -1] : [8, -1, -4], scale: isMobile ? 0.1 : 0.1, color: 'react', speed: -0.0015 },
+    { path: '/mongo.glb', position: isMobile ? [-1.5, -3, -5] : [-7, -5, -3], scale: isMobile ? 4.2 : 6.2, color: 'mongo', speed: 0.001 },
+    { path: '/Robot.glb', position: isMobile ? [0.5, -4, -5] : [6, -5, -5], scale: isMobile ? 0.25 : 0.2, color: 'robot', speed: -0.002 },
     
   ];
 

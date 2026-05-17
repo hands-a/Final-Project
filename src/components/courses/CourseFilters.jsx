@@ -21,9 +21,9 @@ const CourseFilters = ({
           <FaFilter className="text-pink-400 text-sm" /> Categories
         </h3>
         <div className="flex flex-col gap-2">
-          {categories.map(cat => (
+          {categories.map((cat, index) => (
             <button 
-              key={cat}
+              key={`${cat}-${index}`}
               onClick={() => setSelectedCategory(cat)}
               className={`text-left px-4 py-2.5 rounded-xl text-sm transition-all flex justify-between items-center ${
                 selectedCategory === cat 
@@ -50,9 +50,9 @@ const CourseFilters = ({
           
           {/* Levels */}
           <div className="flex flex-wrap gap-2">
-            {levels.map(lvl => (
+            {levels.map((lvl, index) => (
               <button 
-                key={lvl} 
+                key={`${lvl}-${index}`} 
                 onClick={() => setSelectedLevel(lvl)} 
                 className={`px-4 py-2 rounded-xl text-xs transition-all border ${
                   selectedLevel === lvl 
@@ -67,9 +67,9 @@ const CourseFilters = ({
 
           {/* Price */}
           <div className="flex gap-2 bg-white/5 p-1.5 rounded-xl border border-white/10">
-            {['All', 'Free', 'Paid'].map(price => (
+            {['All', 'Free', 'Paid'].map((price, index) => (
               <button 
-                key={price} 
+                key={`${price}-${index}`} 
                 onClick={() => setPriceFilter(price)} 
                 className={`flex-1 py-2 text-xs font-medium rounded-lg transition-all ${
                   priceFilter === price 
