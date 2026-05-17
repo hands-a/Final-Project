@@ -23,12 +23,10 @@ const Footer = () => {
   const underlineStyle = "absolute bottom-[-8px] left-0 w-12 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full";
   const linkStyle = "text-sm font-medium transition-all duration-300 flex items-center gap-2 text-slate-400 hover:text-white hover:translate-x-1";
 
-  
+  // Removed the duplicate 'Data Science'
   const tracks = [
-    
     'Data Science',
     'Mobile App', 
-    'Data Science', 
     'Cyber Security',
     'DevOps',
     'Front-end',
@@ -92,14 +90,15 @@ const Footer = () => {
             </ul>
           </div>
 
+          {/* 3. Top Tracks */}
           <div>
             <h3 className={headingStyle}>
               Top Tracks
               <span className={underlineStyle}></span>
             </h3>
             <ul className="flex flex-col gap-3">
-              {tracks.map((track) => (
-                <li key={track}>
+              {tracks.map((track, index) => (
+                <li key={`${track}-${index}`}>
                   <Link to="/courses" className={linkStyle}>
                     <span className="text-pink-500 text-xs">●</span> {track}
                   </Link>
