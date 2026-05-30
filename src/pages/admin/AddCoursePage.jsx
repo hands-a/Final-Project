@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCloudUploadAlt, FaSave, FaArrowLeft, FaDollarSign, FaList, FaImage, FaSpinner } from 'react-icons/fa';
+import axios from 'axios';
 import CurriculumBuilder from "./CurriculumBuilder";
 
 const AddCoursePage = () => {
@@ -54,31 +55,36 @@ const AddCoursePage = () => {
     };
 
     try {
-      const submitData = new FormData();
-      
-      submitData.append('data', JSON.stringify(courseData));
-
-      if (formData.image instanceof File) {
-        submitData.append('files.image', formData.image);
-      }
-
-      const response = await fetch('https://futuredev-backend.onrender.com/api/courses', {
-        method: 'POST',
-        body: submitData,
+      // 1. Submit course data as JSON
+      const courseResponse = await axios.post('https://futuredev-backend.onrender.com/api/courses', {
+        data: courseData
       });
 
-      const result = await response.json();
+      // Get the ID of the newly created course
+      const newCourseId = courseResponse.data.data.id;
 
-      if (response.ok) {
-        alert("Course Published Successfully! 🚀");
-        navigate('/admin/dashboard');
-      } else {
-        throw new Error(result.error?.message || "Failed to publish");
+      // 2. Upload image and link it to the course
+      if (formData.image instanceof File) {
+        const uploadData = new FormData();
+        uploadData.append('files', formData.image);
+        uploadData.append('ref', 'api::course.course'); 
+        uploadData.append('refId', newCourseId);        
+        uploadData.append('field', 'image');            
+
+        await axios.post('https://futuredev-backend.onrender.com/api/upload', uploadData);
       }
+
+      alert("Course Published Successfully! 🚀");
+      navigate('/admin/dashboard');
       
     } catch (error) {
-      console.error("Error details:", error.message);
-      alert(`Backend Error: ${error.message}`);
+      const errorMsg = error.response?.data?.error?.message || error.message;
+      const errorDetails = error.response?.data?.error?.details?.errors;
+      
+      console.error("Strapi Error Message:", errorMsg);
+      if (errorDetails) console.error("Strapi Error Details:", errorDetails);
+      
+      alert(`Backend Error: ${errorMsg}\nCheck Console (F12) for more details.`);
     } finally {
       setIsSubmitting(false);
     }
