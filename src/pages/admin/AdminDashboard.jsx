@@ -21,16 +21,17 @@ const AdminDashboard = () => {
   }, []);
 
   const fetchCourses = () => {
-    axios.get("http://localhost:1337/api/courses?populate=*")
+    axios.get("https://futuredev-backend.onrender.com/api/courses?populate=*")
       .then((response) => {
         const formattedCourses = response.data.data.map((item) => {
           const attr = item.attributes || item;
           
           let imageUrl = null;
           if (attr.image?.url) {
-            imageUrl = `http://localhost:1337${attr.image.url}`;
+            imageUrl = attr.image.url.startsWith('http') ? attr.image.url : `https://futuredev-backend.onrender.com${attr.image.url}`;
           } else if (attr.image?.data?.attributes?.url) {
-            imageUrl = `http://localhost:1337${attr.image.data.attributes.url}`;
+            const url = attr.image.data.attributes.url;
+            imageUrl = url.startsWith('http') ? url : `https://futuredev-backend.onrender.com${url}`;
           }
 
           return {
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this course permanently?")) {
       try {
-        await axios.delete(`http://localhost:1337/api/courses/${id}`);
+        await axios.delete(`https://futuredev-backend.onrender.com/api/courses/${id}`);
         setCourses(courses.filter(course => course.id !== id));
       } catch (error) {
         console.error("Error deleting course:", error);
@@ -104,7 +105,6 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-[#050511] pt-24 pb-20 px-4 md:px-8 lg:px-12 relative overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto">
         
-        {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6 border-b border-white/10 pb-8 mt-8">
           <div>
             <h1 className="text-3xl md:text-4xl font-light text-white mb-2 tracking-wide">
@@ -122,7 +122,6 @@ const AdminDashboard = () => {
           </Link>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {stats.map((stat, index) => (
             <div
@@ -146,7 +145,6 @@ const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Courses Table Container */}
         <div className="bg-white/0 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
           <div className="p-6 md:p-8 border-b border-white/10 flex justify-between items-center">
             <h3 className="text-xl font-medium tracking-wide text-white">
@@ -159,7 +157,6 @@ const AdminDashboard = () => {
 
           {courses.length > 0 ? (
             <>
-              {/* Desktop View: Table */}
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead className="bg-white/5 text-slate-400 uppercase text-[10px] font-medium tracking-widest border-b border-white/10">
@@ -229,7 +226,6 @@ const AdminDashboard = () => {
                 </table>
               </div>
 
-              {/* Mobile View: Cards Stack */}
               <div className="md:hidden flex flex-col p-4 space-y-4">
                 {courses.map((course) => (
                   <div
@@ -275,7 +271,6 @@ const AdminDashboard = () => {
                     </div>
 
                     <div className="flex gap-3">
-                      {/* 💡 التعديل هنا: تحويل الزرار لـ Link في شاشة الموبايل */}
                       <Link 
                         to={`/admin/edit-course/${course.id}`} 
                         className="flex-1 py-2.5 bg-white/5 border border-white/10 hover:border-blue-500/50 text-slate-300 hover:text-blue-400 hover:bg-blue-500/10 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all"
@@ -294,7 +289,6 @@ const AdminDashboard = () => {
               </div>
             </>
           ) : (
-            /* Empty State */
             <div className="flex flex-col items-center justify-center py-24 text-center px-4">
               <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 text-slate-500 text-3xl shadow-sm">
                 <FaBook />

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaCloudUploadAlt, FaSave, FaArrowLeft, FaDollarSign, FaList, FaImage } from 'react-icons/fa';
-import { useCourses } from '../../context/CourseContext';
+import { FaCloudUploadAlt, FaSave, FaArrowLeft, FaDollarSign, FaList, FaImage, FaSpinner } from 'react-icons/fa';
+import axios from 'axios';
 import CurriculumBuilder from "./CurriculumBuilder";
+
 const AddCoursePage = () => {
   const navigate = useNavigate();
-  const { addCourse } = useCourses();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -30,7 +32,7 @@ const AddCoursePage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (sections.length === 0) {
@@ -38,29 +40,47 @@ const AddCoursePage = () => {
       return;
     }
 
-    const newCourse = {
+    setIsSubmitting(true);
+
+    const courseData = {
       title: formData.title,
       category: formData.category,
       price: parseFloat(formData.price) || 0,
       level: formData.level,
       description: formData.description,
       instructor: "Admin User",
-      image: preview || "https://via.placeholder.com/300x200?text=No+Image",
       sections: sections,   
       students: 0,
-      rating: 0
+      rating: 5.0 
     };
 
-    addCourse(newCourse);
-    alert("Course Published Successfully! 🚀");
-    navigate('/admin/dashboard');
+    try {
+      const submitData = new FormData();
+      
+      submitData.append('data', JSON.stringify(courseData));
+
+      if (formData.image instanceof File) {
+        submitData.append('files.image', formData.image, formData.image.name);
+      }
+
+      const response = await axios.post('https://futuredev-backend.onrender.com/api/courses', submitData);
+
+      if (response.status === 200 || response.status === 201) {
+        alert("Course Published Successfully! 🚀");
+        navigate('/admin/dashboard');
+      }
+    } catch (error) {
+      console.error("Error adding course to Strapi:", error);
+      alert("Failed to publish the course. Please check your connection or permissions.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#050511] pt-32 pb-20 px-6 lg:px-12 relative overflow-hidden">
       <div className="max-w-4xl mx-auto relative z-10">
         
-        {/* Header */}
         <div className="flex items-center gap-6 mb-10 border-b border-white/10 pb-8">
           <button 
             onClick={() => navigate(-1)} 
@@ -76,7 +96,6 @@ const AddCoursePage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           
-          {/* 1. Basic Info (Pure Glass) */}
           <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
             <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
               <FaList className="text-pink-400 opacity-80" /> Basic Information
@@ -104,8 +123,12 @@ const AddCoursePage = () => {
                   className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:bg-white/5 focus:border-pink-400/50 transition-all tracking-wider appearance-none"
                 >
                   <option value="" className="bg-[#050511] text-slate-300">Select Category</option>
-                  <option value="Development" className="bg-[#050511] text-slate-300">Development</option>
-                  <option value="Design" className="bg-[#050511] text-slate-300">Design</option>
+                  <option value="Data Science" className="bg-[#050511] text-slate-300">Data Science</option>
+                  <option value="Mobile App" className="bg-[#050511] text-slate-300">Mobile App</option>
+                  <option value="Cyber Security" className="bg-[#050511] text-slate-300">Cyber Security</option>
+                  <option value="DevOps" className="bg-[#050511] text-slate-300">DevOps</option>
+                  <option value="Front-end" className="bg-[#050511] text-slate-300">Front-end</option>
+                  <option value="Back-end" className="bg-[#050511] text-slate-300">Back-end</option>
                 </select>
               </div>
 
@@ -124,7 +147,6 @@ const AddCoursePage = () => {
             </div>
           </div>
 
-          {/* 2. Pricing  */}
           <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
             <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
               <FaDollarSign className="text-pink-400 opacity-80" /> Details & Pricing
@@ -153,7 +175,6 @@ const AddCoursePage = () => {
             </div>
           </div>
 
-          {/* 3. Image Upload (Pure Glass) */}
           <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
             <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
               <FaImage className="text-pink-400 opacity-80" /> Course Thumbnail
@@ -163,6 +184,7 @@ const AddCoursePage = () => {
                 type="file" 
                 accept="image/*" 
                 onChange={handleImageChange} 
+                required
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
               />
               {preview ? (
@@ -179,7 +201,6 @@ const AddCoursePage = () => {
             </div>
           </div>
 
-          {/* 4. Curriculum Builder Wrapper */}
           <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
              <h3 className="text-xl font-medium tracking-wide text-white mb-8 border-b border-white/10 pb-4 flex items-center gap-3">
                 <FaList className="text-pink-400 opacity-80" /> Curriculum Builder
@@ -187,13 +208,17 @@ const AddCoursePage = () => {
              <CurriculumBuilder onCurriculumChange={setSections} />
           </div>
 
-          {/* Submit */}
           <div className="flex justify-end pt-6">
             <button 
               type="submit" 
-              className="px-10 py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium tracking-wide rounded-xl shadow-lg shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-3"
+              disabled={isSubmitting}
+              className={`px-10 py-4 bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-medium tracking-wide rounded-xl shadow-lg shadow-pink-500/20 transition-all flex items-center gap-3 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : 'hover:scale-[1.02] active:scale-[0.98]'}`}
             >
-              <FaSave className="opacity-80" /> Publish Course
+              {isSubmitting ? (
+                <><FaSpinner className="animate-spin" /> Publishing...</>
+              ) : (
+                <><FaSave className="opacity-80" /> Publish Course</>
+              )}
             </button>
           </div>
 
