@@ -48,10 +48,10 @@ const AddCoursePage = () => {
       price: parseFloat(formData.price) || 0,
       level: formData.level,
       description: formData.description,
-      instructor: "Admin User",
-      sections: sections,   
-      students: 0,
-      rating: 5.0 
+      // instructor: "Admin User",
+      // sections: sections,   
+      // students: 0,
+      // rating: 5.0 
     };
 
     try {
@@ -70,8 +70,13 @@ const AddCoursePage = () => {
         navigate('/admin/dashboard');
       }
     } catch (error) {
-      console.error("Error adding course to Strapi:", error);
-      alert("Failed to publish the course. Please check your connection or permissions.");
+      const errorMsg = error.response?.data?.error?.message || error.message;
+      const errorDetails = error.response?.data?.error?.details?.errors;
+      
+      console.error("Strapi Error Message:", errorMsg);
+      if (errorDetails) console.error("Strapi Error Details:", errorDetails);
+      
+      alert(`Backend Error: ${errorMsg}\nافتح الـ Console (F12) عشان تشوف التفاصيل لو محتاج!`);
     } finally {
       setIsSubmitting(false);
     }
