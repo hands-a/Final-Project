@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCloudUploadAlt, FaSave, FaArrowLeft, FaDollarSign, FaList, FaImage, FaSpinner } from 'react-icons/fa';
-import axios from 'axios';
 import CurriculumBuilder from "./CurriculumBuilder";
 
 const AddCoursePage = () => {
@@ -48,10 +47,10 @@ const AddCoursePage = () => {
       price: parseFloat(formData.price) || 0,
       level: formData.level,
       description: formData.description,
-      // instructor: "Admin User",
-      // sections: sections,   
-      // students: 0,
-      // rating: 5.0 
+      instructor: "Admin User",
+      sections: sections,   
+      students: 0,
+      rating: 5.0 
     };
 
     try {
@@ -60,23 +59,26 @@ const AddCoursePage = () => {
       submitData.append('data', JSON.stringify(courseData));
 
       if (formData.image instanceof File) {
-        submitData.append('files.image', formData.image, formData.image.name);
+        submitData.append('files.image', formData.image);
       }
 
-      const response = await axios.post('https://futuredev-backend.onrender.com/api/courses', submitData);
+      const response = await fetch('https://futuredev-backend.onrender.com/api/courses', {
+        method: 'POST',
+        body: submitData,
+      });
 
-      if (response.status === 200 || response.status === 201) {
+      const result = await response.json();
+
+      if (response.ok) {
         alert("Course Published Successfully! 🚀");
         navigate('/admin/dashboard');
+      } else {
+        throw new Error(result.error?.message || "Failed to publish");
       }
+      
     } catch (error) {
-      const errorMsg = error.response?.data?.error?.message || error.message;
-      const errorDetails = error.response?.data?.error?.details?.errors;
-      
-      console.error("Strapi Error Message:", errorMsg);
-      if (errorDetails) console.error("Strapi Error Details:", errorDetails);
-      
-      alert(`Backend Error: ${errorMsg}\nافتح الـ Console (F12) عشان تشوف التفاصيل لو محتاج!`);
+      console.error("Error details:", error.message);
+      alert(`Backend Error: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
