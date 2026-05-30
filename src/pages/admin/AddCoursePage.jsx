@@ -35,11 +35,6 @@ const AddCoursePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (sections.length === 0) {
-      alert("Please add at least one section to the curriculum!");
-      return;
-    }
-
     setIsSubmitting(true);
 
     const courseData = {
@@ -49,21 +44,16 @@ const AddCoursePage = () => {
       level: formData.level,
       description: formData.description,
       instructor: "Admin User",
-      sections: sections,   
-      students: 0,
       rating: 5.0 
     };
 
     try {
-      // 1. Submit course data as JSON
       const courseResponse = await axios.post('https://futuredev-backend.onrender.com/api/courses', {
         data: courseData
       });
 
-      // Get the ID of the newly created course
       const newCourseId = courseResponse.data.data.id;
 
-      // 2. Upload image and link it to the course
       if (formData.image instanceof File) {
         const uploadData = new FormData();
         uploadData.append('files', formData.image);
@@ -79,12 +69,7 @@ const AddCoursePage = () => {
       
     } catch (error) {
       const errorMsg = error.response?.data?.error?.message || error.message;
-      const errorDetails = error.response?.data?.error?.details?.errors;
-      
-      console.error("Strapi Error Message:", errorMsg);
-      if (errorDetails) console.error("Strapi Error Details:", errorDetails);
-      
-      alert(`Backend Error: ${errorMsg}\nCheck Console (F12) for more details.`);
+      alert(`Backend Error: ${errorMsg}`);
     } finally {
       setIsSubmitting(false);
     }
