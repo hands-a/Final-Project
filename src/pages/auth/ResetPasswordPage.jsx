@@ -62,7 +62,7 @@ const ResetPasswordPage = () => {
                   <Field 
                     type="password"
                     name="password"
-                    placeholder="••••••••" 
+                    placeholder="new password" 
                     // Added tracking-widest specifically here for the bullet points effect
                     className={`input-field tracking-widest ${errors.password && touched.password ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
                   />
@@ -75,7 +75,7 @@ const ResetPasswordPage = () => {
                   <Field 
                     type="password"
                     name="confirmPassword"
-                    placeholder="••••••••" 
+                    placeholder="confirm password" 
                     className={`input-field tracking-widest ${errors.confirmPassword && touched.confirmPassword ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
                   />
                   <ErrorMessage name="confirmPassword" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />

@@ -56,9 +56,7 @@ const RegisterPage = () => {
           
           {/* Header Section */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-pink-500 to-violet-600 rounded-2xl mb-4 shadow-lg shadow-pink-500/30">
-              <FaRocket className="text-white text-xl" />
-            </div>
+            
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 tracking-tight">
               Create Account
             </h1>
@@ -84,7 +82,7 @@ const RegisterPage = () => {
                     <Field
                       type="text"
                       name="firstName"
-                      placeholder="John"
+                      placeholder="First Name"
                       className={`input-field ${errors.firstName && touched.firstName ? "!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50" : ""}`}
                     />
                     <ErrorMessage name="firstName" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
@@ -96,7 +94,7 @@ const RegisterPage = () => {
                     <Field
                       type="text"
                       name="lastName"
-                      placeholder="Doe"
+                      placeholder="Last Name"
                       className={`input-field ${errors.lastName && touched.lastName ? "!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50" : ""}`}
                     />
                     <ErrorMessage name="lastName" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
@@ -109,7 +107,7 @@ const RegisterPage = () => {
                   <Field
                     type="email"
                     name="email"
-                    placeholder="name@example.com"
+                    placeholder="Enter your email"
                     className={`input-field ${errors.email && touched.email ? "!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50" : ""}`}
                   />
                   <ErrorMessage name="email" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
