@@ -101,7 +101,7 @@ const EditCoursePage = () => {
     return (
       <div className="min-h-screen bg-[#050511] flex flex-col items-center justify-center pt-24">
         <FaSpinner className="text-pink-500 text-5xl animate-spin mb-4" />
-        <h2 className="text-white text-xl font-light tracking-widest uppercase">Loading Course...</h2>
+        <h2 className="text-white text-xl font-normal tracking-widest uppercase">Loading Course...</h2>
       </div>
     );
   }
@@ -118,8 +118,8 @@ const EditCoursePage = () => {
             <FaArrowLeft />
           </button>
           <div>
-            <h1 className="text-3xl md:text-4xl font-light text-white mb-2 tracking-wide">Edit Course</h1>
-            <p className="text-slate-400 font-light text-sm tracking-wide">Update your course content and details.</p>
+            <h1 className="text-3xl md:text-4xl font-normal text-white mb-2 tracking-wide">Edit Course</h1>
+            <p className="text-slate-400 font-normal text-sm tracking-wide">Update your course content and details.</p>
           </div>
         </div>
 
@@ -129,7 +129,7 @@ const EditCoursePage = () => {
             
             <div className="bg-white/0 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] space-y-6">
               <div>
-                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Course Title</label>
+                <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Course Title</label>
                 <input 
                   type="text" 
                   required
@@ -142,7 +142,7 @@ const EditCoursePage = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <div>
-                  <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Category</label>
+                  <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Category</label>
                   <select 
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
@@ -156,7 +156,7 @@ const EditCoursePage = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Level</label>
+                  <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Level</label>
                   <select 
                     value={level}
                     onChange={(e) => setLevel(e.target.value)}
@@ -170,7 +170,7 @@ const EditCoursePage = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Price ($)</label>
+                <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Price ($)</label>
                 <input 
                   type="number" 
                   required
@@ -207,7 +207,7 @@ const EditCoursePage = () => {
                 ) : (
                   <div className="flex flex-col items-center justify-center text-slate-500">
                     <FaImage className="text-4xl mb-3 opacity-80 group-hover:text-pink-400 transition-colors" />
-                    <span className="text-xs font-light tracking-widest uppercase">Upload Image</span>
+                    <span className="text-xs font-normal tracking-widest uppercase">Upload Image</span>
                   </div>
                 )}
               </div>

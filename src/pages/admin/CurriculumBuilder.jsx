@@ -55,7 +55,7 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
             
             <div className="p-4 sm:p-5 flex justify-between items-center border-b border-white/5">
               <div className="flex items-center gap-4">
-                <span className="bg-gradient-to-r from-pink-500 to-violet-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">
+                <span className="bg-gradient-to-r from-pink-500 to-violet-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">
                   Section {index + 1}
                 </span>
                 <h4 className="font-medium tracking-wide text-white">{section.title}</h4>
@@ -78,16 +78,16 @@ const CurriculumBuilder = ({ onCurriculumChange }) => {
                         <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
                           {lesson.type === 'video' ? <FaVideo className="text-pink-400 text-xs" /> : <FaFileAlt className="text-violet-400 text-xs" />}
                         </div>
-                        <span className="font-light tracking-wide text-white">{idx + 1}. {lesson.title}</span>
+                        <span className="font-normal tracking-wide text-white">{idx + 1}. {lesson.title}</span>
                       </div>
-                      <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold bg-black/20 px-2 py-1 rounded-md">
+                      <span className="text-xs text-slate-500 uppercase tracking-widest font-bold bg-black/20 px-2 py-1 rounded-md">
                         {lesson.duration} min
                       </span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs text-slate-500 mb-5 font-light tracking-wider italic text-center py-2">No lessons in this section yet.</p>
+                <p className="text-xs text-slate-500 mb-5 font-normal tracking-wider italic text-center py-2">No lessons in this section yet.</p>
               )}
 
               {activeSectionId === section.id ? (

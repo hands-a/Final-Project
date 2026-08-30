@@ -32,19 +32,18 @@ const VerifyCodePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
-      
-      <div className="relative z-10 w-full max-w-[500px]">
-        {/* Reusable Glass Panel */}
+    <div className="min-h-screen bg-zinc-950 relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-600/6 rounded-full blur-[140px] pointer-events-none" />
+      <div className="bg-grid-mesh absolute inset-0 pointer-events-none opacity-50" />
+
+      <div className="relative z-10 w-full max-w-[460px]">
         <div className="glass-panel p-8 sm:p-10">
-          
-          {/* Header Section */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-pink-500 to-violet-600 rounded-2xl mb-4 shadow-lg shadow-pink-500/30">
-              <FaShieldAlt className="text-white text-xl" />
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl mb-4 shadow-md">
+              <FaShieldAlt className="text-cyan-400 text-xl" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">Verify Code</h1>
-            <p className="text-slate-300/80 text-sm">Enter the 4-digit code sent to your email.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Verify Code</h1>
+            <p className="text-zinc-500 text-sm">Enter the 4-digit code sent to your email.</p>
           </div>
 
           {/* Formik Integration */}
@@ -66,7 +65,7 @@ const VerifyCodePage = () => {
                         type="text"
                         maxLength={1}
                         // Reusable OTP input class + Error state override
-                        className={`verify-input ${errors.code && touched.code ? '!border-red-500/50 focus:!border-red-500 focus:!bg-red-500/5' : ''}`}
+                        className={`verify-input ${errors.code && touched.code ? '!border-rose-500/50 focus:!border-rose-500 focus:!bg-rose-500/5' : ''}`}
                         value={values.code[index] || ''}
                         
                         // Handle Typing and Auto-focus Forward
@@ -97,7 +96,7 @@ const VerifyCodePage = () => {
                   
                   {/* Error Message */}
                   <div className="text-center mt-3">
-                    <ErrorMessage name="code" component="span" className="text-red-400 text-[11px] tracking-wider" />
+                  <ErrorMessage name="code" component="span" className="text-rose-400 text-xs tracking-wider" />
                   </div>
                 </div>
 
@@ -114,12 +113,12 @@ const VerifyCodePage = () => {
 
                 {/* Resend Code Link */}
                 <div className="text-center mt-4 text-xs text-slate-400">
-                  Didn't receive the email? <button type="button" className="text-pink-400 font-bold hover:text-pink-300 transition-colors ml-1 uppercase tracking-wider">Resend Code</button>
+                  Didn't receive the email? <button type="button" className="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors duration-300 ml-1 uppercase tracking-wider">Resend Code</button>
                 </div>
 
                 {/* Footer Link */}
                 <div className="text-center mt-2">
-                   <Link to="/login" className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center justify-center gap-2 group">
+                   <Link to="/login" className="text-zinc-500 hover:text-cyan-400 text-sm font-medium transition-colors duration-300 flex items-center justify-center gap-2 group">
                     <FaArrowLeft className="text-xs group-hover:-translate-x-1 transition-transform" /> Back to Login
                   </Link>
                 </div>

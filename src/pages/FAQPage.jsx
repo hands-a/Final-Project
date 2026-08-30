@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp, FaQuestionCircle } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaTerminal } from 'react-icons/fa';
 
 const faqs = [
   {
@@ -33,53 +33,58 @@ const FAQSection = () => {
 
   return (
     <section className="py-24 bg-transparent relative overflow-hidden">
-      
+
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-         <div className="absolute top-1/4 left-[-10%] w-96 h-96 bg-purple-600/10 rounded-full blur-[100px]"></div>
-         <div className="absolute bottom-1/4 right-[-10%] w-96 h-96 bg-pink-600/10 rounded-full blur-[100px]"></div>
+        <div className="absolute top-1/4 left-[-10%] w-96 h-96 bg-cyan-600/6 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-[-10%] w-96 h-96 bg-emerald-600/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        
-        <div className="text-center mb-16">
-          <span className="text-purple-500 font-bold tracking-widest uppercase text-sm">Support</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mt-2 mb-4">
-            Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Questions</span>
+
+        <div className="text-center mb-14">
+          <span className="text-cyan-400 font-bold tracking-widest uppercase text-xs mb-3 block">Support</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            Frequently Asked{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Questions</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            Everything you need to know about the product and billing. Can’t find the answer you’re looking for? Please chat to our friendly team.
+          <p className="text-zinc-500 max-w-2xl mx-auto text-sm leading-relaxed">
+            Everything you need to know about the product and billing. Can't find the answer? Please contact our friendly team.
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="max-w-3xl mx-auto space-y-3">
           {faqs.map((faq, index) => (
-            <div 
-              key={index} 
-              className={`bg-[#13151d] border ${openIndex === index ? 'border-purple-500/50 shadow-lg shadow-purple-500/10' : 'border-white/5'} rounded-2xl overflow-hidden transition-all duration-300`}
+            <div
+              key={index}
+              className={`glass-panel overflow-hidden transition-all duration-300 ${
+                openIndex === index ? 'border-cyan-500/30 shadow-[0_8px_24px_rgba(6,182,212,0.08)]' : 'border-zinc-800/50'
+              }`}
             >
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex items-center justify-between p-6 text-left focus:outline-none group"
               >
                 <div className="flex items-center gap-4">
-                  <FaQuestionCircle className={`text-xl transition-colors ${openIndex === index ? 'text-purple-500' : 'text-slate-600 group-hover:text-purple-400'}`} />
-                  <span className={`font-bold text-lg transition-colors ${openIndex === index ? 'text-white' : 'text-slate-200 group-hover:text-white'}`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 ${
+                    openIndex === index ? 'bg-cyan-500/10 border border-cyan-500/20' : 'bg-zinc-800/60 border border-zinc-700/50 group-hover:border-zinc-600'
+                  }`}>
+                    <FaTerminal className={`text-xs transition-colors duration-300 ${openIndex === index ? 'text-cyan-400' : 'text-zinc-600 group-hover:text-zinc-400'}`} />
+                  </div>
+                  <span className={`font-semibold text-base transition-colors duration-300 ${openIndex === index ? 'text-white' : 'text-zinc-300 group-hover:text-white'}`}>
                     {faq.question}
                   </span>
                 </div>
                 {openIndex === index ? (
-                  <FaChevronUp className="text-purple-500" />
+                  <FaChevronUp className="text-cyan-400 shrink-0 ml-4" />
                 ) : (
-                  <FaChevronDown className="text-slate-500 group-hover:text-white transition-colors" />
+                  <FaChevronDown className="text-zinc-600 group-hover:text-zinc-400 transition-colors shrink-0 ml-4" />
                 )}
               </button>
 
-              <div 
-                className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                  openIndex === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                }`}
-              >
-                <div className="px-6 pb-6 pt-0 ml-11 border-l-2 border-white/5 pl-4 text-slate-400 text-sm leading-relaxed">
+              <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                openIndex === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+              }`}>
+                <div className="px-6 pb-6 pt-0 ml-12 border-l-2 border-cyan-500/20 pl-4 text-zinc-500 text-sm leading-relaxed">
                   {faq.answer}
                 </div>
               </div>

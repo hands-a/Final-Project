@@ -32,19 +32,18 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
-      
-      <div className="relative z-10 w-full max-w-[500px]">
-        {/* Reusable Glass Panel */}
+    <div className="min-h-screen bg-zinc-950 relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-600/6 rounded-full blur-[140px] pointer-events-none" />
+      <div className="bg-grid-mesh absolute inset-0 pointer-events-none opacity-50" />
+
+      <div className="relative z-10 w-full max-w-[460px]">
         <div className="glass-panel p-8 sm:p-10">
-          
-          {/* Header Section */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-pink-500 to-violet-600 rounded-2xl mb-4 shadow-lg shadow-pink-500/30">
-              <FaLock className="text-white text-xl" />
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl mb-4 shadow-md">
+              <FaLock className="text-cyan-400 text-xl" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">Reset Password</h1>
-            <p className="text-slate-300/80 text-sm">Create a new strong password.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Reset Password</h1>
+            <p className="text-zinc-500 text-sm">Create a new strong password.</p>
           </div>
 
           {/* Formik Integration */}
@@ -64,9 +63,9 @@ const ResetPasswordPage = () => {
                     name="password"
                     placeholder="new password" 
                     // Added tracking-widest specifically here for the bullet points effect
-                    className={`input-field tracking-widest ${errors.password && touched.password ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
+                    className={`input-field tracking-widest ${errors.password && touched.password ? '!border-rose-500/50 focus:!border-rose-500 focus:!ring-rose-500/20' : ''}`}
                   />
-                  <ErrorMessage name="password" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
+                  <ErrorMessage name="password" component="div" className="text-rose-400 text-xs mt-1.5 ml-1" />
                 </div>
 
                 {/* Confirm Password Input */}
@@ -78,7 +77,7 @@ const ResetPasswordPage = () => {
                     placeholder="confirm password" 
                     className={`input-field tracking-widest ${errors.confirmPassword && touched.confirmPassword ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
                   />
-                  <ErrorMessage name="confirmPassword" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
+                  <ErrorMessage name="confirmPassword" component="div" className="text-red-400 text-xs mt-1.5 ml-1" />
                 </div>
 
                 {/* Submit Button */}

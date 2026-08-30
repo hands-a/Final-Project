@@ -87,8 +87,8 @@ const AddCoursePage = () => {
             <FaArrowLeft />
           </button>
           <div>
-            <h1 className="text-3xl md:text-4xl font-light text-white mb-2 tracking-wide">Create New Course</h1>
-            <p className="text-slate-400 font-light text-sm tracking-wide">Fill in the details to publish a new course to the platform.</p>
+            <h1 className="text-3xl md:text-4xl font-normal text-white mb-2 tracking-wide">Create New Course</h1>
+            <p className="text-slate-400 font-normal text-sm tracking-wide">Fill in the details to publish a new course to the platform.</p>
           </div>
         </div>
 
@@ -101,7 +101,7 @@ const AddCoursePage = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="col-span-1 md:col-span-2">
-                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Course Title</label>
+                <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Course Title</label>
                 <input 
                   type="text" 
                   name="title" 
@@ -113,7 +113,7 @@ const AddCoursePage = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Category</label>
+                <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Category</label>
                 <select 
                   name="category" 
                   onChange={handleChange} 
@@ -131,7 +131,7 @@ const AddCoursePage = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Level</label>
+                <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Level</label>
                 <select 
                   name="level" 
                   onChange={handleChange} 
@@ -151,7 +151,7 @@ const AddCoursePage = () => {
             </h3>
             <div className="space-y-6">
               <div>
-                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Price ($)</label>
+                <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Price ($)</label>
                 <input 
                   type="number" 
                   name="price" 
@@ -161,7 +161,7 @@ const AddCoursePage = () => {
                 />
               </div>
               <div>
-                <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Description</label>
+                <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Description</label>
                 <textarea 
                   name="description" 
                   rows="4" 
@@ -193,7 +193,7 @@ const AddCoursePage = () => {
                     <FaCloudUploadAlt className="text-3xl text-pink-400 opacity-80" />
                   </div>
                   <p className="text-slate-300 font-medium tracking-wide mb-1">Click to upload thumbnail</p>
-                  <p className="text-slate-500 text-xs font-light">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+                  <p className="text-slate-500 text-xs font-normal">SVG, PNG, JPG or GIF (max. 800x400px)</p>
                 </div>
               )}
             </div>

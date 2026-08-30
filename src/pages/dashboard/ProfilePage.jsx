@@ -54,7 +54,7 @@ const ProfilePage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#050511] flex items-center justify-center text-white font-light text-xl tracking-widest uppercase">
+      <div className="min-h-screen bg-[#050511] flex items-center justify-center text-white font-normal text-xl tracking-widest uppercase">
         Loading profile...
       </div>
     );
@@ -68,10 +68,10 @@ const ProfilePage = () => {
         <div className="container mx-auto px-6 lg:px-12 relative z-10">
           
           <div className="mb-10 border-b border-white/10 pb-8">
-            <h1 className="text-3xl md:text-5xl font-light text-white mb-3 tracking-wide">
+            <h1 className="text-3xl md:text-5xl font-normal text-white mb-3 tracking-wide">
               Account Settings
             </h1>
-            <p className="text-slate-400 font-light tracking-wide text-sm">
+            <p className="text-slate-400 font-normal tracking-wide text-sm">
               Manage your personal details, developer profile, and security.
             </p>
           </div>
@@ -81,7 +81,7 @@ const ProfilePage = () => {
             <div className="lg:col-span-1">
               <div className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl p-8 text-center relative overflow-hidden sticky top-32 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
                 
-                <div className="relative w-32 h-32 mx-auto mt-2 mb-6 rounded-full border border-white/20 shadow-[0_0_20px_rgba(244,114,182,0.15)] group">
+                <div className="relative w-32 h-32 mx-auto mt-2 mb-6 rounded-full border border-zinc-700 shadow-[0_0_24px_rgba(6,182,212,0.15)] group">
                   <img
                     src={
                       avatarPreview ||
@@ -111,7 +111,11 @@ const ProfilePage = () => {
                 <h2 className="text-2xl font-medium tracking-wide text-white mb-1">
                   {formData.name || user.name}
                 </h2>
-                <p className="text-pink-400 text-[10px] font-bold uppercase tracking-widest mb-6 inline-block bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                <p className={`text-xs font-bold uppercase tracking-widest mb-6 inline-block px-3 py-1 rounded-full border ${
+                  user.role === "admin"
+                    ? "text-amber-400 bg-amber-500/10 border-amber-500/20"
+                    : "text-cyan-400 bg-cyan-500/10 border-cyan-500/20"
+                }`}>
                   {user.role === "admin" ? "Administrator" : "Student"}
                 </p>
 
@@ -122,7 +126,7 @@ const ProfilePage = () => {
                 )}
 
                 {formData.bio && (
-                  <p className="text-slate-400 text-sm text-center font-light leading-relaxed mb-6 border-b border-white/10 pb-6">
+                  <p className="text-slate-400 text-sm text-center font-normal leading-relaxed mb-6 border-b border-white/10 pb-6">
                     "{formData.bio}"
                   </p>
                 )}
@@ -144,25 +148,25 @@ const ProfilePage = () => {
                     </a>
                   )}
                   {formData.portfolio && (
-                    <a href={formData.portfolio} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-pink-400 transition-colors text-xl">
+                    <a href={formData.portfolio} target="_blank" rel="noreferrer" className="text-zinc-600 hover:text-cyan-400 transition-colors duration-300 text-xl">
                       <FaGlobe />
                     </a>
                   )}
                 </div>
 
-                <div className="space-y-4 text-left mt-8 pt-6 border-t border-white/10">
-                  <div className="flex items-center gap-4 text-slate-400 text-[11px] uppercase tracking-widest">
-                    <FaEnvelope className="text-pink-400 text-sm opacity-80" /> {user.email}
+                <div className="space-y-4 text-left mt-8 pt-6 border-t border-zinc-800/50">
+                  <div className="flex items-center gap-4 text-zinc-500 text-xs uppercase tracking-widest">
+                    <FaEnvelope className="text-cyan-400 text-sm" /> {user.email}
                   </div>
-                  <div className="flex items-center gap-4 text-slate-400 text-[11px] uppercase tracking-widest">
-                    <FaUser className="text-pink-400 text-sm opacity-80" /> Member since 2026
+                  <div className="flex items-center gap-4 text-zinc-500 text-xs uppercase tracking-widest">
+                    <FaUser className="text-cyan-400 text-sm" /> Member since 2026
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-2">
-              <div className="bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
+              <div className="glass-panel p-8 md:p-10">
                 <form onSubmit={handleSubmit} className="space-y-10">
                   
                   <div>
@@ -171,7 +175,7 @@ const ProfilePage = () => {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Full Name</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Full Name</label>
                         <input
                           type="text"
                           name="name"
@@ -183,7 +187,7 @@ const ProfilePage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Email Address</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Email Address</label>
                         <input
                           type="email"
                           name="email"
@@ -203,7 +207,7 @@ const ProfilePage = () => {
                     </h3>
                     <div className="space-y-6">
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Professional Headline</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Professional Headline</label>
                         <input
                           type="text"
                           name="headline"
@@ -215,7 +219,7 @@ const ProfilePage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Short Bio</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Short Bio</label>
                         <textarea
                           name="bio"
                           rows="3"
@@ -234,7 +238,7 @@ const ProfilePage = () => {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">GitHub URL</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">GitHub URL</label>
                         <input
                           type="url"
                           name="github"
@@ -246,7 +250,7 @@ const ProfilePage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">LinkedIn URL</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">LinkedIn URL</label>
                         <input
                           type="url"
                           name="linkedin"
@@ -258,7 +262,7 @@ const ProfilePage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Twitter / X</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Twitter / X</label>
                         <input
                           type="url"
                           name="twitter"
@@ -270,7 +274,7 @@ const ProfilePage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Portfolio Website</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Portfolio Website</label>
                         <input
                           type="url"
                           name="portfolio"
@@ -289,7 +293,7 @@ const ProfilePage = () => {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">Current Password</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">Current Password</label>
                         <input
                           type="password"
                           name="currentPassword"
@@ -301,7 +305,7 @@ const ProfilePage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1">New Password</label>
+                        <label className="block text-xs uppercase tracking-widest text-slate-300 mb-2 ml-1">New Password</label>
                         <input
                           type="password"
                           name="newPassword"
@@ -317,7 +321,7 @@ const ProfilePage = () => {
                   <div className="flex justify-end pt-6 border-t border-white/10 mt-8">
                     <button
                       type="submit"
-                      className="bg-gradient-to-r from-pink-500 to-violet-600 text-white font-medium py-3.5 px-8 rounded-xl shadow-lg shadow-pink-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2"
+                      className="btn-primary py-3.5 px-8"
                     >
                       <FaSave className="opacity-80" /> Save Profile Settings
                     </button>

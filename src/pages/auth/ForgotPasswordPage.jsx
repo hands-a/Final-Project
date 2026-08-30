@@ -28,19 +28,18 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
-      
-      <div className="relative z-10 w-full max-w-[500px]">
-        {/* Reusable Glass Panel */}
+    <div className="min-h-screen bg-zinc-950 relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-600/6 rounded-full blur-[140px] pointer-events-none" />
+      <div className="bg-grid-mesh absolute inset-0 pointer-events-none opacity-50" />
+
+      <div className="relative z-10 w-full max-w-[460px]">
         <div className="glass-panel p-8 sm:p-10">
-            
-          {/* Header Section */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-pink-500 to-violet-600 rounded-2xl mb-4 shadow-lg shadow-pink-500/30">
-                <FaKey className="text-white text-xl" />
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl mb-4 shadow-md">
+              <FaKey className="text-cyan-400 text-xl" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">Forgot Password?</h1>
-            <p className="text-slate-300/80 text-sm">Enter your email to receive a reset code.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Forgot Password?</h1>
+            <p className="text-zinc-500 text-sm">Enter your email to receive a reset code.</p>
           </div>
 
           {/* Formik Integration */}
@@ -59,9 +58,9 @@ const ForgotPasswordPage = () => {
                         type="email"
                         name="email"
                         placeholder="name@example.com" 
-                        className={`input-field ${errors.email && touched.email ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
+                        className={`input-field ${errors.email && touched.email ? '!border-rose-500/50 focus:!border-rose-500 focus:!ring-rose-500/20' : ''}`} 
                     />  
-                    <ErrorMessage name="email" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
+                    <ErrorMessage name="email" component="div" className="text-rose-400 text-xs mt-1.5 ml-1" />
                 </div>
 
                 {/* Submit Button */}
@@ -77,7 +76,7 @@ const ForgotPasswordPage = () => {
 
                 {/* Footer Link */}
                 <div className="text-center mt-6">
-                    <Link to="/login" className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center justify-center gap-2 group">
+                    <Link to="/login" className="text-zinc-500 hover:text-cyan-400 text-sm font-medium transition-colors duration-300 flex items-center justify-center gap-2 group">
                       <FaArrowLeft className="text-xs group-hover:-translate-x-1 transition-transform" /> Back to Login
                     </Link>
                 </div>

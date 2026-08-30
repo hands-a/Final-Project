@@ -1,37 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Cairo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import "tailwindcss";
-@import url( 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* ============================================================
+   COMMAND CENTER — GLOBAL DESIGN SYSTEM
+   ============================================================ */
 
 @layer base {
   body {
-    @apply font-sans antialiased text-slate-300 bg-[#050511]; 
-    @apply antialiased text-slate-300 bg-[#050511]; 
-    font-family: "Poppins", sans-serif;
+    @apply antialiased text-zinc-300 bg-zinc-950;
+    font-family: "Inter", sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: "Inter", "Cairo", sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
   }
 }
 
 @layer components {
-  
+
+  /* ─────────────────────────────────────────
+     GLASS SYSTEM — Command Center surface
+  ───────────────────────────────────────── */
+
   .glass-panel {
-    @apply bg-white/0 backdrop-blur-xl border border-white/10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)];
+    @apply bg-zinc-900/60 backdrop-blur-md border border-zinc-800/50 rounded-2xl shadow-2xl;
   }
 
+  .glass-card {
+    @apply bg-zinc-900/60 backdrop-blur-md border border-zinc-800/50 rounded-2xl shadow-2xl
+           transition-all duration-300 hover:-translate-y-1;
+  }
+
+  /* ─────────────────────────────────────────
+     BUTTON SYSTEM
+  ───────────────────────────────────────── */
+
+  /* Primary — Cyan Command */
   .btn-primary {
-    @apply bg-gradient-to-r from-pink-500 to-violet-600 hover:from-pink-600 hover:to-violet-700 text-white font-bold rounded-xl shadow-lg shadow-pink-500/20 flex justify-center items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-70 disabled:cursor-wait;
+    @apply bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-semibold rounded-xl
+           shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40
+           flex justify-center items-center gap-2
+           transition-all duration-300 hover:-translate-y-0.5
+           disabled:opacity-60 disabled:cursor-wait disabled:hover:translate-y-0;
   }
 
-  .btn-social {
-    @apply py-2.5 bg-transparent border border-white/10 text-white rounded-xl font-semibold hover:bg-white/5 transition-all flex justify-center items-center gap-2 text-sm;
+  /* Ghost command button */
+  .btn-cmd {
+    @apply bg-transparent border border-zinc-700 text-zinc-300
+           hover:border-cyan-500/40 hover:text-cyan-400 hover:bg-cyan-500/5
+           font-medium rounded-xl flex justify-center items-center gap-2
+           transition-all duration-300;
   }
+
+  /* Social button */
+  .btn-social {
+    @apply py-2.5 bg-transparent border border-zinc-800 text-zinc-300 rounded-xl
+           font-medium hover:bg-zinc-800/60 hover:border-zinc-700 hover:text-white
+           transition-all duration-300 flex justify-center items-center gap-2 text-sm;
+  }
+
+  /* ─────────────────────────────────────────
+     INPUT SYSTEM — Technical command interface
+  ───────────────────────────────────────── */
 
   .input-field {
-    @apply w-full px-4 py-3 bg-transparent border border-white/10 rounded-xl focus:bg-white/5 outline-none transition-all text-white text-sm placeholder:text-slate-500/50 focus:border-pink-400/50 focus:ring-1 focus:ring-pink-400/50;
+    @apply w-full px-4 py-3 bg-zinc-900/70 border border-zinc-800 rounded-xl
+           outline-none transition-all duration-300 text-white text-sm
+           placeholder:text-zinc-600
+           focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 focus:bg-zinc-900;
   }
 
   .label-text {
-    @apply block text-[11px] uppercase tracking-widest text-slate-300 mb-2 ml-1;
+    @apply block text-xs font-medium text-zinc-400 mb-2 ml-1 uppercase tracking-wider;
   }
-  
+
+  /* ─────────────────────────────────────────
+     BADGE SYSTEM — Semantic color language
+  ───────────────────────────────────────── */
+
+  /* Frontend — Cyan */
+  .badge-frontend {
+    @apply bg-cyan-500/10 text-cyan-400 border border-cyan-500/20
+           text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest;
+  }
+
+  /* Backend — Orange */
+  .badge-backend {
+    @apply bg-orange-500/10 text-orange-400 border border-orange-500/20
+           text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest;
+  }
+
+  /* Career / DevOps / Success — Emerald */
+  .badge-career {
+    @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20
+           text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest;
+  }
+
+  /* Achievements / Rewards — Amber */
+  .badge-achievement {
+    @apply bg-amber-500/20 text-amber-400 border border-amber-500/20
+           text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest;
+  }
+
+  /* Neutral */
+  .badge-neutral {
+    @apply bg-zinc-800/60 text-zinc-400 border border-zinc-700/50
+           text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest;
+  }
+
+  /* ─────────────────────────────────────────
+     CODE BLOCK SYSTEM
+  ───────────────────────────────────────── */
+
+  .code-block {
+    @apply bg-zinc-800/50 border border-zinc-700/50 rounded-lg p-4
+           font-mono text-sm text-slate-300 leading-relaxed;
+  }
 }
+
+/* ─────────────────────────────────────────
+   VERIFY OTP INPUT
+───────────────────────────────────────── */
+
 .verify-input {
-    @apply w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-transparent border border-white/10 text-center text-2xl text-white outline-none transition-all focus:border-pink-400/50 focus:ring-1 focus:ring-pink-400/50 focus:bg-white/5;
-  }
+  @apply w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-zinc-900/80 border border-zinc-800
+         text-center text-2xl text-white outline-none transition-all duration-300
+         focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 focus:bg-zinc-900;
+}
+
+/* ─────────────────────────────────────────
+   AMBIENT BACKGROUND UTILITIES
+───────────────────────────────────────── */
+
+.bg-cmd-glow-cyan {
+  background: radial-gradient(ellipse 80% 50% at 20% 10%, rgba(6, 182, 212, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 40% at 80% 80%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+}
+
+.bg-cmd-glow-orange {
+  background: radial-gradient(ellipse 80% 50% at 20% 10%, rgba(249, 115, 22, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6, 182, 212, 0.04) 0%, transparent 60%);
+}
+
+/* Grid mesh overlay */
+.bg-grid-mesh {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black, transparent);
+}

@@ -1,40 +1,44 @@
 import React from 'react';
-import { FaFilter } from 'react-icons/fa';
+import { FaSlidersH } from 'react-icons/fa';
 
-const CourseFilters = ({ 
-  categories, 
-  levels, 
-  courses, 
-  selectedCategory, 
-  setSelectedCategory, 
-  selectedLevel, 
-  setSelectedLevel, 
-  priceFilter, 
-  setPriceFilter 
+const CourseFilters = ({
+  categories,
+  levels,
+  courses,
+  selectedCategory,
+  setSelectedCategory,
+  selectedLevel,
+  setSelectedLevel,
+  priceFilter,
+  setPriceFilter
 }) => {
   return (
-    <aside className="w-full lg:w-1/4 space-y-8 h-fit lg:sticky lg:top-28">
-      
+    <aside className="w-full lg:w-1/4 space-y-5 h-fit lg:sticky lg:top-28">
+
       {/* Categories Filter */}
-      <div className="glass-panel p-6">
-        <h3 className="text-white font-light text-lg mb-5 flex items-center gap-2 tracking-wide">
-          <FaFilter className="text-pink-400 text-sm" /> Categories
+      <div className="glass-panel p-5">
+        <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2 uppercase tracking-widest">
+          <FaSlidersH className="text-cyan-400 text-xs" /> Categories
         </h3>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           {categories.map((cat, index) => (
-            <button 
+            <button
               key={`${cat}-${index}`}
               onClick={() => setSelectedCategory(cat)}
-              className={`text-left px-4 py-2.5 rounded-xl text-sm transition-all flex justify-between items-center ${
-                selectedCategory === cat 
-                  ? 'bg-gradient-to-r from-pink-500 to-violet-600 text-white font-medium shadow-lg shadow-pink-500/20' 
-                  : 'text-slate-400 hover:bg-white/5 hover:text-white bg-transparent border border-transparent hover:border-white/5'
+              className={`text-left px-4 py-2.5 rounded-xl text-sm transition-all duration-300 flex justify-between items-center font-medium ${
+                selectedCategory === cat
+                  ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+                  : 'text-zinc-500 hover:bg-zinc-800/60 hover:text-zinc-200 border border-transparent'
               }`}
             >
-              {cat}
-              <span className={`text-xs ${selectedCategory === cat ? 'text-white/90' : 'text-slate-500'}`}>
-                {cat === 'All' 
-                  ? courses.length 
+              <span>{cat}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                selectedCategory === cat
+                  ? 'bg-cyan-500/20 text-cyan-400'
+                  : 'bg-zinc-800/60 text-zinc-600'
+              }`}>
+                {cat === 'All'
+                  ? courses.length
                   : courses.filter(c => c.category === cat).length
                 }
               </span>
@@ -44,42 +48,48 @@ const CourseFilters = ({
       </div>
 
       {/* Level & Price Filter */}
-      <div className="glass-panel p-6">
-        <h3 className="text-white font-light text-lg mb-5 tracking-wide">Level & Price</h3>
-        <div className="space-y-6">
-          
+      <div className="glass-panel p-5">
+        <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Level & Price</h3>
+        <div className="space-y-5">
+
           {/* Levels */}
-          <div className="flex flex-wrap gap-2">
-            {levels.map((lvl, index) => (
-              <button 
-                key={`${lvl}-${index}`} 
-                onClick={() => setSelectedLevel(lvl)} 
-                className={`px-4 py-2 rounded-xl text-xs transition-all border ${
-                  selectedLevel === lvl 
-                    ? 'bg-gradient-to-r from-pink-500 to-violet-600 border-transparent text-white shadow-lg shadow-pink-500/20 font-medium' 
-                    : 'bg-transparent border-white/10 text-slate-400 hover:border-white/30 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {lvl}
-              </button>
-            ))}
+          <div>
+            <p className="text-xs text-zinc-600 uppercase tracking-widest mb-3 font-medium">Skill Level</p>
+            <div className="flex flex-wrap gap-2">
+              {levels.map((lvl, index) => (
+                <button
+                  key={`${lvl}-${index}`}
+                  onClick={() => setSelectedLevel(lvl)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs transition-all duration-300 border font-medium ${
+                    selectedLevel === lvl
+                      ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
+                      : 'bg-transparent border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300'
+                  }`}
+                >
+                  {lvl}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Price */}
-          <div className="flex gap-2 bg-white/5 p-1.5 rounded-xl border border-white/10">
-            {['All', 'Free', 'Paid'].map((price, index) => (
-              <button 
-                key={`${price}-${index}`} 
-                onClick={() => setPriceFilter(price)} 
-                className={`flex-1 py-2 text-xs font-medium rounded-lg transition-all ${
-                  priceFilter === price 
-                    ? 'bg-white/10 text-white shadow-sm border border-white/10' 
-                    : 'text-slate-500 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {price}
-              </button>
-            ))}
+          <div>
+            <p className="text-xs text-zinc-600 uppercase tracking-widest mb-3 font-medium">Price</p>
+            <div className="flex gap-1.5 bg-zinc-900/60 p-1.5 rounded-xl border border-zinc-800/50">
+              {['All', 'Free', 'Paid'].map((price, index) => (
+                <button
+                  key={`${price}-${index}`}
+                  onClick={() => setPriceFilter(price)}
+                  className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all duration-300 ${
+                    priceFilter === price
+                      ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-sm'
+                      : 'text-zinc-600 hover:text-zinc-300 hover:bg-zinc-800/60'
+                  }`}
+                >
+                  {price}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { RiRocketLine, RiLogoutBoxRLine } from "react-icons/ri";
-import { FaShoppingCart, FaUserCircle, FaBookOpen } from "react-icons/fa";
+import { FaShoppingCart, FaUserCircle, FaBookOpen, FaShieldAlt } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assets/logo.png";
@@ -34,211 +34,221 @@ const Navbar = () => {
   };
 
   const getLinkClass = ({ isActive }) =>
-    `relative text-[15px] font-bold transition-colors duration-300 pb-1
-    ${isActive ? "text-white" : "text-slate-400 hover:text-white"}
-    after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] 
-    after:bg-gradient-to-r after:from-purple-500 after:to-pink-500 
-    after:rounded-full after:transition-transform after:duration-300 after:origin-right
-    ${isActive ? "after:scale-x-100 after:origin-left" : "after:scale-x-0 hover:after:scale-x-100 hover:after:origin-left"}
-    `;
+    `relative text-sm font-medium transition-all duration-300 px-3 py-1.5 rounded-lg
+    ${isActive
+      ? "text-cyan-400 bg-cyan-500/10 border border-cyan-500/20"
+      : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
+    }`;
 
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${scrolled ? "bg-[#0a0a0a]/90 backdrop-blur-xl border-white/10 shadow-lg py-3" : "bg-transparent border-transparent py-5"}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
+          scrolled
+            ? "bg-zinc-950/90 backdrop-blur-xl border-zinc-800/60 shadow-2xl shadow-black/40 py-3"
+            : "bg-transparent border-transparent py-5"
+        }`}
       >
         <div className="container mx-auto px-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2.5 group">
             <img
               src={Logo}
               alt="Logo"
-              className="w-10 h-10 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_10px_rgba(168,85,247,0.4)]"
+              className="w-9 h-9 group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_12px_rgba(6,182,212,0.4)]"
             />
-            <span className="text-2xl font-bold text-white font-sans tracking-tight">
+            <span className="text-xl font-bold text-white tracking-tight">
               Future
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
-                Dev
-              </span>
+              <span className="text-cyan-400 ml-0.5">Dev</span>
             </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8 bg-white/5 px-8 py-2.5 rounded-full border border-white/5 backdrop-blur-sm shadow-inner">
-            <NavLink to="/" className={getLinkClass}>
-              Home
-            </NavLink>
+          {/* Desktop Nav Pills */}
+          <div className="hidden lg:flex items-center gap-1 bg-zinc-900/60 px-3 py-2 rounded-2xl border border-zinc-800/50 backdrop-blur-md shadow-inner">
+            <NavLink to="/" className={getLinkClass}>Home</NavLink>
             {user && (
-              <NavLink to="/my-courses" className={getLinkClass}>
-                My Learning
-              </NavLink>
+              <NavLink to="/my-courses" className={getLinkClass}>My Learning</NavLink>
             )}
-            <NavLink to="/courses" className={getLinkClass}>
-              Courses
-            </NavLink>
-            <NavLink to="/about" className={getLinkClass}>
-              About
-            </NavLink>
+            <NavLink to="/courses" className={getLinkClass}>Courses</NavLink>
+            <NavLink to="/about" className={getLinkClass}>About</NavLink>
           </div>
 
-          <div className="flex items-center gap-5">
+          {/* Right Controls */}
+          <div className="flex items-center gap-4">
+            {/* Cart */}
             <Link
               to="/cart"
-              className="relative group flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/5 transition-colors"
+              className="relative group flex items-center justify-center w-9 h-9 rounded-xl bg-zinc-900/60 border border-zinc-800/50 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all duration-300"
             >
-              <FaShoppingCart className="text-xl text-slate-300 group-hover:text-purple-400 transition-colors" />
+              <FaShoppingCart className="text-base text-zinc-400 group-hover:text-cyan-400 transition-colors" />
               {user && cartItems.length > 0 && (
-                <span className="absolute top-0 right-0 w-4 h-4 bg-pink-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-[#0a0a0a]">
+                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-cyan-500 text-zinc-950 text-[10px] font-bold flex items-center justify-center rounded-full">
                   {cartItems.length}
                 </span>
               )}
             </Link>
 
+            {/* Desktop User / Auth */}
             <div className="hidden lg:flex items-center gap-3">
               {user ? (
-                <div className="relative group pl-4 border-l border-white/10">
-                  <div className="flex items-center gap-3 cursor-pointer py-2">
-                    <div className="w-10 h-10 rounded-full bg-[#13151d] border-2 border-[#13151d] shadow-[0_0_15px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform overflow-hidden">
+                <div className="relative group pl-3 border-l border-zinc-800">
+                  <div className="flex items-center gap-2.5 cursor-pointer py-1.5">
+                    <div className="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-700 shadow-[0_0_12px_rgba(6,182,212,0.15)] group-hover:border-cyan-500/40 group-hover:shadow-[0_0_16px_rgba(6,182,212,0.25)] transition-all duration-300 overflow-hidden">
                       <img
                         src={
                           user?.avatar ||
-                          `https://ui-avatars.com/api/?name=${user?.name || "U"}&background=random`
+                          `https://ui-avatars.com/api/?name=${user?.name || "U"}&background=0e7490&color=fff`
                         }
                         alt="Profile"
                         className="w-full h-full object-cover"
                       />
                     </div>
-
                     <div className="hidden xl:block text-left">
-                      <p className="text-sm font-bold text-white leading-none">
-                        {user.name}
-                      </p>
-                      <p className="text-[11px] text-purple-400 font-bold uppercase tracking-wider mt-1">
+                      <p className="text-sm font-semibold text-white leading-none">{user.name}</p>
+                      <p className={`text-xs font-bold uppercase tracking-wider mt-0.5 ${
+                        user.role === "admin" ? "text-amber-400" : "text-cyan-400"
+                      }`}>
                         {user.role === "admin" ? "Administrator" : "Student"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="absolute right-0 top-full mt-2 w-56 bg-[#13151d] border border-white/10 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 overflow-hidden">
-                    <div className="p-2 space-y-1">
+                  {/* Dropdown */}
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/60 rounded-2xl shadow-2xl shadow-black/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right scale-95 group-hover:scale-100 overflow-hidden">
+                    <div className="p-2 space-y-0.5">
                       <Link
                         to="/profile"
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 font-medium hover:text-white hover:bg-white/5 rounded-xl transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800/60 rounded-xl transition-all duration-200"
                       >
-                        <FaUserCircle className="text-lg text-slate-500" /> My
-                        Profile
+                        <FaUserCircle className="text-base text-zinc-500" /> My Profile
                       </Link>
 
                       {user.role === "admin" && (
                         <Link
                           to="/admin/dashboard"
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-purple-400 font-bold hover:text-purple-300 hover:bg-purple-500/10 rounded-xl transition-colors"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-amber-400 font-semibold hover:text-amber-300 hover:bg-amber-500/10 rounded-xl transition-all duration-200"
                         >
-                          <RiRocketLine className="text-lg" /> Admin Dashboard
+                          <FaShieldAlt className="text-base" /> Admin Dashboard
                         </Link>
                       )}
 
-                      <div className="h-px bg-white/5 my-2"></div>
+                      <div className="h-px bg-zinc-800 my-1"></div>
 
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 font-medium hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors"
+                        className="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition-all duration-200"
                       >
-                        <RiLogoutBoxRLine className="text-lg" /> Logout
+                        <RiLogoutBoxRLine className="text-base" /> Logout
                       </button>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-3 pl-4 border-l border-white/10">
+                <div className="flex items-center gap-2.5 pl-3 border-l border-zinc-800">
                   <Link
                     to="/login"
-                    className="px-6 py-2.5 rounded-xl font-bold text-sm text-white bg-white/10 border border-white/10 hover:bg-white/20 transition-all backdrop-blur-sm"
+                    className="px-5 py-2 rounded-xl font-medium text-sm text-zinc-300 bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 hover:text-white transition-all duration-300"
                   >
                     Log In
                   </Link>
                   <Link
                     to="/register"
-                    className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-all"
+                    className="flex items-center gap-1.5 btn-primary px-5 py-2 text-sm"
                   >
-                    Get Started <RiRocketLine />
+                    Get Started <RiRocketLine className="text-base" />
                   </Link>
                 </div>
               )}
             </div>
 
+            {/* Mobile Hamburger */}
             <button
               onClick={() => setIsOpen(true)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-white hover:bg-white/10 transition-colors"
+              className="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-zinc-900/60 border border-zinc-800/50 text-zinc-300 hover:text-white hover:border-zinc-700 transition-all duration-300"
             >
-              <HiMenuAlt3 className="text-2xl" />
+              <HiMenuAlt3 className="text-xl" />
             </button>
           </div>
         </div>
       </nav>
 
+      {/* Mobile Overlay */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] lg:hidden transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
         onClick={() => setIsOpen(false)}
-      ></div>
+      />
 
+      {/* Mobile Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-[80%] max-w-sm bg-[#0f1117] border-l border-white/10 z-[70] transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-full w-[80%] max-w-sm bg-zinc-950 border-l border-zinc-800/60 z-[70] transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
-        <div className="p-6 flex items-center justify-between border-b border-white/5">
-          <span className="text-xl font-bold text-white">Menu</span>
+        {/* Drawer Header */}
+        <div className="p-5 flex items-center justify-between border-b border-zinc-800/60">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="text-sm font-semibold text-white tracking-wider uppercase">Menu</span>
+          </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-all duration-300"
           >
-            <HiX className="text-xl" />
+            <HiX className="text-lg" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-2">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? "bg-purple-500/10 text-purple-400" : "text-slate-300 hover:bg-white/5 hover:text-white"}`
-            }
-          >
-            Home
-          </NavLink>
+        {/* Nav Links */}
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-1">
+          {[
+            { to: "/", label: "Home" },
+            { to: "/courses", label: "Courses" },
+            { to: "/about", label: "About" },
+          ].map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `block px-4 py-3 rounded-xl font-medium text-base transition-all duration-300 ${
+                  isActive
+                    ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+                    : "text-zinc-300 hover:bg-zinc-800/60 hover:text-white"
+                }`
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
+
           {user && (
             <NavLink
               to="/my-courses"
               className={({ isActive }) =>
-                `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? "bg-purple-500/10 text-purple-400" : "text-slate-300 hover:bg-white/5 hover:text-white"}`
+                `block px-4 py-3 rounded-xl font-medium text-base transition-all duration-300 ${
+                  isActive
+                    ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+                    : "text-zinc-300 hover:bg-zinc-800/60 hover:text-white"
+                }`
               }
             >
               My Learning
             </NavLink>
           )}
-          <NavLink
-            to="/courses"
-            className={({ isActive }) =>
-              `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? "bg-purple-500/10 text-purple-400" : "text-slate-300 hover:bg-white/5 hover:text-white"}`
-            }
-          >
-            Courses
-          </NavLink>
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? "bg-purple-500/10 text-purple-400" : "text-slate-300 hover:bg-white/5 hover:text-white"}`
-            }
-          >
-            About
-          </NavLink>
 
           {user && (
             <>
-              <div className="h-px bg-white/5 my-4 mx-4"></div>
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider px-4 mb-2">
-                My Account
-              </span>
+              <div className="h-px bg-zinc-800 my-3 mx-2" />
+              <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest px-4 mb-1">Account</span>
               <NavLink
                 to="/profile"
                 className={({ isActive }) =>
-                  `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? "bg-purple-500/10 text-purple-400" : "text-slate-300 hover:bg-white/5 hover:text-white"}`
+                  `block px-4 py-3 rounded-xl font-medium text-base transition-all duration-300 ${
+                    isActive
+                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+                      : "text-zinc-300 hover:bg-zinc-800/60 hover:text-white"
+                  }`
                 }
               >
                 Profile Settings
@@ -248,7 +258,11 @@ const Navbar = () => {
                 <NavLink
                   to="/admin/dashboard"
                   className={({ isActive }) =>
-                    `block px-4 py-3 rounded-xl font-bold text-lg transition-colors ${isActive ? "bg-purple-500/10 text-purple-400" : "text-purple-400 hover:bg-purple-500/10"}`
+                    `block px-4 py-3 rounded-xl font-semibold text-base transition-all duration-300 ${
+                      isActive
+                        ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                        : "text-amber-400 hover:bg-amber-500/10"
+                    }`
                   }
                 >
                   Admin Dashboard
@@ -258,47 +272,50 @@ const Navbar = () => {
           )}
         </div>
 
-        <div className="p-6 border-t border-white/5 bg-[#13151d]">
+        {/* Drawer Footer */}
+        <div className="p-4 border-t border-zinc-800/60 bg-zinc-900/40">
           {user ? (
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-full bg-[#0a0a0a] border-2 border-[#0a0a0a] overflow-hidden">
+              <div className="flex items-center gap-3 mb-4 px-1">
+                <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-700 overflow-hidden">
                   <img
                     src={
                       user?.avatar ||
-                      `https://ui-avatars.com/api/?name=${user?.name || "U"}&background=random`
+                      `https://ui-avatars.com/api/?name=${user?.name || "U"}&background=0e7490&color=fff`
                     }
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div>
-                  <p className="text-white font-bold">{user.name}</p>
-                  <p className="text-purple-400 text-xs font-bold uppercase tracking-wider">
+                  <p className="text-white font-semibold text-sm">{user.name}</p>
+                  <p className={`text-xs font-bold uppercase tracking-wider ${
+                    user.role === "admin" ? "text-amber-400" : "text-cyan-400"
+                  }`}>
                     {user.role === "admin" ? "Administrator" : "Student"}
                   </p>
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full py-3.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+                className="w-full py-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 border border-rose-500/20"
               >
-                <RiLogoutBoxRLine className="text-lg" /> Logout
+                <RiLogoutBoxRLine /> Logout
               </button>
             </div>
           ) : (
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <Link
                 to="/login"
                 onClick={() => setIsOpen(false)}
-                className="w-full py-3.5 bg-white/10 border border-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-center transition-colors"
+                className="w-full py-3 bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/60 text-white rounded-xl font-semibold text-center transition-all duration-300"
               >
                 Log In
               </Link>
               <Link
                 to="/register"
                 onClick={() => setIsOpen(false)}
-                className="w-full py-3.5 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-xl font-bold text-center shadow-lg transition-colors"
+                className="w-full py-3 flex items-center justify-center gap-2 btn-primary"
               >
                 Get Started <RiRocketLine />
               </Link>

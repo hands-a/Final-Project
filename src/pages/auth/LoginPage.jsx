@@ -2,42 +2,29 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FaLock, FaArrowRight, FaGoogle, FaFacebook } from 'react-icons/fa';
-import { useAuth } from '../../context/AuthContext'; 
+import { FaArrowRight, FaTerminal } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
-  // Initial Form State
-  const initialValues = {
-    email: '',
-    password: '',
-  };
+  const initialValues = { email: '', password: '' };
 
-  // Form Validation Schema using Yup
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required'),
-    password: Yup.string()
-      .required('Password is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
   });
 
-  // Handle Form Submission
   const onSubmit = (values, { setSubmitting }) => {
-    // Simulating an API call delay
     setTimeout(() => {
       const userData = {
-        name: values.email.split('@')[0], 
+        name: values.email.split('@')[0],
         email: values.email,
-        role: 'student' // Default role
+        role: 'student'
       };
-      
-      login(userData); 
+      login(userData);
       setSubmitting(false);
-      
-      // Role-based routing
       if (values.email.includes('admin')) {
         navigate('/admin/dashboard');
       } else {
@@ -47,77 +34,74 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
-      
-      <div className="relative z-10 w-full max-w-[500px]">
-        {/* Reusable Glass Panel Class */}
-        <div className="glass-panel p-8 sm:p-10">
-          
-          {/* Header Section */}
-          <div className="text-center mb-8">
-          
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 tracking-tight">Welcome Back</h1>
-            <p className="text-slate-300/80 text-sm">Enter your credentials to access your account.</p>
-          </div>
+    <div className="min-h-screen bg-zinc-950 relative overflow-hidden flex items-center justify-center p-4 sm:p-6">
 
-          {/* Formik Integration */}
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
+      {/* Ambient */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-cyan-600/6 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-emerald-700/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="bg-grid-mesh absolute inset-0 pointer-events-none opacity-50" />
+
+      <div className="relative z-10 w-full max-w-[460px]">
+
+        {/* Brand mark */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
+            <FaTerminal className="text-cyan-400 text-xs" />
+            <span className="text-cyan-400 text-xs font-mono tracking-widest uppercase">Command Center</span>
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-1">Welcome Back</h1>
+          <p className="text-zinc-500 text-sm">Enter your credentials to access your account.</p>
+        </div>
+
+        <div className="glass-panel p-8 sm:p-10">
+          <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
             {({ errors, touched, isSubmitting }) => (
               <Form className="space-y-5">
-                
-                {/* Email Field */}
+
                 <div>
                   <label className="label-text">Email Address</label>
-                  <Field 
+                  <Field
                     type="email"
                     name="email"
-                    placeholder="name@example.com" 
-                    className={`input-field ${errors.email && touched.email ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
+                    placeholder="name@example.com"
+                    className={`input-field ${errors.email && touched.email ? '!border-rose-500/50 focus:!border-rose-500 focus:!ring-rose-500/20' : ''}`}
                   />
-                  <ErrorMessage name="email" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
+                  <ErrorMessage name="email" component="div" className="text-rose-400 text-xs mt-1.5 ml-1" />
                 </div>
 
-                {/* Password Field */}
                 <div>
                   <div className="flex justify-between items-center mb-2 ml-1">
                     <label className="label-text !mb-0 !ml-0">Password</label>
-                    <Link to="/forgot-password" className="text-[10px] text-pink-400 hover:text-pink-300 transition-colors uppercase tracking-wider">
+                    <Link to="/forgot-password" className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-wider">
                       Forgot Password?
                     </Link>
                   </div>
-                  <Field 
+                  <Field
                     type="password"
                     name="password"
-                    placeholder="Enter your Password" 
-                    className={`input-field ${errors.password && touched.password ? '!border-red-500/50 focus:!border-red-500 focus:!ring-red-500/50' : ''}`} 
+                    placeholder="Enter your password"
+                    className={`input-field ${errors.password && touched.password ? '!border-rose-500/50 focus:!border-rose-500 focus:!ring-rose-500/20' : ''}`}
                   />
-                  <ErrorMessage name="password" component="div" className="text-red-400 text-[10px] mt-1.5 ml-1" />
+                  <ErrorMessage name="password" component="div" className="text-rose-400 text-xs mt-1.5 ml-1" />
                 </div>
 
-                {/* Submit Button */}
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={isSubmitting}
-                  className="btn-primary w-full py-3.5 mt-2"
+                  className="btn-primary w-full py-3.5 mt-2 shadow-[0_0_20px_rgba(6,182,212,0.15)]"
                 >
-                  {isSubmitting ? 'Logging in...' : (
-                    <>Log In Now <FaArrowRight /></>
-                  )}
+                  {isSubmitting ? 'Authenticating...' : <><span>Access Account</span> <FaArrowRight /></>}
                 </button>
-
-                
 
               </Form>
             )}
           </Formik>
 
-          {/* Footer Link */}
-          <p className="text-center mt-6 text-slate-300 text-sm">
-            Don't have an account? <Link to="/register" className="text-pink-400 font-bold hover:text-pink-300 transition-colors ml-1">Sign Up Free</Link>
+          <p className="text-center mt-6 text-zinc-500 text-sm">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors ml-1">
+              Sign Up Free
+            </Link>
           </p>
         </div>
       </div>
